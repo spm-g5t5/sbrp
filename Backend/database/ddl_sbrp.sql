@@ -13,7 +13,6 @@ STAFF_LNAME		varchar(50)		not null,
 DEPT			varchar(50)		not null,
 COUNTRY			varchar(50)		not null,
 EMAIL			varchar(50)		not null,
-ACCESS_RIGHTS	int				not null,
 CONSTRAINT STAFF_PK PRIMARY KEY (STAFF_ID),
 CONSTRAINT STAFF_FK1 FOREIGN KEY (STAFF_ID) REFERENCES STAFF_ACCESS(STAFF_ID));
 
