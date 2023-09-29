@@ -19,6 +19,3 @@ def hello():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# To obtain parameters from config
-# app.config["DB_HOST"] where key = key in config

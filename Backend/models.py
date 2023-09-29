@@ -24,4 +24,31 @@ class Apply(db.Model):
 
     def json(self):
         return {"application_id": self.application_id, "applicant_staff_id": self.applicant_staff_id, "applicant_existing_role": self.applicant_existing_role, "applicant_existing_dept": self.applicant_existing_dept, "application_status": self.application_status, "date_applied": self.date_applied, "applied_role_id": self.applied_role_id}
+class Staff(db.Model):
+    __tablename__ = 'STAFF'
+    staff_id = db.Column(db.Integer, primary_key=True)
+    staff_fname = db.Column(db.String(50), nullable=False)
+    staff_lname = db.Column(db.String(50), nullable=False)
+    dept = db.Column(db.String(50), nullable=False)
+    country = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+
+    def verifyStaffExists(self):
+        json = {
+            "staff_id": self.staff_id,
+        }
+
+        return json
+class StaffAccess(Staff):
+    __tablename__ = 'STAFF_ACCESS'
+    staff_id  = db.Column(db.Integer, db.ForeignKey("STAFF.staff_id"), primary_key=True)
+    access_rights = db.Column(db.Integer, nullable=False)
+
+    def getStaffRole(self):
+        json = {
+            "staff_id": self.staff_id,
+            "access_rights": self.access_rights,
+        }
+
+        return json
 
