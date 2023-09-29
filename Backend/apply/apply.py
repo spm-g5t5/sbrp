@@ -1,13 +1,12 @@
-from flask import Flask, request, jsonify, Blueprint, render_template, current_app
-import json
-import requests
+from flask import jsonify, Blueprint, current_app
+from models import Apply
 
 apply_routes = Blueprint('apply_routes', __name__)
 
-# for admin
 @apply_routes.route('/viewApplicants')
 def viewApplicants():
-    return 'View Applicants'
+    applications = Apply.query.all()
+    return jsonify([app.json() for app in applications])
 
 # for config testing
 @apply_routes.route('/test/configtest')
