@@ -5,16 +5,8 @@ from models import Staff, StaffAccess
 
 staff_routes = Blueprint('staff_routes', __name__)
 
-# for apply
-@staff_routes.route('/viewStaffAccess')
-def viewStaffAccess():
-    staffaccess_lst = StaffAccess.query.all()
-    json = jsonify([staff.json() for staff in staffaccess_lst])
-    return json
-
-
 #flask route post request template
-@staff_routes.route('/login', methods=['POST'])
+@staff_routes.route('/API/v1/login', methods=['POST'])
 def authStaff():
     if "User" in request.headers:
         try:
@@ -48,4 +40,4 @@ def authStaff():
                 "message": "An error occured"
             }), 400
     return jsonify("User not in header"), 500
-    
+    request.status_code = 500
