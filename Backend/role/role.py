@@ -10,7 +10,7 @@ def viewRoles():
         roles = Role.query.all()
         if not roles:
             # If there are no roles found, return a 404 Not Found status
-            return jsonify({"error": "No roles found"}), 404
+            return jsonify({"error": "No roles found"}), 200
 
         # Return a JSON response with the list of roles
         return jsonify([role.json() for role in roles]), 200
@@ -25,7 +25,7 @@ def getSkillsByRoleName(name):
         role_name = RoleSkill.query.filter_by(role_name=name).all()
         if not role_name:
             # If there are no skills found for the specified role name, return a 404 Not Found status
-            return jsonify({"error": "No skills found for this role name"}), 404
+            return jsonify({"error": "No skills found for this role name"}), 200
 
         # Return a JSON response with the list of skills for the specified role name
         return jsonify([role.json() for role in role_name]), 200

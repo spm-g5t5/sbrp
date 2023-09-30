@@ -10,7 +10,7 @@ def viewApplicants():
         applications = Apply.query.all()
         if not applications:
             # If there are no applications, return a 404 Not Found status
-            return jsonify({"error": "No applicants found"}), 404
+            return jsonify({"error": "No applicants found"}), 200
 
         # Return a JSON response with the list of applicants
         return jsonify([app.json() for app in applications]), 200
@@ -25,7 +25,7 @@ def getApplicantByRoleId(id):
         applications = Apply.query.filter_by(applied_role_id=id).all()
         if not applications:
             # If there are no applicants for the specified role, return a 404 Not Found status
-            return jsonify({"error": "No applicants found for this role"}), 404
+            return jsonify({"error": "No applicants found for this role"}), 200
 
         # Return a JSON response with the list of applicants for the specified role
         return jsonify([app.json() for app in applications]), 200
@@ -40,7 +40,7 @@ def getApplicantByApplicationId(id):
         applications = Apply.query.filter_by(application_id=id).all()
         if not applications:
             # If there are no applicants for the specified application ID, return a 404 Not Found status
-            return jsonify({"error": "No applicants found for this application ID"}), 404
+            return jsonify({"error": "No applicants found for this application ID"}), 200
 
         # Return a JSON response with the list of applicants for the specified application ID
         return jsonify([app.json() for app in applications]), 200
@@ -55,7 +55,7 @@ def getApplicantBySkillId(id):
         applications = ApplySkill.query.filter_by(application_id=id).all()
         if not applications:
             # If there are no applicants for the specified skill ID, return a 404 Not Found status
-            return jsonify({"error": "No applicants found for this skill ID"}), 404
+            return jsonify({"error": "No applicants found for this skill ID"}), 200
 
         # Return a JSON response with the list of applicants for the specified skill ID
         return jsonify([app.json() for app in applications]), 200
