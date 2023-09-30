@@ -15,7 +15,7 @@ app.register_blueprint(apply_routes)
 
 @app.route('/')
 def hello():
-    return "heloo"
+    return "Welcome to SBRP"
 
 if __name__ == '__main__':
     app.run(debug=True)
