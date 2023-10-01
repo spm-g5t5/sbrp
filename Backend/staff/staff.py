@@ -17,8 +17,6 @@ def authStaff():
                 return jsonify({
                     "login_status": 1,
                     "staff": useraccess_records[0].getStaffRole(),
-                    "message": "User login successful",
-
                 }), 200
             else:
                 user_records = Staff.query.filter_by(email=user).all()
@@ -26,18 +24,19 @@ def authStaff():
                     return jsonify({
                         "login_status": -1,
                         "staff": user_records[0].verifyStaffExists(),
-                        "message": "User has no access rights",
-
+                        "error": "User has no access rights",
                     }), 200
 
                 return jsonify({
                      "login_status": 0,
-                    "message": "Invalid user"
+                    "error": "Invalid user"
                 }), 400
             
         except:
             return jsonify({
-                "message": "An error occured"
+                "error": "An error occured"
             }), 400
-    return jsonify("User not in header"), 500
+    return jsonify({
+                "error": "User not in header"
+            }), 500
     request.status_code = 500
