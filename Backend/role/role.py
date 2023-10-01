@@ -32,3 +32,15 @@ def getSkillsByRoleName(name):
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
+    
+@role_routes.route('/API/v1/searchRole/<string:inputRoleName>')
+def getRolebyName(inputRoleName):
+    try:
+        inputRoleName = "%{}%".format(inputRoleName)
+        role_search_results = Role.query.filter(Role.role_name.like(inputRoleName)).all()
+        if not role_search_results:
+            return jsonify({"error": "No role found with search criteria"}), 200
+
+        return jsonify([role.json() for role in role_search_results]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
