@@ -9,7 +9,7 @@ def viewApplicants():
     try:
         applications = Apply.query.all()
         if not applications:
-            # If there are no applications, return a 404 Not Found status
+            # If there are no applications, return a 200 Not Found status
             return jsonify({"error": "No applicants found"}), 200
 
         # Return a JSON response with the list of applicants
@@ -24,7 +24,7 @@ def getApplicantByRoleId(id):
     try:
         applications = Apply.query.filter_by(applied_role_id=id).all()
         if not applications:
-            # If there are no applicants for the specified role, return a 404 Not Found status
+            # If there are no applicants for the specified role, return a 200 Not Found status
             return jsonify({"error": "No applicants found for this role"}), 200
 
         # Return a JSON response with the list of applicants for the specified role
@@ -39,7 +39,7 @@ def getApplicantByApplicationId(id):
     try:
         applications = Apply.query.filter_by(application_id=id).all()
         if not applications:
-            # If there are no applicants for the specified application ID, return a 404 Not Found status
+            # If there are no applicants for the specified application ID, return a 200 Not Found status
             return jsonify({"error": "No applicants found for this application ID"}), 200
 
         # Return a JSON response with the list of applicants for the specified application ID
@@ -54,7 +54,7 @@ def getApplicantBySkillId(id):
     try:
         applications = ApplySkill.query.filter_by(application_id=id).all()
         if not applications:
-            # If there are no applicants for the specified skill ID, return a 404 Not Found status
+            # If there are no applicants for the specified skill ID, return a 200 Not Found status
             return jsonify({"error": "No applicants found for this skill ID"}), 200
 
         # Return a JSON response with the list of applicants for the specified skill ID
