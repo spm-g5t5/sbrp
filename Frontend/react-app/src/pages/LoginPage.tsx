@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import logoWave from '../assets/logo_wave_design.png';
 import '../App.css'; // Import a CSS file for component-specific styles
 
-const Login: React.FC = () => {
+const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,20 +21,57 @@ const Login: React.FC = () => {
     setError('');
   };
 
+  let navigate = useNavigate(); 
+  const routeAdmin = () =>{ 
+    let path = `./AdminHomePage`; 
+    navigate(path);
+  }
+
+  const routeStaff = () =>{ 
+    let path = `./StaffHomePage`; 
+    navigate(path);
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.email && !formData.password) {
+      setFormData({
+        email: '',
+        password: ''
+      });  
       setError('Email and password are required');
     } else if (!formData.email) {
+      setFormData({
+        email: '',
+        password: ''
+      });  
       setError('Email is required');
     } else if (!formData.password) {
+      setFormData({
+        email: '',
+        password: ''
+      });  
       setError('Password is required');
     } else {
       // Store the email in local storage
       setError('');
-      localStorage.setItem('email', formData.email);
-      // Navigate to AdminHomePage or display a success message here
+          // Check for "admin" or "staff" in the email
+      const emailParts = formData.email.split('@');
+      if (emailParts.length === 2) {
+        const domain = emailParts[1].toLowerCase();
+        if (domain.includes('admin')) {
+          // Store the identity as "admin"
+          localStorage.setItem('identity', 'admin');
+          return routeAdmin();
+        } else if (domain.includes('staff')) {
+          // Store the identity as "staff"
+          localStorage.setItem('identity', 'staff');
+          return routeStaff();
+        } else {
+          setError('You are not a registered user');
+        };
+      }
     }
   };
 
@@ -91,4 +128,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
