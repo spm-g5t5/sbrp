@@ -34,7 +34,8 @@ def getSkillsByRoleName(name):
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
-    
+
+#search for role by name
 @role_routes.route('/API/v1/searchRole/<string:inputRoleName>')
 def getRolebyName(inputRoleName):
     try:
@@ -47,7 +48,7 @@ def getRolebyName(inputRoleName):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-
+#create a new role
 @role_routes.route('/API/v1/addRole', methods=['POST'])
 def addRole():
     try:
