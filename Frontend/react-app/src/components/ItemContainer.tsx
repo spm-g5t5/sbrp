@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -27,15 +26,12 @@ const ItemContainer: React.FC<MyComponentProps> = ({ item }) => {
 
   return (
     <Container>
-    <Card style={{ width: '18rem' }}>
-    <Card.Body>
-      <Card.Title>{item.role_name}</Card.Title>
-      <Card.Text>
+      <h1>{item.role_name}</h1>
+      <div>
         Department: {item.department}
-      </Card.Text>
+      </div>
       <Button style={{ backgroundColor: '#266C73' }} onClick={handleShowModal}>More details</Button>
-    </Card.Body>
-  </Card>
+
   <Modal show={showModal} onHide={handleCloseModal}>
   <Modal.Header closeButton>
     <Modal.Title>{item.role_name}</Modal.Title>
