@@ -35,4 +35,3 @@ const AdminRole = () => {
 }
 
 export default AdminRole;
-

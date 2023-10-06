@@ -4,15 +4,15 @@ import '../styles/SearchBar.css';
 
 function SearchBar() {
   return (
-    <Row className='searchbar'>
+    <Row>
       <Col xs={12} md={6}> {/* Half width on small screens, full width on medium and larger */}
-        <Form className="form-inline">
+        <Form className='searchbar'>
           <FormControl
             type="text"
             placeholder="Search"
             className="mr-2"
           />
-          <Button variant="outline-success">Search</Button>
+          <Button style={{ backgroundColor: '#266C73' }}>Search</Button>
         </Form>
       </Col>
     </Row>

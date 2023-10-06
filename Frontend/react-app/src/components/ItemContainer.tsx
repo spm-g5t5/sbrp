@@ -33,7 +33,7 @@ const ItemContainer: React.FC<MyComponentProps> = ({ item }) => {
       <Card.Text>
         Department: {item.department}
       </Card.Text>
-      <Button variant="secondary" onClick={handleShowModal}>More details</Button>
+      <Button style={{ backgroundColor: '#266C73' }} onClick={handleShowModal}>More details</Button>
     </Card.Body>
   </Card>
   <Modal show={showModal} onHide={handleCloseModal}>
@@ -46,7 +46,7 @@ const ItemContainer: React.FC<MyComponentProps> = ({ item }) => {
     Job Type: <p>{item.job_type}</p>
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
+    <Button style={{ backgroundColor: '#266C73' }} onClick={handleCloseModal}>
       Close
     </Button>
   </Modal.Footer>
