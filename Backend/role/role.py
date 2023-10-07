@@ -2,10 +2,11 @@ from flask import jsonify, Blueprint, current_app, request
 from models import Role, RoleListingSkills
 from datetime import datetime
 from models import db
+import requests
 
 role_routes = Blueprint('role_routes', __name__)
 
-#get all roles
+#get all roles for admin
 @role_routes.route('/API/v1/viewRoles')
 def viewRoles(): 
     try:
@@ -13,8 +14,19 @@ def viewRoles():
         query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
         roles = query.all()
 
+        processed_roles = []
+        if not roles:
+            # If there are no roles found, return a 200 Not Found status
+            return jsonify({"error": "No roles found"}), 200
+        
+        # for each role found
+        for role in roles:
+            temp_role = role.json()
+            temp_role['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role.json()["hiring_manager_id"]}').json()
+            processed_roles += [temp_role]
+
         # Return a JSON response with the list of roles
-        return jsonify([role.json() for role in roles]), 200
+        return jsonify(processed_roles), 200
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500

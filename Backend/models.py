@@ -37,8 +37,11 @@ class Staff(db.Model):
         json = {
             "staff_id": self.staff_id,
         }
-
         return json
+    
+    def json(self):
+        return {"staff_id": self.staff_id, "staff_fname": self.staff_fname, "staff_lname": self.staff_lname, "dept": self.dept, "country": self.country, "email": self.email}
+    
 class StaffAccess(Staff):
     __tablename__ = 'STAFF_ACCESS'
     staff_id  = db.Column(db.Integer, db.ForeignKey("STAFF.staff_id"), primary_key=True)
