@@ -40,3 +40,16 @@ def authStaff():
                 "error": "User not in header"
             }), 500
     request.status_code = 500
+
+@staff_routes.route('/API/v1/staff/<int:input_staff_id>')
+def getStaffDetails(input_staff_id):
+    try:
+        useraccess_records = Staff.query.filter_by(staff_id=input_staff_id).all()
+        return jsonify(
+            useraccess_records[0].json()
+        ), 200        
+            
+    except:
+        return jsonify({
+            "error": "An error occured"
+        }), 400
