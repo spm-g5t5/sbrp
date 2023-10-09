@@ -49,7 +49,7 @@ def getRolebyName(inputRoleName):
         return jsonify({"error": str(e)}), 500
     
 #create a new role
-@role_routes.route('/API/v1/addRole', methods=['POST'])
+@role_routes.route('/API/v1/createRole', methods=['POST'])
 def addRole():
     try:
         data = request.get_json()
@@ -68,14 +68,33 @@ def addRole():
             expiry_dt=expiry_dt,
             hiring_manager_id=data['hiring_manager_id']
         )
+        
+        # Create a list to store the RoleSkill records
+        role_skills = []
+
+        # Loop through the list of skills and create RoleSkill records
+        for skill_name in data['role_skills']:
+            role_skill = RoleSkill(
+                role_name=data['role_name'],
+                skill_name=skill_name
+            )
+            role_skills.append(role_skill)
+
+        # Add the RoleSkill records to the session
+        db.session.add_all(role_skills)
 
         # Add the new role to the session
         db.session.add(new_role)
-
+  
         # Commit the session to persist the record in the database
         db.session.commit()
 
-        return jsonify(new_role.json()), 201
+        response_data = {
+            "role": new_role.json(),
+            "role_skills": [role_skill.json() for role_skill in role_skills]
+        }
+
+        return jsonify(response_data), 201
     except Exception as e:
         db.session.rollback()  # Rollback the session in case of an error
         return f"Error inserting data: {str(e)}", 500
