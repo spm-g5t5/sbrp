@@ -67,6 +67,7 @@ class ApplySkill(db.Model):
 class Role(db.Model):
     __tablename__ = 'role_listing'
     role_id = db.Column(db.Integer, primary_key=True)
+    role_listing_ver = db.Column(db.Integer, primary_key=True)
     role_name = db.Column(db.String(20), nullable=False)
     job_type = db.Column(db.String(50), nullable=False)
     department = db.Column(db.String(50), nullable=False)
@@ -74,6 +75,8 @@ class Role(db.Model):
     original_creation_dt = db.Column(db.DateTime, nullable=False)
     expiry_dt = db.Column(db.DateTime, nullable=False)
     hiring_manager_id = db.Column(db.Integer, nullable=False)
+    upd_hiring_manager_id = db.Column(db.Integer, nullable=True)
+    upd_dt = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, role_id, role_name, job_type, department, job_description, original_creation_dt, expiry_dt, hiring_manager_id):
         self.role_id = role_id
