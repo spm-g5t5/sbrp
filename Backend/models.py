@@ -66,7 +66,7 @@ class ApplySkill(db.Model):
     
 class Role(db.Model):
     __tablename__ = 'role_listing'
-    role_id = db.Column(db.Integer, primary_key=True)
+    role_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     role_listing_ver = db.Column(db.Integer, primary_key=True)
     role_name = db.Column(db.String(20), nullable=False)
     job_type = db.Column(db.String(50), nullable=False)
@@ -92,8 +92,7 @@ class Role(db.Model):
         self.upd_dt = upd_dt
 
     def json(self):
-        return {"role_id": self.role_id, "role_name": self.role_name, "job_type": self.job_type, "department": self.department, "job_description": self.job_description, "original_creation_dt": self.original_creation_dt, "expiry_dt": self.expiry_dt, "hiring_manager_id": self.hiring_manager_id}
-    
+        return {"role_id": self.role_id, "role_listing_ver": self.role_listing_ver, "role_name": self.role_name, "job_type": self.job_type, "department": self.department, "job_description": self.job_description, "original_creation_dt": self.original_creation_dt, "expiry_dt": self.expiry_dt, "hiring_manager_id": self.hiring_manager_id, "upd_hiring_manager_id": self.upd_hiring_manager_id, "upd_dt": self.upd_dt} 
 class RoleSkill(db.Model):
     __tablename__ = 'role_skill'
     role_name = db.Column(db.String(20), primary_key=True)
