@@ -18,6 +18,7 @@ interface Item {
 
 const RoleSkills: React.FC<MyComponentProps> = ({ item }) => {
     const [skills, setSkills] = useState([]);
+
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/API/v1/viewRoles/skill/'+ item.role_name)
       .then((response) => {

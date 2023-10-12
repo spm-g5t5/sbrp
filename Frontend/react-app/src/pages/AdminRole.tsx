@@ -9,10 +9,12 @@ import { Button, Container, Modal } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 
 
+
 const AdminRole = () => {
   const [data, setData] = useState([]);
   const [Applications, setApplications] = useState([]);
   const [showModal, setShowModal] = useState(false);
+
 
   useEffect(() => {
     axios.get('http://127.0.0.1:5000/API/v1/viewRoles')
@@ -41,12 +43,12 @@ const AdminRole = () => {
       <Header />
       <SearchBar />
       {/* Display the data */}
-      <ul>
         {data.map((item) => (
           <Card style={{ margin: '30px' }}>
           <ItemContainer key={item.role_id} item={item} />
           <RoleSkills key={item.role_name} item={item} />
           <Button style={{ backgroundColor: '#266C73' }} onClick={() => handleViewApplications(item.role_id)}>View Applications</Button>
+
           {showModal && (
             <Modal show={showModal} onHide={() => setShowModal(false)}>
               <Modal.Header closeButton>
@@ -65,9 +67,9 @@ const AdminRole = () => {
               </Modal.Footer>
           </Modal>
           )}
+
           </Card>
         ))}
-      </ul>
     </div>
   );
 }
