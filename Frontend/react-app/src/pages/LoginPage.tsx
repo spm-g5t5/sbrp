@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import logoWave from '../assets/logo_wave_design.png';
 import '../App.css'; // Import a CSS file for component-specific styles
+import axios from 'axios';
+
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -54,25 +56,15 @@ const LoginPage = () => {
       });  
       setError('Password is required');
     } else {
-      // Store the email in local storage
-      setError('');
-          // Check for "admin" or "staff" in the email
-      const emailParts = formData.email.split('@');
-      if (emailParts.length === 2) {
-        const domain = emailParts[1].toLowerCase();
-        if (domain.includes('admin')) {
-          // Store the identity as "admin"
-          localStorage.setItem('identity', 'admin');
-          return routeAdmin();
-        } else if (domain.includes('staff')) {
-          // Store the identity as "staff"
-          localStorage.setItem('identity', 'staff');
-          return routeStaff();
-        } else {
-          setError('You are not a registered user');
-        };
+      axios.post('http://127.0.0.1:5000/API/v1/login', { email: formData.email })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error('Error logging in:', error);
+        setError('Login failed');
+      });
       }
-    }
   };
 
   return (
