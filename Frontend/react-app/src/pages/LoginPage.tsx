@@ -33,6 +33,10 @@ const LoginPage = () => {
     let path = `./StaffHomePage`; 
     navigate(path);
   }
+  const routeManager = () =>{ 
+    let path = `./AdminHomePage`; 
+    navigate(path);
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,15 +60,45 @@ const LoginPage = () => {
       });  
       setError('Password is required');
     } else {
-      axios.post('http://127.0.0.1:5000/API/v1/login', { email: formData.email })
+      axios.post('http://127.0.0.1:5000/API/v1/login', null, {
+        headers: {
+          user: formData.email,
+          password: formData.password,
+        },
+      })
       .then((response) => {
-        console.log(response)
+        if (response.data.login_status === 1) {
+          // Successful login, store access rights
+          let staffId = response.data.staff.staff_id
+          let accessRights = response.data.staff.access_rights
+          localStorage.setItem('StaffId', staffId);
+          localStorage.setItem('AccessRights', accessRights);
+          // Direct into the correct webpage
+          // If user is admin, route to admin page
+          if(accessRights == 3){
+            return routeAdmin()
+          }
+          // If user is manager, route to manager page
+          else if (accessRights == 2){
+            return routeManager()
+          }
+          // If user is staff, route to staff page
+          else if (accessRights == 1){
+            return routeStaff()
+          }
+          
+        } else if (response.data.login_status === 0) {
+          setError('Login failed');
+        } else if (response.data.login_status === -1){
+          setError('Access rights issue. Please contact IT help desk');
+        }
+        
       })
       .catch((error) => {
         console.error('Error logging in:', error);
         setError('Login failed');
       });
-      }
+    }
   };
 
   return (
