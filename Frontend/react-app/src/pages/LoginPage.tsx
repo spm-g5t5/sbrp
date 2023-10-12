@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import logoWave from '../assets/logo_wave_design.png';
 import '../App.css'; // Import a CSS file for component-specific styles
 import axios from 'axios';
+
 
 
 const LoginPage = () => {
@@ -14,7 +15,7 @@ const LoginPage = () => {
 
   const [error, setError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -23,20 +24,7 @@ const LoginPage = () => {
     setError('');
   };
 
-  let navigate = useNavigate(); 
-  const routeAdmin = () =>{ 
-    let path = `./AdminHomePage`; 
-    navigate(path);
-  }
-
-  const routeStaff = () =>{ 
-    let path = `./StaffHomePage`; 
-    navigate(path);
-  }
-  const routeManager = () =>{ 
-    let path = `./AdminHomePage`; 
-    navigate(path);
-  }
+  const navigate = useNavigate(); // Get the navigation function
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,47 +47,40 @@ const LoginPage = () => {
         password: ''
       });  
       setError('Password is required');
-    } else {
-      axios.post('http://127.0.0.1:5000/API/v1/login', null, {
-        headers: {
-          user: formData.email,
-          password: formData.password,
-        },
-      })
-      .then((response) => {
-        if (response.data.login_status === 1) {
-          // Successful login, store access rights
-          let staffId = response.data.staff.staff_id
-          let accessRights = response.data.staff.access_rights
-          localStorage.setItem('StaffId', staffId);
-          localStorage.setItem('AccessRights', accessRights);
-          // Direct into the correct webpage
-          // If user is admin, route to admin page
-          if(accessRights == 3){
-            return routeAdmin()
-          }
-          // If user is manager, route to manager page
-          else if (accessRights == 2){
-            return routeManager()
-          }
-          // If user is staff, route to staff page
-          else if (accessRights == 1){
-            return routeStaff()
-          }
-          
-        } else if (response.data.login_status === 0) {
-          setError('Login failed');
-        } else if (response.data.login_status === -1){
-          setError('Access rights issue. Please contact IT help desk');
+    } else {axios.post('http://127.0.0.1:5000/API/v1/login', null, {
+      headers: {
+        user: formData.email,
+        password: formData.password,
+      },
+    })
+    .then((response) => {
+      if (response.data.login_status === 1) {
+        // Successful login, store access rights
+        const staffId = response.data.staff.staff_id;
+        const accessRights = response.data.staff.access_rights;
+        localStorage.setItem('StaffId', staffId);
+        localStorage.setItem('AccessRights', accessRights);
+
+        // Direct into the correct webpage
+        if (accessRights === 3) {
+          navigate('AdminHomePage'); // Navigate to the admin page
+        } else if (accessRights === 2) {
+          navigate('ManagerHomePage'); // Navigate to the manager page
+        } else if (accessRights === 1) {
+          navigate('StaffHomePage'); // Navigate to the staff page
         }
-        
-      })
-      .catch((error) => {
-        console.error('Error logging in:', error);
+      } else if (response.data.login_status === 0) {
         setError('Login failed');
-      });
-    }
+      } else if (response.data.login_status === -1) {
+        setError('Access rights issue. Please contact IT help desk');
+      }
+    })
+    .catch((error) => {
+      console.error('Error logging in:', error);
+      setError('Login failed');
+    });
   };
+}
 
   return (
     <div className="login-container">
