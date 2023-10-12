@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import logoWave from '../assets/logo_wave_design.png';
-import '../App.css'; // Import a CSS file for component-specific styles
+import '../styles/Login.css'; // Import a CSS file for component-specific styles
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({

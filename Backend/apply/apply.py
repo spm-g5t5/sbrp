@@ -33,7 +33,7 @@ def getApplicantByRoleId(id):
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
 
-#get applications for a sepecfic application
+#get applications for a specific application
 @apply_routes.route('/API/v1/viewApplicants/application/<int:id>')
 def getApplicantByApplicationId(id):
     try:
