@@ -91,27 +91,27 @@ def updateRole():
         expiry_dt = datetime.strptime(data['expiry_dt'], '%Y-%m-%d')  # Adjust the format as needed
 
         # TO-DO: UPDATE ROLE RECORD
-        new_role = Role(
-            role_id=None, #specified by user which role to update
-            role_listing_ver = None, #Autoincrement
+        update_role = Role(
+            role_id=data['orig_role_listing']['role_id'],
+            role_listing_ver = int(data['orig_role_listing']['role_listing_ver']) + 1,
             role_name=data['role_name'],
             job_type=data['job_type'],
             department=data['department'],
             job_description=data['job_description'],
-            original_creation_dt=None,
+            original_creation_dt=data['orig_role_listing']['original_creation_dt'],
             expiry_dt=expiry_dt,
-            hiring_manager_id=None,
+            hiring_manager_id=data['orig_role_listing']['hiring_manager_id'],
             upd_hiring_manager_id=data['hiring_manager_id'],
             upd_dt=datetime.now()
         )
 
         # Add the new role to the session
-        db.session.add(new_role)
+        db.session.add(update_role)
 
         # Commit the session to persist the record in the database
         db.session.commit()
 
-        return jsonify(new_role.json()), 201
+        return jsonify(update_role.json()), 201
     except Exception as e:
         db.session.rollback()  # Rollback the session in case of an error
         return f"Error inserting data: {str(e)}", 500

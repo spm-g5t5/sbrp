@@ -78,8 +78,9 @@ class Role(db.Model):
     upd_hiring_manager_id = db.Column(db.Integer, nullable=True)
     upd_dt = db.Column(db.DateTime, nullable=True)
 
-    def __init__(self, role_id, role_name, job_type, department, job_description, original_creation_dt, expiry_dt, hiring_manager_id):
+    def __init__(self, role_id, role_listing_ver, role_name, job_type, department, job_description, original_creation_dt, expiry_dt, hiring_manager_id, upd_hiring_manager_id, upd_dt):
         self.role_id = role_id
+        self.role_listing_ver = role_listing_ver
         self.role_name = role_name
         self.job_type = job_type
         self.department = department
@@ -87,6 +88,8 @@ class Role(db.Model):
         self.original_creation_dt = original_creation_dt
         self.expiry_dt = expiry_dt
         self.hiring_manager_id = hiring_manager_id
+        self.upd_hiring_manager_id = upd_hiring_manager_id
+        self.upd_dt = upd_dt
 
     def json(self):
         return {"role_id": self.role_id, "role_name": self.role_name, "job_type": self.job_type, "department": self.department, "job_description": self.job_description, "original_creation_dt": self.original_creation_dt, "expiry_dt": self.expiry_dt, "hiring_manager_id": self.hiring_manager_id}
