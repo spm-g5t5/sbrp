@@ -2,7 +2,6 @@ from flask import Flask
 from role.role import role_routes
 from staff.staff import staff_routes
 from apply.apply import apply_routes
-from flask import Flask
 from flask_cors import CORS
 
 from extensions import db
