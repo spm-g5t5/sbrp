@@ -20,9 +20,18 @@ const AdminRole = () => {
     original_creation_dt: string;
     // Add other properties as needed
   }[]>([]);
+  
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
-  const [showModal, setShowModal] = useState(false);
+  const [showApplicationModal, setApplicationShowModal] = useState(false);
+  const [showDetailModal, setDetailShowModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
 
+  const handleDetailCloseModal = () => setDetailShowModal(false);
+
+   const handleDetailShowModal = (item: object) => {
+    setCurrentItem(item);
+    setDetailShowModal(true);
+  }
 
   useEffect(() => {
     axios.get('http://127.0.0.1:5000/API/v1/viewRoles')
@@ -35,7 +44,7 @@ const AdminRole = () => {
   }, []);
 
   const handleViewApplications = (role_id: number) => {
-    setShowModal(true);
+    setApplicationShowModal(true);
     axios.get(`http://127.0.0.1:5000/API/v1/viewApplicants/role/${role_id}`)
       .then((response) => {
         setApplications(response.data);
@@ -55,8 +64,10 @@ const AdminRole = () => {
             <ItemContainer key={item.role_id.toString()} item={item} />
             <RoleSkills key={item.role_name.toString()} item={item} />
             <Button style={{ backgroundColor: '#266C73' }} onClick={() => handleViewApplications(item.role_id)}>View Applications</Button>
-            {showModal && (
-              <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Button style={{ backgroundColor: '#266C73' }} onClick={() => handleDetailShowModal(item)}>More details</Button>
+
+            {showApplicationModal && (
+              <Modal show={showApplicationModal} onHide={() => setApplicationShowModal(false)}>
                 <Modal.Header closeButton>
                   <Modal.Title>Applications</Modal.Title>
                 </Modal.Header>
@@ -67,12 +78,30 @@ const AdminRole = () => {
                   ))}
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={() => setShowModal(false)}>
+                  <Button variant="secondary" onClick={() => setApplicationShowModal(false)}>
                     Close
                   </Button>
                 </Modal.Footer>
               </Modal>
             )}
+
+            {showDetailModal && (<Modal show={showDetailModal} onHide={handleDetailCloseModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>{currentItem.role_name}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Application Close Date: <p>{currentItem.expiry_dt}</p>
+                Job Description:<p>{currentItem.job_description}</p>
+                Job Type: <p>{currentItem.job_type}</p>
+                Creation Date and time: <p>{currentItem.original_creation_dt}</p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button style={{ backgroundColor: '#266C73' }} onClick={handleDetailCloseModal}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>)}
+
           </Card>
         ))}
     </div>

@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Badge from 'react-bootstrap/Badge';
+import { BsFillXCircleFill } from 'react-icons/bs'
 
 interface Item {
   role_name: string;
@@ -19,11 +20,6 @@ interface MyComponentProps {
 }
 
 const ItemContainer: React.FC<MyComponentProps> = ({ item }) => {
-  const [showModal, setShowModal] = useState(false);
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-
 
   const expiryDate = new Date(item.expiry_dt)
   const expDateStr = expiryDate.toLocaleDateString()
@@ -34,6 +30,10 @@ const ItemContainer: React.FC<MyComponentProps> = ({ item }) => {
       setExpired(true);
   }
 
+  const handleRemoveRole = () => {
+
+  }
+
   return (
     <Container>
       <h1>{item.role_name}</h1>
@@ -41,24 +41,13 @@ const ItemContainer: React.FC<MyComponentProps> = ({ item }) => {
       <div>
         Department: {item.department}
       </div>
-      <Button style={{ backgroundColor: '#266C73' }} onClick={handleShowModal}>More details</Button>
+      <Button onClick={handleRemoveRole} variant="danger" style={{ display: 'flex', alignItems: 'center' }}>
+        <span>Remove</span>
+        <BsFillXCircleFill style={{ marginRight: 'auto' }} />
+      </Button>
 
-  <Modal show={showModal} onHide={handleCloseModal}>
-  <Modal.Header closeButton>
-    <Modal.Title>{item.role_name}</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    Application Close Date: <p>{expDateStr}</p>
-    Job Description:<p>{item.job_description}</p>
-    Job Type: <p>{item.job_type}</p>
-    Creation Date and time: <p>{item.original_creation_dt}</p>
-  </Modal.Body>
-  <Modal.Footer>
-    <Button style={{ backgroundColor: '#266C73' }} onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
+
+  
 </Container>
   )
 };
