@@ -84,11 +84,13 @@ def addRole():
     
 @role_routes.route('/API/v1/updateRole', methods=['POST'])
 def updateRole():
+    flag = 0
     try:
         data = request.get_json()
 
         # Convert the 'expiry_dt' string to a datetime object
         expiry_dt = datetime.strptime(data['expiry_dt'], '%Y-%m-%d')  # Adjust the format as needed
+        flag += 1
 
         update_role = Role(
             role_id=data['orig_role_listing']['role_id'],
@@ -104,6 +106,7 @@ def updateRole():
             upd_dt=datetime.now()
         )
 
+        flag += 1
         # Add the new role to the session
         db.session.add(update_role)
 
@@ -113,4 +116,9 @@ def updateRole():
         return jsonify(update_role.json()), 201
     except Exception as e:
         db.session.rollback()  # Rollback the session in case of an error
+        if flag == 1:
+            return f"Passed JSON data invalid or missing values, error: {str(e)}", 500
+        elif flag ==2:
+            return f"Error inserting data to database, possible issue with role record: {str(e)}", 500
+
         return f"Error inserting data: {str(e)}", 500
