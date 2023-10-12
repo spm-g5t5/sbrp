@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, createBrowserRouter, Route, RouterProvider } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
 import AdminHomePage from './pages/AdminHomePage';
 import StaffHomePage from './pages/StaffHomePage';
 import ManagerHomePage from './pages/ManagerHomePage';
 import NoPage from './pages/NoPage'; // Assuming 'NoPage' is a valid component
+import LoginPage from  './pages/LoginPage';
+import AdminHomePage from  './pages/AdminHomePage';
+import AdminRole from  './pages/AdminRole';
+
 
 const App = () => {
   return (
