@@ -13,11 +13,6 @@ def viewRoles():
         query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
         roles = query.all()
 
-        # roles = Role.query.all()
-        # if not roles:
-        #     # If there are no roles found, return a 200 Not Found status
-        #     return jsonify({"error": "No roles found"}), 200
-
         # Return a JSON response with the list of roles
         return jsonify([role.json() for role in roles]), 200
     except Exception as e:
