@@ -7,12 +7,16 @@ role_routes = Blueprint('role_routes', __name__)
 
 #get all roles
 @role_routes.route('/API/v1/viewRoles')
-def viewRoles():
+def viewRoles(): 
     try:
-        roles = Role.query.all()
-        if not roles:
-            # If there are no roles found, return a 200 Not Found status
-            return jsonify({"error": "No roles found"}), 200
+        subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+        query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+        roles = query.all()
+
+        # roles = Role.query.all()
+        # if not roles:
+        #     # If there are no roles found, return a 200 Not Found status
+        #     return jsonify({"error": "No roles found"}), 200
 
         # Return a JSON response with the list of roles
         return jsonify([role.json() for role in roles]), 200
