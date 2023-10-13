@@ -43,7 +43,11 @@ def getSkillsByRoleName(name):
 def getRolebyName(inputRoleName):
     try:
         inputRoleName = "%{}%".format(inputRoleName)
-        role_search_results = Role.query.filter(Role.role_name.like(inputRoleName)).all()
+
+        subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+        query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+        role_search_results = query.filter(Role.role_name.like(inputRoleName)).all()
+
         if not role_search_results:
             return jsonify({"error": "No role found with search criteria"}), 200
 
