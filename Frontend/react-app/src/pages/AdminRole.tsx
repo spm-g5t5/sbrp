@@ -117,6 +117,7 @@ const AdminRole = () => {
           <CardBody>
             Department: {item.department}
             <RoleSkills key={item.role_name.toString()} item={item} />
+
           </CardBody>
           <CardFooter>
             <Button
@@ -183,6 +184,30 @@ const AdminRole = () => {
           )}
         </Card>
       ))}
+
+            <Button style={{ backgroundColor: '#266C73' }} onClick={() => handleViewApplications(item.role_id)}>View Applications</Button>
+            
+            {showModal && (
+              <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Applications</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p>Applicant by staff ID</p>
+                  {Object.keys(Applications).map((key: string) => (
+                    <li key={key}>{Applications[key].applicant_staff_id}</li>
+                  ))}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={() => setShowModal(false)}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            )}
+          </Card>
+        ))}
+
     </div>
   );
 };

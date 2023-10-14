@@ -1,0 +1,7 @@
+/* Center container vertically */
+.center-vertically {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
