@@ -8,7 +8,7 @@ interface Item {
   role_name: string;
   department: string;
   job_description: string;
-  expiry_dt: string;
+  expiry_dt: Date;
   job_type: string;
 }
 
@@ -30,14 +30,14 @@ const RoleSkills: React.FC<MyComponentProps> = ({ item }) => {
   }, []);
 
   return (
-    <Container>
+    <div>
       <p>Skills required:</p>
       {Object.keys(skills).map((key: string) => (
         <Badge bg="success" key={key}>
           {skills[key].skill_name}
         </Badge>
       ))}
-    </Container>
+    </div>
   );
 };
 
