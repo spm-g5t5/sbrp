@@ -88,42 +88,26 @@ const AdminRole = () => {
       });
   };
 
-  const handleRemoveRole = async (item: { active_status: number; orig_role_listing: object }) => {
-    // Create a shallow copy of the item
-    const temp_item = { ...item };
-  
-    // Set active_status to 0
-    temp_item.active_status = 0;
-  
-    // Add the old item to orig_role_listing
-    temp_item.orig_role_listing = item;
-  
-    console.log(temp_item);
-     
-    try {
-      const response = await axios.post('http://127.0.0.1:5000/API/v1/updateRole', temp_item);
-  
-      // Handle the response as needed
-      console.log('POST request response:', response.data);
-    } catch (error: any) {
-      if (error.response) {
-        // The request was made, but the server responded with an error
-        console.error('Server Error:', error.response.data);
-      } else if (error.request) {
-        // The request was made, but no response was received
-        console.error('No response received from the server.');
-      } else {
-        // Something else went wrong
-        console.error('Request error:', error.message);
-      }
-    }
-  };
+  const handleRemoveRole = (item: {
+    role_id: number;
+  }) => {
+    axios
+    .get(`http://127.0.0.1:5000/API/v1/hideRole/${item.role_id}`)
+    .then((response) => {
+      setApplications(response.data);
+      console.log(response.data);
+      window.location.reload();
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+  }
 
   return (
     <div>
       <Header />
       <SearchBar />
-      {data.map((item) => (
+      {data.filter((item) => item.active_status == 1).map((item) => (
         <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
           <CardHeader className="d-flex justify-content-between">
             <div>
@@ -162,6 +146,8 @@ const AdminRole = () => {
               More details
             </Button>
           </CardFooter>
+          </Card>
+      ))}
 
           {showDetailModal && (
             <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
@@ -211,8 +197,7 @@ const AdminRole = () => {
               </Modal.Footer>
             </Modal>
           )}
-        </Card>
-      ))}
+
 
           
 
