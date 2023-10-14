@@ -119,17 +119,6 @@ def addRole():
         # Create a list to store the RoleSkill records
         role_skills = []
 
-        # Loop through the list of skills and create RoleSkill records
-        for skill_name in data['role_skills']:
-            role_skill = RoleSkill(
-                role_name=data['role_name'],
-                skill_name=skill_name
-            )
-            role_skills.append(role_skill)
-
-        # Add the RoleSkill records to the session
-        db.session.add_all(role_skills)
-
         # Add the new role to the session
         db.session.add(new_role)
         db.session.commit()
