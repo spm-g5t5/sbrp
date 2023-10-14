@@ -129,7 +129,7 @@ def addRole():
         role_skills = []
 
         # Loop through the list of skills and create RoleSkill records
-        for skill_name in data['role_skills']:
+        for skill_name in data['role_listing_skills']:
             role_listing_skills = RoleListingSkills(
                 role_id=new_role.role_id,
                 role_listing_ver=0,
@@ -184,7 +184,7 @@ def updateRole():
         role_skills = []
 
         # Loop through the list of skills and create RoleSkill records
-        for skill_name in data['role_skills']:
+        for skill_name in data['role_listing_skills']:
             role_listing_skills = RoleListingSkills(
                 role_id=data['orig_role_listing']['role_id'],
                 role_listing_ver=int(data['orig_role_listing']['role_listing_ver']) + 1,
