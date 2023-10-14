@@ -105,8 +105,10 @@ def addRole():
 
         # Add the new role to the session
         db.session.add(new_role)
+        db.session.commit()
+
         db.session.refresh(new_role)
-        
+
         # Create a list to store the RoleSkill records
         role_skills = []
 
@@ -115,7 +117,7 @@ def addRole():
             role_listing_skills = RoleListingSkills(
                 role_id=new_role.role_id,
                 role_listing_ver=0,
-                skill_name=skill_name[0],
+                skills=skill_name[0],
                 skills_proficiency=skill_name[1]
             )
             role_skills.append(role_listing_skills)
@@ -128,7 +130,7 @@ def addRole():
 
         response_data = {
             "role": new_role.json(),
-            "role_skills": [role_skill.json() for role_skill in role_skills]
+            "role_listing_skills": [role_skill.json() for role_skill in role_skills]
         }
 
         return jsonify(response_data), 201
