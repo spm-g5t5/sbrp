@@ -70,11 +70,22 @@ def getRolebyName(inputRoleName):
 def getAllRoleVer(inputRoleId):
     try:
         role_search_results = Role.query.filter(Role.role_id == (inputRoleId)).all()
-
+    
         if not role_search_results:
             return jsonify({"error": "No role found with search criteria"}), 200
+        
+        role = []
 
-        return jsonify([role.json() for role in role_search_results]), 200
+        for search_role in role_search_results:
+            skill_search_results = RoleListingSkills.query.filter(RoleListingSkills.role_id == (search_role.role_id), RoleListingSkills.role_listing_ver == (search_role.role_listing_ver)).all()
+            role += [{
+                "role_id": search_role.role_id,
+                "role_listing_ver": search_role.role_listing_ver,
+                "role": search_role.json(),
+                "role_listing_skills": [skill.json() for skill in skill_search_results]
+            }]
+
+        return jsonify(role), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -146,6 +157,8 @@ def updateRole():
 
         # Convert the 'expiry_dt' string to a datetime object
         expiry_dt = datetime.strptime(data['expiry_dt'], '%Y-%m-%d')  # Adjust the format as needed
+        orig_create_dt = datetime.strptime(data['orig_role_listing']['original_creation_dt'], '%a, %d %b %Y %H:%M:%S %Z')  # Adjust the format as needed
+
         flag += 1
 
         update_role = Role(
@@ -155,21 +168,41 @@ def updateRole():
             job_type=data['job_type'],
             department=data['department'],
             job_description=data['job_description'],
-            original_creation_dt=data['orig_role_listing']['original_creation_dt'],
+            original_creation_dt= orig_create_dt,
             expiry_dt=expiry_dt,
             hiring_manager_id=data['orig_role_listing']['hiring_manager_id'],
             upd_hiring_manager_id=data['hiring_manager_id'],
             upd_dt=datetime.now()
         )
 
+        role_skills = []
+
+        # Loop through the list of skills and create RoleSkill records
+        for skill_name in data['role_skills']:
+            role_listing_skills = RoleListingSkills(
+                role_id=data['orig_role_listing']['role_id'],
+                role_listing_ver=int(data['orig_role_listing']['role_listing_ver']) + 1,
+                skills=skill_name[0],
+                skills_proficiency=skill_name[1]
+            )
+            role_skills.append(role_listing_skills)
+
         flag += 1
-        # Add the new role to the session
+        # Add the new role and role_skills to the session
         db.session.add(update_role)
+        db.session.add_all(role_skills)
 
         # Commit the session to persist the record in the database
         db.session.commit()
 
-        return jsonify(update_role.json()), 201
+        flag += 1
+        processed_role = update_role.json()
+
+        processed_role['role_listing_skills'] = []
+        for role_skill in role_skills:
+            processed_role['role_listing_skills'] += [role_skill.json()]
+
+        return jsonify(processed_role), 200
     except Exception as e:
         db.session.rollback()  # Rollback the session in case of an error
         if flag == 1:
