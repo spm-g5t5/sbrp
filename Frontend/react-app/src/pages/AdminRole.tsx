@@ -24,6 +24,7 @@ const AdminRole = () => {
       expiry_dt: Date;
       job_type: string;
       original_creation_dt: Date;
+      active_status: number;
       // Add other properties as needed
     }[]
   >([]);
@@ -86,9 +87,36 @@ const AdminRole = () => {
       });
   };
 
-  const handleRemoveRole = () => {
-    
-  }
+  const handleRemoveRole = async (item: { active_status: number; orig_role_listing: object }) => {
+    // Create a shallow copy of the item
+    const temp_item = { ...item };
+  
+    // Set active_status to 0
+    temp_item.active_status = 0;
+  
+    // Add the old item to orig_role_listing
+    temp_item.orig_role_listing = item;
+  
+    console.log(temp_item);
+     
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/API/v1/updateRole', temp_item);
+  
+      // Handle the response as needed
+      console.log('POST request response:', response.data);
+    } catch (error: any) {
+      if (error.response) {
+        // The request was made, but the server responded with an error
+        console.error('Server Error:', error.response.data);
+      } else if (error.request) {
+        // The request was made, but no response was received
+        console.error('No response received from the server.');
+      } else {
+        // Something else went wrong
+        console.error('Request error:', error.message);
+      }
+    }
+  };
 
   return (
     <div>
@@ -106,7 +134,7 @@ const AdminRole = () => {
               )}
             </div>
             <Button
-              onClick={handleRemoveRole}
+              onClick={() => handleRemoveRole(item)}
               variant="danger"
               style={{ display: "flex", alignItems: "center" }}
             >
@@ -185,28 +213,7 @@ const AdminRole = () => {
         </Card>
       ))}
 
-            <Button style={{ backgroundColor: '#266C73' }} onClick={() => handleViewApplications(item.role_id)}>View Applications</Button>
-            
-            {showModal && (
-              <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Applications</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <p>Applicant by staff ID</p>
-                  {Object.keys(Applications).map((key: string) => (
-                    <li key={key}>{Applications[key].applicant_staff_id}</li>
-                  ))}
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={() => setShowModal(false)}>
-                    Close
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            )}
-          </Card>
-        ))}
+          
 
     </div>
   );

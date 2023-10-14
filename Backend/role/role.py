@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, current_app, request
-from models import Role, RoleListingSkills
+from models import Role, RoleListingSkills, RoleSkill
 from datetime import datetime
 from models import db
 import requests
