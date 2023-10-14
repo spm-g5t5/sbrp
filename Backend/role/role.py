@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, current_app, request
-from models import Role, RoleSkill
+from models import Role, RoleListingSkills
 from datetime import datetime
 from models import db
 
@@ -20,16 +20,20 @@ def viewRoles():
         return jsonify({"error": str(e)}), 500
 
 #get skills needed for a specific role
-@role_routes.route('/API/v1/viewRoles/skill/<string:name>')
-def getSkillsByRoleName(name):
+@role_routes.route('/API/v1/viewRoles/skill/<string:inputRoleID>')
+def getSkillsByRoleName(inputRoleID):
     try:
-        role_name = RoleSkill.query.filter_by(role_name=name).all()
-        if not role_name:
+
+        subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+        query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
+        skills = query.filter_by(role_id=inputRoleID).all()
+
+        if not skills:
             # If there are no skills found for the specified role name, return a 200 Not Found status
             return jsonify({"error": "No skills found for this role name"}), 200
 
         # Return a JSON response with the list of skills for the specified role name
-        return jsonify([role.json() for role in role_name]), 200
+        return jsonify([skill.json() for skill in skills]), 200
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500

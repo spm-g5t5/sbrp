@@ -105,3 +105,18 @@ class RoleSkill(db.Model):
     def json(self):
         return {"role_name": self.role_name, "skill_name": self.skill_name}
     
+class RoleListingSkills(db.Model):
+    __tablename__ = 'role_listing_skills'
+    role_id = db.Column(db.Integer, primary_key=True)
+    role_listing_ver = db.Column(db.Integer, primary_key=True)
+    skills = db.Column(db.String(20))
+    skills_proficiency = db.Column(db.Integer)
+
+    def __init__(self, role_id, role_listing_ver, skills, skills_proficiency):
+        self.role_id = role_id
+        self.role_listing_ver = role_listing_ver
+        self.skills = skills
+        self.skills_proficiency = skills_proficiency
+
+    def json(self):
+        return {"role_id": self.role_id, "role_listing_ver": self.role_listing_ver, "skill_name": self.skills, "skills_proficiency": self.skills_proficiency}
