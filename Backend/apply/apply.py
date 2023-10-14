@@ -1,5 +1,6 @@
-from flask import jsonify, Blueprint
-from models import Apply, ApplySkill
+from flask import jsonify, Blueprint, request
+from models import Apply, ApplySkill, Role, RoleSkill, StaffSkill
+import requests
 
 apply_routes = Blueprint('apply_routes', __name__)
 
@@ -7,13 +8,35 @@ apply_routes = Blueprint('apply_routes', __name__)
 @apply_routes.route('/API/v1/viewApplicants')
 def viewApplicants():
     try:
+        processed_applications = []
         applications = Apply.query.all()
+        
+
         if not applications:
             # If there are no applications, return a 200 Not Found status
             return jsonify({"error": "No applicants found"}), 200
+        
+        # for each applicants found
+        for applicant in applications:
+            temp_application = applicant.json()  # Call json() on the individual applicant
+            temp_application['staff'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{applicant.json()["applicant_staff_id"]}').json()
+            
 
-        # Return a JSON response with the list of applicants
-        return jsonify([app.json() for app in applications]), 200
+            role = Role.query.filter_by(role_id=applicant.json()["applied_role_id"]).first()
+            temp_application['role'] = role.json()
+
+            role_name = role.json()["role_name"]
+            role_skills = RoleSkill.query.filter_by(role_name=role_name).all()
+            temp_application['role_skills'] = [skill.json() for skill in role_skills]
+            
+            staff_skill = StaffSkill.query.filter_by(staff_id=applicant.json()["applicant_staff_id"]).all()
+            temp_application['staff_skill'] = [skill.json() for skill in staff_skill]
+
+
+            processed_applications += [temp_application]
+       
+
+        return jsonify(processed_applications), 200
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
