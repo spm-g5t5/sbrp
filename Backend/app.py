@@ -2,6 +2,7 @@ from flask import Flask
 from role.role import role_routes
 from staff.staff import staff_routes
 from apply.apply import apply_routes
+from role_skill_match.role_skill_match import rs_match_routes
 from flask_cors import CORS
 
 from extensions import db
@@ -14,6 +15,7 @@ CORS(app)
 app.register_blueprint(role_routes)
 app.register_blueprint(staff_routes)
 app.register_blueprint(apply_routes)
+app.register_blueprint(rs_match_routes)
 
 @app.route('/')
 def hello():

@@ -114,7 +114,7 @@ class RoleListingSkills(db.Model):
     __tablename__ = 'role_listing_skills'
     role_id = db.Column(db.Integer, primary_key=True)
     role_listing_ver = db.Column(db.Integer, primary_key=True)
-    skills = db.Column(db.String(20))
+    skills = db.Column(db.String(20), primary_key=True)
     skills_proficiency = db.Column(db.Integer)
 
     def __init__(self, role_id, role_listing_ver, skills, skills_proficiency):
