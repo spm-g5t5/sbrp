@@ -98,7 +98,7 @@ def addRole():
         data = request.get_json()
 
         # Convert the 'expiry_dt' string to a datetime object
-        expiry_dt = datetime.strptime(data['expiry_dt'], '%Y-%m-%d')  # Adjust the format as needed
+        expiry_dt = datetime.strptime(data['expiry_dt'], '%a, %d %b %Y %H:%M:%S %Z')  # Adjust the format as needed
 
         # Create a new role record
         new_role = Role(
@@ -172,7 +172,7 @@ def updateRole():
         data = request.get_json()
 
         # Convert the 'expiry_dt' string to a datetime object
-        expiry_dt = datetime.strptime(data['expiry_dt'], '%Y-%m-%d')  # Adjust the format as needed
+        expiry_dt = datetime.strptime(data['expiry_dt'], '%a, %d %b %Y %H:%M:%S %Z')  # Adjust the format as needed
         orig_create_dt = datetime.strptime(data['orig_role_listing']['original_creation_dt'], '%a, %d %b %Y %H:%M:%S %Z')  # Adjust the format as needed
 
         flag += 1
@@ -189,7 +189,7 @@ def updateRole():
             hiring_manager_id=data['orig_role_listing']['hiring_manager_id'],
             upd_hiring_manager_id=data['hiring_manager_id'],
             upd_dt=datetime.now(),
-            active_stauts=data['active_status']
+            active_statuts=data['active_status']
         )
 
         role_skills = []
