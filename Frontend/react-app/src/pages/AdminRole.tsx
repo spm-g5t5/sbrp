@@ -25,6 +25,7 @@ const AdminRole = () => {
       job_type: string;
       original_creation_dt: Date;
       active_status: number;
+      orig_role_listing: object;
       // Add other properties as needed
     }[]
   >([]);
