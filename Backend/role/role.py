@@ -25,7 +25,7 @@ def viewRoles():
             temp_role['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role.json()["hiring_manager_id"]}').json()
             processed_roles += [temp_role]
 
-        # Return a JSON response with the list of roles
+            # Return a JSON response with the list of roles
         return jsonify(processed_roles), 200
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
@@ -49,7 +49,8 @@ def getSkillsByRoleName(inputRoleID):
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
-    
+
+#search for role by name
 @role_routes.route('/API/v1/searchRole/<string:inputRoleName>')
 def getRolebyName(inputRoleName):
     try:
@@ -114,6 +115,20 @@ def addRole():
             upd_dt=datetime.now(),
             active_status=1
         )
+        
+        # Create a list to store the RoleSkill records
+        role_skills = []
+
+        # Loop through the list of skills and create RoleSkill records
+        for skill_name in data['role_skills']:
+            role_skill = RoleSkill(
+                role_name=data['role_name'],
+                skill_name=skill_name
+            )
+            role_skills.append(role_skill)
+
+        # Add the RoleSkill records to the session
+        db.session.add_all(role_skills)
 
         # Add the new role to the session
         db.session.add(new_role)
