@@ -178,7 +178,7 @@ def updateRole():
             hiring_manager_id=data['orig_role_listing']['hiring_manager_id'],
             upd_hiring_manager_id=data['hiring_manager_id'],
             upd_dt=datetime.now(),
-            active_statuts=data['active_status']
+            active_status=data['active_status']
         )
 
         role_skills = []
