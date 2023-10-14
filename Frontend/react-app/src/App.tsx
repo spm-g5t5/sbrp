@@ -12,6 +12,9 @@ import AdminHomePage from "./pages/AdminHomePage";
 import StaffHomePage from "./pages/StaffHomePage";
 import ManagerHomePage from "./pages/ManagerHomePage";
 import NoPage from "./pages/NoPage"; // Assuming 'NoPage' is a valid component
+import AdminApplicants from "./pages/AdminApplicants";
+import AdminRole from  './pages/AdminRole';        
+
 
 const App = () => {
   return (

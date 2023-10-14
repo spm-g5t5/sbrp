@@ -55,6 +55,7 @@ const AdminRole = () => {
             <ItemContainer key={item.role_id.toString()} item={item} />
             <RoleSkills key={item.role_name.toString()} item={item} />
             <Button style={{ backgroundColor: '#266C73' }} onClick={() => handleViewApplications(item.role_id)}>View Applications</Button>
+            
             {showModal && (
               <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
