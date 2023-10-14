@@ -119,17 +119,6 @@ def addRole():
         # Create a list to store the RoleSkill records
         role_skills = []
 
-        # Loop through the list of skills and create RoleSkill records
-        for skill_name in data['role_skills']:
-            role_skill = RoleSkill(
-                role_name=data['role_name'],
-                skill_name=skill_name
-            )
-            role_skills.append(role_skill)
-
-        # Add the RoleSkill records to the session
-        db.session.add_all(role_skills)
-
         # Add the new role to the session
         db.session.add(new_role)
         db.session.commit()
@@ -140,7 +129,7 @@ def addRole():
         role_skills = []
 
         # Loop through the list of skills and create RoleSkill records
-        for skill_name in data['role_skills']:
+        for skill_name in data['role_listing_skills']:
             role_listing_skills = RoleListingSkills(
                 role_id=new_role.role_id,
                 role_listing_ver=0,
@@ -189,13 +178,13 @@ def updateRole():
             hiring_manager_id=data['orig_role_listing']['hiring_manager_id'],
             upd_hiring_manager_id=data['hiring_manager_id'],
             upd_dt=datetime.now(),
-            active_statuts=data['active_status']
+            active_status=data['active_status']
         )
 
         role_skills = []
 
         # Loop through the list of skills and create RoleSkill records
-        for skill_name in data['role_skills']:
+        for skill_name in data['role_listing_skills']:
             role_listing_skills = RoleListingSkills(
                 role_id=data['orig_role_listing']['role_id'],
                 role_listing_ver=int(data['orig_role_listing']['role_listing_ver']) + 1,
@@ -226,5 +215,123 @@ def updateRole():
             return f"Passed JSON data invalid or missing values, error: {str(e)}", 500
         elif flag ==2:
             return f"Error inserting data to database, possible issue with role record: {str(e)}", 500
+
+        return f"Error inserting data: {str(e)}", 500
+
+@role_routes.route('/API/v1/hideRole/<string:inputRoleId>')
+def hideRole(inputRoleId):
+    try:
+
+        subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+        query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+        role = query.filter_by(role_id=inputRoleId).all().copy()[0]
+
+        if role.active_status == 1:
+            new_role = Role(
+                role_id=role.role_id,
+                role_listing_ver = role.role_listing_ver + 1,
+                role_name=role.role_name,
+                job_type=role.job_type,
+                department=role.department,
+                job_description=role.job_description,
+                original_creation_dt= role.original_creation_dt,
+                expiry_dt=role.expiry_dt,
+                hiring_manager_id=role.hiring_manager_id,
+                upd_hiring_manager_id=role.upd_hiring_manager_id,
+                upd_dt=datetime.now(),
+                active_status=0
+            )
+
+            subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+            query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
+            skills = query.filter_by(role_id=inputRoleId).all().copy()
+            new_skills = []
+            for skill in skills:
+                new_skills += [RoleListingSkills(
+                    role_id=skill.role_id,
+                    role_listing_ver=skill.role_listing_ver + 1,
+                    skills=skill.skills,
+                    skills_proficiency=skill.skills_proficiency
+                )]
+
+            # Add the new role and role_skills to the session
+            db.session.add(new_role)
+            db.session.add_all(new_skills)
+
+            # Commit the session to persist the record in the database
+            db.session.commit()
+
+            processed_role = new_role.json()
+
+            processed_role['role_listing_skills'] = []
+            for role_skill in new_skills:
+                processed_role['role_listing_skills'] += [role_skill.json()]
+
+            return jsonify(processed_role), 200
+        else:
+            db.session.rollback()  # Rollback the session in case of an error
+            return f"Error updating active_status, role already hidden", 500
+
+    except Exception as e:
+        db.session.rollback()  # Rollback the session in case of an error
+
+        return f"Error inserting data: {str(e)}", 500
+
+@role_routes.route('/API/v1/unhideRole/<string:inputRoleId>')
+def unhideRole(inputRoleId):
+    try:
+
+        subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+        query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+        role = query.filter_by(role_id=inputRoleId).all().copy()[0]
+
+        if role.active_status == 0:
+            new_role = Role(
+                role_id=role.role_id,
+                role_listing_ver = role.role_listing_ver + 1,
+                role_name=role.role_name,
+                job_type=role.job_type,
+                department=role.department,
+                job_description=role.job_description,
+                original_creation_dt= role.original_creation_dt,
+                expiry_dt=role.expiry_dt,
+                hiring_manager_id=role.hiring_manager_id,
+                upd_hiring_manager_id=role.upd_hiring_manager_id,
+                upd_dt=datetime.now(),
+                active_status=1
+            )
+
+            subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+            query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
+            skills = query.filter_by(role_id=inputRoleId).all().copy()
+            new_skills = []
+            for skill in skills:
+                new_skills += [RoleListingSkills(
+                    role_id=skill.role_id,
+                    role_listing_ver=skill.role_listing_ver + 1,
+                    skills=skill.skills,
+                    skills_proficiency=skill.skills_proficiency
+                )]
+
+            # Add the new role and role_skills to the session
+            db.session.add(new_role)
+            db.session.add_all(new_skills)
+
+            # Commit the session to persist the record in the database
+            db.session.commit()
+
+            processed_role = new_role.json()
+
+            processed_role['role_listing_skills'] = []
+            for role_skill in new_skills:
+                processed_role['role_listing_skills'] += [role_skill.json()]
+
+            return jsonify(processed_role), 200
+        else:
+            db.session.rollback()  # Rollback the session in case of an error
+            return f"Error updating active_status, role already active", 500
+
+    except Exception as e:
+        db.session.rollback()  # Rollback the session in case of an error
 
         return f"Error inserting data: {str(e)}", 500
