@@ -12,6 +12,7 @@ import AdminHomePage from "./pages/AdminHomePage";
 import StaffHomePage from "./pages/StaffHomePage";
 import ManagerHomePage from "./pages/ManagerHomePage";
 import NoPage from "./pages/NoPage"; // Assuming 'NoPage' is a valid component
+import AdminRole from "./pages/AdminRole"
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       <Route path="AdminHomePage" element={<AdminHomePage />} />
       <Route path="/StaffHomePage" element={<StaffHomePage />} />
       <Route path="/ManagerHomePage" element={<ManagerHomePage />} />
+      <Route path="/AdminRole" element={<AdminRole />} />
       <Route path="*" element={<NoPage />} />
     </Routes>
   );
