@@ -24,6 +24,7 @@ const App = () => {
       <Route path="/StaffHomePage" element={<StaffHomePage />} />
       <Route path="/ManagerHomePage" element={<ManagerHomePage />} />
       <Route path="/AdminRole" element={<AdminRole />} />
+      <Route path="/AdminApplicants" element={<AdminApplicants />} />
       <Route path="*" element={<NoPage />} />
     </Routes>
   );
