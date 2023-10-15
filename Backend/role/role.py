@@ -340,7 +340,7 @@ def unhideRole(inputRoleId):
 def getSkills():
     try:
         skills = db.session.query(RoleSkill.skill_name).distinct().all()
-
+        skills = [skill[0] for skill in skills]
         return jsonify(skills), 200
     except Exception as e:
 
