@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, current_app, request
-from models import Role, RoleListingSkills
+from models import Role, RoleListingSkills, RoleSkill
 from datetime import datetime
 from models import db
 import requests
@@ -333,5 +333,15 @@ def unhideRole(inputRoleId):
 
     except Exception as e:
         db.session.rollback()  # Rollback the session in case of an error
+
+        return f"Error inserting data: {str(e)}", 500
+
+@role_routes.route('/API/v1/getSkills')
+def getSkills():
+    try:
+        skills = db.session.query(RoleSkill.skill_name).distinct().all()
+        skills = [skill[0] for skill in skills]
+        return jsonify(skills), 200
+    except Exception as e:
 
         return f"Error inserting data: {str(e)}", 500
