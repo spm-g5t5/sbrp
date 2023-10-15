@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, request
-from models import Apply, ApplySkill, Role, RoleSkill, StaffSkill
+from models import Apply, ApplySkill, Role, RoleSkill, StaffSkill, RoleListingSkills
 import requests
 
 apply_routes = Blueprint('apply_routes', __name__)
@@ -25,8 +25,8 @@ def viewApplicants():
             role = Role.query.filter_by(role_id=applicant.json()["applied_role_id"]).first()
             temp_application['role'] = role.json()
 
-            role_name = role.json()["role_name"]
-            role_skills = RoleSkill.query.filter_by(role_name=role_name).all()
+            role_id = role.json()["role_id"]
+            role_skills = RoleListingSkills.query.filter_by(role_id=role_id).all()
             temp_application['role_skills'] = [skill.json() for skill in role_skills]
             
             staff_skill = StaffSkill.query.filter_by(staff_id=applicant.json()["applicant_staff_id"]).all()
