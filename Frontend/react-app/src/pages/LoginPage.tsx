@@ -67,7 +67,7 @@ const LoginPage = () => {
         } else if (accessRights === 2) {
           navigate('ManagerHomePage'); // Navigate to the manager page
         } else if (accessRights === 1) {
-          navigate('StaffHomePage'); // Navigate to the staff page
+          navigate('StaffRoleListingPage'); // Navigate to the staff page
         }
       } else if (response.data.login_status === 0) {
         setError('Login failed');

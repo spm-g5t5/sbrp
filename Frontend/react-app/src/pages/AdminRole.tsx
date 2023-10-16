@@ -30,6 +30,7 @@ const AdminRole = () => {
     }[]
   >([]);
 
+  const accessRights = localStorage.getItem("AccessRights");
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
   const [showApplicationModal, setApplicationShowModal] = useState(false);
   const [showDetailModal, setDetailShowModal] = useState(false);
@@ -105,7 +106,7 @@ const AdminRole = () => {
 
   return (
     <div>
-      <Header />
+      <Header accessRights={accessRights} />
       <SearchBar />
       {data.filter((item) => item.active_status == 1).map((item) => (
         <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
