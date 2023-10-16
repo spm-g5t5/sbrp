@@ -58,11 +58,11 @@ def getRolebyName(inputRoleName):
 
         subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
         query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
-        role_search_results = query.filter(Role.role_name(inputRoleName)).all()
+        role_search_results = query.filter(Role.role_name.like("%{}%".format(inputRoleName))).all()
 
         if not role_search_results:
             return jsonify({"error": "No role found with search criteria"}), 200
-
+        print(role_search_results)
         return jsonify([role.json() for role in role_search_results]), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
