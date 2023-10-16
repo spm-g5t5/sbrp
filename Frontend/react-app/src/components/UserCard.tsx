@@ -12,7 +12,7 @@ const UserCard: React.FC<UserCardProps> = ({ username }) => {
 
   const handleUserCardClick = () => {
     if (username === 'ST') {
-      navigate('StaffRoleListingPage')
+      navigate('/StaffRoleListingPage')
     } else if (username === 'MA') {
       // Navigate to another page if needed
       navigate('/AdminRole');
