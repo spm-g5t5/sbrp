@@ -13,7 +13,9 @@ import ManagerHomePage from "./pages/ManagerHomePage";
 import NoPage from "./pages/NoPage"; // Assuming 'NoPage' is a valid component
 import StaffRoleListingPage from "./pages/StaffRoleListingPage";
 import AdminApplicants from "./pages/AdminApplicants";
-import AdminRole from  './pages/AdminRole';        
+import AdminRole from  './pages/AdminRole'; 
+import UpdateRoleListingPage from  './pages/UpdateRoleListingPage'; 
+import AddJobPage from  './pages/AddJobPage'; 
 
 const App = () => {
   return (
@@ -24,6 +26,8 @@ const App = () => {
       <Route path="/AdminRole" element={<AdminRole />} />
       <Route path="/StaffRoleListingPage" element={<StaffRoleListingPage />} />
       <Route path="/AdminApplicants" element={<AdminApplicants />} />
+      <Route path="/UpdateRoleListingPage" element={<UpdateRoleListingPage />} />
+      <Route path="/AddJobPage" element={<AddJobPage />} />
       <Route path="*" element={<NoPage />} />
     </Routes>
   );

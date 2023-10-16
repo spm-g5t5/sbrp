@@ -12,7 +12,8 @@ import {
   CardFooter,
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { BsFillXCircleFill } from 'react-icons/bs'
+import { BsFillXCircleFill } from "react-icons/bs";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 const AdminRole = () => {
   const [data, setData] = useState<
@@ -29,7 +30,7 @@ const AdminRole = () => {
       // Add other properties as needed
     }[]
   >([]);
-
+  const navigate = useNavigate();
   const accessRights = localStorage.getItem("AccessRights");
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
   const [showApplicationModal, setApplicationShowModal] = useState(false);
@@ -89,119 +90,124 @@ const AdminRole = () => {
       });
   };
 
-  const handleRemoveRole = (item: {
-    role_id: number;
-  }) => {
+  const handleRemoveRole = (item: { role_id: number }) => {
     axios
-    .get(`http://127.0.0.1:5000/API/v1/hideRole/${item.role_id}`)
-    .then((response) => {
-      setApplications(response.data);
-      console.log(response.data);
-      window.location.reload();
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
-  }
+      .get(`http://127.0.0.1:5000/API/v1/hideRole/${item.role_id}`)
+      .then((response) => {
+        setApplications(response.data);
+        console.log(response.data);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
 
   return (
     <div>
       <Header accessRights={accessRights} />
       <SearchBar />
-      {data.filter((item) => item.active_status == 1).map((item) => (
-        <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
-          <CardHeader className="d-flex justify-content-between">
-            <div>
-            <h1>{item.role_name}</h1>
-              {item.expiry_dt > currentDate ? (
-                <Badge bg="danger">Expired</Badge>
-              ) : (
-                <Badge>Active</Badge>
-              )}
-            </div>
-            <Button
-              onClick={() => handleRemoveRole(item)}
-              variant="danger"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <span>Remove</span>
-              <BsFillXCircleFill />
-            </Button>
-          </CardHeader>
-          <CardBody>
-            Department: {item.department}
-            <RoleSkills key={item.role_name.toString()} item={item} />
-
-          </CardBody>
-          <CardFooter>
-            <Button
-              style={{ backgroundColor: "#266C73" }}
-              onClick={() => handleViewApplications(item.role_id)}
-            >
-              View Applications
-            </Button>
-            <Button
-              style={{ backgroundColor: "#266C73" }}
-              onClick={() => handleDetailShowModal(item)}
-            >
-              More details
-            </Button>
-          </CardFooter>
+      <Button
+            onClick={() => navigate("/AddJobPage")}
+            variant="success"
+          >
+            <span>Add Job</span>
+          </Button>
+      {data
+        .filter((item) => item.active_status == 1)
+        .map((item) => (
+          <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
+            <CardHeader className="d-flex justify-content-between">
+              <div>
+                <h1>{item.role_name}</h1>
+                {item.expiry_dt > currentDate ? (
+                  <Badge bg="danger">Expired</Badge>
+                ) : (
+                  <Badge>Active</Badge>
+                )}
+              </div>
+              <div className="d-flex">
+                <Button
+                  onClick={() => navigate("/UpdateRoleListingPage")}
+                  variant="warning"
+                >
+                  <span>Update</span>
+                </Button>
+                <Button onClick={() => handleRemoveRole(item)} variant="danger">
+                  <span>Remove</span>
+                  <BsFillXCircleFill />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardBody>
+              Department: {item.department}
+              <RoleSkills key={item.role_name.toString()} item={item} />
+            </CardBody>
+            <CardFooter>
+              <Button
+                style={{ backgroundColor: "#266C73" }}
+                onClick={() => handleViewApplications(item.role_id)}
+              >
+                View Applications
+              </Button>
+              <Button
+                style={{ backgroundColor: "#266C73" }}
+                onClick={() => handleDetailShowModal(item)}
+              >
+                More details
+              </Button>
+            </CardFooter>
           </Card>
-      ))}
+        ))}
 
-          {showDetailModal && (
-            <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>{currentItem!.role_name}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                Application Close Date:{" "}
-                <p>{currentItem!.expiry_dt.toLocaleDateString()}</p>
-                Job Description:<p>{currentItem!.job_description}</p>
-                Job Type: <p>{currentItem!.job_type}</p>
-                Creation Date and time:
-                <p>{currentItem!.original_creation_dt.toLocaleDateString()}</p>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  style={{ backgroundColor: "#266C73" }}
-                  onClick={handleDetailCloseModal}
-                >
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          )}
-
-          {showApplicationModal && (
-            <Modal
-              show={showApplicationModal}
-              onHide={() => setApplicationShowModal(false)}
+      {showDetailModal && (
+        <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>{currentItem!.role_name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Application Close Date:{" "}
+            <p>{currentItem!.expiry_dt.toLocaleDateString()}</p>
+            Job Description:<p>{currentItem!.job_description}</p>
+            Job Type: <p>{currentItem!.job_type}</p>
+            Creation Date and time:
+            <p>{currentItem!.original_creation_dt.toLocaleDateString()}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              style={{ backgroundColor: "#266C73" }}
+              onClick={handleDetailCloseModal}
             >
-              <Modal.Header closeButton>
-                <Modal.Title>Applications</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <p>Applicant by staff ID</p>
-                {Object.keys(Applications).map((key: string) => (
-                  <li key={key}>{Applications[key].applicant_staff_id}</li>
-                ))}
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  style={{ backgroundColor: "#266C73" }}
-                  onClick={() => setApplicationShowModal(false)}
-                >
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          )}
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
 
-
-          
-
+      {showApplicationModal && (
+        <Modal
+          show={showApplicationModal}
+          onHide={() => setApplicationShowModal(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Applications</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Applicant by staff ID</p>
+            {Object.keys(Applications).map((key: string) => (
+              <li key={key}>{Applications[key].applicant_staff_id}</li>
+            ))}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              style={{ backgroundColor: "#266C73" }}
+              onClick={() => setApplicationShowModal(false)}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };
