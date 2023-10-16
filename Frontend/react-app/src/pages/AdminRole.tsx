@@ -31,7 +31,7 @@ const AdminRole = () => {
     }[]
   >([]);
   const navigate = useNavigate();
-  const accessRights = localStorage.getItem("AccessRights");
+  const accessRights = parseInt(localStorage.getItem("AccessRights") || "0", 10);
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
   const [showApplicationModal, setApplicationShowModal] = useState(false);
   const [showDetailModal, setDetailShowModal] = useState(false);
