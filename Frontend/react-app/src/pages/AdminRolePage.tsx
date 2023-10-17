@@ -15,7 +15,7 @@ import Card from "react-bootstrap/Card";
 import { BsFillXCircleFill } from "react-icons/bs";
 import { Navigate, Outlet, useNavigate,Link } from "react-router-dom";
 
-const AdminRole = () => {
+const AdminRolePage = () => {
   
   const [data, setData] = useState<
     {
@@ -214,4 +214,4 @@ const AdminRole = () => {
   );
 };
 
-export default AdminRole;
+export default AdminRolePage;

@@ -12,12 +12,12 @@ import AdminHomePage from "./pages/AdminHomePage";
 import ManagerHomePage from "./pages/ManagerHomePage";
 import NoPage from "./pages/NoPage"; // Assuming 'NoPage' is a valid component
 import StaffRoleListingPage from "./pages/StaffRoleListingPage";
-import AdminApplicants from "./pages/AdminApplicants";
-import AdminRole from  './pages/AdminRole'; 
+import AdminApplicantsPage from "./pages/AdminApplicantsPage";
+import AdminRolePage from  './pages/AdminRolePage'; 
 import UpdateRoleListingPage from  './pages/UpdateRoleListingPage'; 
 import AddJobPage from  './pages/AddJobPage';
-import ApplicantPage from "./pages/ApplicantPage"; 
-import AdminSpecificApplicants from "./pages/AdminSpecificApplicants";
+// import ApplicantPage from "./pages/ApplicantPage"; 
+import AdminSpecificApplicantsPage from "./pages/AdminSpecificApplicantsPage";
 
 const App = () => {
   return (
@@ -25,13 +25,13 @@ const App = () => {
       <Route path="/" element={<LoginPage />} />
       <Route path="/AdminHomePage" element={<AdminHomePage />} />
       <Route path="/ManagerHomePage" element={<ManagerHomePage />} />
-      <Route path="/AdminRole" element={<AdminRole />} />
+      <Route path="/AdminRolePage" element={<AdminRolePage />} />
       <Route path="/StaffRoleListingPage" element={<StaffRoleListingPage />} />
-      <Route path="/AdminApplicants" element={<AdminApplicants />} />
-      <Route path="/AdminSpecificApplicants" element={<AdminSpecificApplicants />} />
+      <Route path="/AdminApplicantsPage" element={<AdminApplicantsPage />} />
+      <Route path="/AdminSpecificApplicants" element={<AdminSpecificApplicantsPage />} />
       <Route path="/UpdateRoleListingPage" element={<UpdateRoleListingPage />} />
       <Route path="/AddJobPage" element={<AddJobPage />} />
-      <Route path="/ApplicantPage" element={<ApplicantPage />} />
+      {/* <Route path="/ApplicantPage" element={<ApplicantPage />} /> */}
       <Route path="*" element={<NoPage />} />
     </Routes>
   );

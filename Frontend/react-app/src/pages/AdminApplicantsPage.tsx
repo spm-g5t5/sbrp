@@ -38,7 +38,7 @@ interface Applicant {
     // Add other properties as needed
   }
 
-const AdminApplicants = () => {
+const AdminApplicantsPage = () => {
   
     const [showSkillModal, setSkillShowModal] = useState(false);
     const [data, setData] = useState<Applicant[]>([]);
@@ -152,4 +152,4 @@ const AdminApplicants = () => {
   );
 };
 
-export default AdminApplicants;
+export default AdminApplicantsPage;

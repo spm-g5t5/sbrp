@@ -3,7 +3,7 @@ import { Navigate, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
 
-const AdminSpecificApplicants = () => {
+const AdminSpecificApplicantsPage = () => {
     const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
     const roleId = parseInt(localStorage.getItem("RoleId") || '0', 10);
     const navigate = useNavigate(); // Get the navigate function
@@ -40,4 +40,4 @@ const AdminSpecificApplicants = () => {
   );
 }
 
-export default AdminSpecificApplicants;
+export default AdminSpecificApplicantsPage;
