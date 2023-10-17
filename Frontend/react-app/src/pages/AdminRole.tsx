@@ -31,7 +31,10 @@ const AdminRole = () => {
     }[]
   >([]);
   const navigate = useNavigate();
-  const accessRights = parseInt(localStorage.getItem("AccessRights") || "0", 10);
+  const accessRights = parseInt(
+    localStorage.getItem("AccessRights") || "0",
+    10
+  );
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
   const [showApplicationModal, setApplicationShowModal] = useState(false);
   const [showDetailModal, setDetailShowModal] = useState(false);
@@ -103,16 +106,19 @@ const AdminRole = () => {
       });
   };
 
+  const handleUpdateRole = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem('RoleId', roleId);
+    navigate('/UpdateRoleListingPage')
+  }
+
   return (
     <div>
       <Header accessRights={accessRights} />
       <SearchBar />
-      <Button
-            onClick={() => navigate("/AddJobPage")}
-            variant="success"
-          >
-            <span>Add Job</span>
-          </Button>
+      <Button onClick={() => navigate("/AddJobPage")} variant="success">
+        <span>Add Job</span>
+      </Button>
       {data
         .filter((item) => item.active_status == 1)
         .map((item) => (
@@ -128,7 +134,7 @@ const AdminRole = () => {
               </div>
               <div className="d-flex">
                 <Button
-                  onClick={() => navigate("/UpdateRoleListingPage")}
+                  onClick={() => handleUpdateRole(item)}
                   variant="warning"
                 >
                   <span>Update</span>

@@ -2,26 +2,30 @@ import React, { useState, useEffect } from "react";
 import "../styles/AddJobPage.css";
 import Header from "../components/Header";
 import axios from "axios";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 interface FormData {
   role_name: string;
   job_type: string;
   department: string;
-  description: string;
-  expiryDate: string;
+  job_description: string;
+  expiry_dt: string;
   role_skills: Array<{ skillName: string; proficiency: number }>;
+  hiring_manager_id: string;
 }
 
-const accessRights = parseInt(localStorage.getItem("AccessRights") || "0", 10);
+const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
+const staffId = localStorage.getItem("StaffId") || '';
 
 const AddJobPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     role_name: "",
     job_type: "",
     department: "",
-    description: "",
-    expiryDate: "",
+    job_description: "",
+    expiry_dt: "",
     role_skills: [{ skillName: "", proficiency: 1 }],
+    hiring_manager_id: staffId,
   });
 
   const proficiencyLevels = {
@@ -29,6 +33,17 @@ const AddJobPage: React.FC = () => {
     2: "Intermediate",
     3: "Advanced",
   };
+
+  const navigate = useNavigate(); // Get the navigate function
+
+  useEffect(() => {
+    // Check access rights here
+    if (accessRights !== 3) {
+      // Redirect to the login page if access rights are not 3
+      // This will take the user back to the login page
+      navigate("/");
+    }
+  }, [accessRights, navigate]);
 
   const handleInputChange = (
     event: React.ChangeEvent<
@@ -44,7 +59,7 @@ const AddJobPage: React.FC = () => {
   };
 
   const handleSkillChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     index: number
   ) => {
     const { name, value } = event.target;
@@ -74,18 +89,14 @@ const AddJobPage: React.FC = () => {
     }));
   };
 
+  const [skills, setSkills] = useState<string[]>([]);
+
   useEffect(() => {
     axios
       .get("http://127.0.0.1:5000/API/v1/getSkills")
       .then((response) => {
         const skills = response.data;
-        setFormData((prevData) => ({
-          ...prevData,
-          role_skills: skills.map((skillName) => ({
-            skillName,
-            proficiency: 1,
-          })),
-        }));
+        setSkills(skills);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -94,9 +105,60 @@ const AddJobPage: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(formData);
+    
+    // Extract the current `expiry_dt` from the formData
+    const existingExpiry_dt = new Date(formData.expiry_dt);
+    
+    // Set the hours, minutes, and seconds to 23:59:59
+    existingExpiry_dt.setHours(23, 59, 59);
+  
+    // Format the `existingExpiry_dt` to the desired format: %a, %d %b %Y %H:%M:%S %Z
+    const formattedExpiry_dt = existingExpiry_dt.toUTCString();
+  
+    // Create a copy of the formData and update the expiry_dt
+    const updatedFormData = {
+      ...formData,
+      expiry_dt: formattedExpiry_dt,
+    };
+  
+    setFormData(updatedFormData);
+    
+    console.log(updatedFormData);
     // You can send the form data to your server here.
+  
+  
+    // Now, formData.expiryDate will be "2023-10-26 23:59:59"
+    axios.post('http://127.0.0.1:5000/API/v1/createRole', updatedFormData)
+      .then((response) => {
+        // Handle the response from the server here
+        console.log(updatedFormData);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('Error logging in:', error);
+      });
+      navigate("/AdminRole");
   };
+
+
+  // const handleSubmit = (event: React.FormEvent) => {
+  //   event.preventDefault();
+    
+  //   console.log(formData);
+  //   // You can send the form data to your server here.
+  
+  
+  //   // Now, formData.expiryDate will be "2023-10-26 23:59:59"
+  //   axios.post('http://127.0.0.1:5000/API/v1/createRole', formData)
+  //     .then((response) => {
+  //       // Handle the response from the server here
+  //       console.log(formData);
+  //       console.log(response);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error logging in:', error);
+  //     });
+  // };
 
   return (
     <div>
@@ -147,8 +209,8 @@ const AddJobPage: React.FC = () => {
             <label className="label">Job Description:</label>
             <textarea
               className="inputaddrole-textarea"
-              name="description"
-              value={formData.description}
+              name="job_description"
+              value={formData.job_description}
               onChange={handleInputChange}
               required
             />
@@ -159,37 +221,49 @@ const AddJobPage: React.FC = () => {
             <input
               className="inputaddrole"
               type="date"
-              name="expiryDate"
-              value={formData.expiryDate}
+              name="expiry_dt"
+              value={formData.expiry_dt}
               onChange={handleInputChange}
             />
           </div>
 
           <div className="form-group">
-            <label className="label">Skills:</label>
-            {formData.role_skills.map((skill, index) => (
-              <div key={index} className="skill-card">
-                <select
-                  name="skillName"
-                  value={skill.skillName}
-                  onChange={(event) => handleSkillChange(event, index)}
-                >
-                  <option value={1}>Basic</option>
-                  <option value={2}>Intermediate</option>
-                  <option value={3}>Advanced</option>
-                </select>
-                <select
-                  name="proficiency"
-                  value={skill.proficiency}
-                  onChange={(event) => handleSkillChange(event, index)}
-                >
-                  <option value={1}>Basic</option>
-                  <option value={2}>Intermediate</option>
-                  <option value={3}>Advanced</option>
-                </select>
-              </div>
-            ))}
-            <button type="button" onClick={addSkill}>
+            <div className="skill-section">
+              {formData.role_skills.map((skill, index) => (
+                <div key={index} className="skill-card">
+                  <div className="skill-row">
+                    <label className="label-skill">Skills:</label>
+                    <select
+                      className="inputaddrole"
+                      name="skillName"
+                      value={skill.skillName}
+                      onChange={(event) => handleSkillChange(event, index)}
+                    >
+                      <option value="">Select Skill</option>
+                      {skills.map((skillItem) => (
+                        <option key={skillItem} value={skillItem}>
+                          {skillItem}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="skill-row">
+                    <label className="label-skill">Proficiency:</label>
+                    <select
+                      className="inputaddrole"
+                      name="proficiency"
+                      value={skill.proficiency}
+                      onChange={(event) => handleSkillChange(event, index)}
+                    >
+                      <option value={1}>Basic</option>
+                      <option value={2}>Intermediate</option>
+                      <option value={3}>Advanced</option>
+                    </select>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button className="submitaddskill" type="button" onClick={addSkill}>
               Add Skill
             </button>
           </div>
