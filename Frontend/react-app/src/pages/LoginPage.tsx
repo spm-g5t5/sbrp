@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import logoWave from '../assets/logo_wave_design.png';
 import axios from 'axios';
-
 import '../styles/Login.css'; // Import a CSS file for component-specific styles
 
 
