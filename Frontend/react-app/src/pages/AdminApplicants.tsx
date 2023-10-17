@@ -39,6 +39,7 @@ interface Applicant {
   }
 
 const AdminApplicants = () => {
+  
     const [showSkillModal, setSkillShowModal] = useState(false);
     const [data, setData] = useState<Applicant[]>([]);
     const [roleSkillMatch, setRoleSkillMatch] = useState()

@@ -3,12 +3,12 @@ import { Navigate, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
 
-const UpdateRoleListingPage = () => {
-  const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
-  const roleId = parseInt(localStorage.getItem("RoleId") || '0', 10);
-  const navigate = useNavigate(); // Get the navigate function
+const AdminSpecificApplicants = () => {
+    const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
+    const roleId = parseInt(localStorage.getItem("RoleId") || '0', 10);
+    const navigate = useNavigate(); // Get the navigate function
 
-
+    const [data, setData] = useState()
   
   useEffect(() => {
     // Check access rights here
@@ -25,6 +25,7 @@ const UpdateRoleListingPage = () => {
       .get(`http://127.0.0.1:5000/API/v1/viewApplicants/role/${roleId}`)
       .then((response) => {
         console.log(response.data);
+        setData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -34,9 +35,9 @@ const UpdateRoleListingPage = () => {
 
   return (
     <div>
-      This is the update role listing page
+      {data}
     </div>
   );
 }
 
-export default UpdateRoleListingPage;
+export default AdminSpecificApplicants;

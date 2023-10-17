@@ -13,9 +13,10 @@ import {
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { BsFillXCircleFill } from "react-icons/bs";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate,Link } from "react-router-dom";
 
 const AdminRole = () => {
+  
   const [data, setData] = useState<
     {
       role_id: number;
@@ -80,18 +81,12 @@ const AdminRole = () => {
       });
   }, []);
 
-  const handleViewApplications = (role_id: number) => {
-    setApplicationShowModal(true);
-    axios
-      .get(`http://127.0.0.1:5000/API/v1/viewApplicants/role/${role_id}`)
-      .then((response) => {
-        setApplications(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
+  const handleViewApplications = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem('RoleId', roleId);
+    navigate('/AdminSpecificApplicants');
+
+  }
 
   const handleRemoveRole = (item: { role_id: number }) => {
     axios
@@ -109,7 +104,8 @@ const AdminRole = () => {
   const handleUpdateRole = (item: { role_id: number }) => {
     const roleId = item.role_id.toString(); // Convert number to string
     localStorage.setItem('RoleId', roleId);
-    navigate('/UpdateRoleListingPage')
+    navigate('/UpdateRoleListingPage');
+
   }
 
   return (
@@ -152,7 +148,7 @@ const AdminRole = () => {
             <CardFooter>
               <Button
                 style={{ backgroundColor: "#266C73" }}
-                onClick={() => handleViewApplications(item.role_id)}
+                onClick={() => handleViewApplications(item)}
               >
                 View Applications
               </Button>
