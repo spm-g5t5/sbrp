@@ -14,7 +14,7 @@ interface FormData {
   hiring_manager_id: string;
 }
 
-const accessRights = localStorage.getItem("AccessRights") || '';
+const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
 const staffId = localStorage.getItem("StaffId") || '';
 
 const AddJobPage: React.FC = () => {
@@ -38,7 +38,7 @@ const AddJobPage: React.FC = () => {
 
   useEffect(() => {
     // Check access rights here
-    if (accessRights !== "3") {
+    if (accessRights !== 3) {
       // Redirect to the login page if access rights are not 3
       // This will take the user back to the login page
       navigate("/");
