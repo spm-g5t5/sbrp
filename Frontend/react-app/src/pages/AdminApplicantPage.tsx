@@ -40,6 +40,7 @@ const AdminApplicantPage = () => {
     const [data, setData] = useState<Applicant[]>([]);
     const [roleSkillMatch, setRoleSkillMatch] = useState()
     const [currentItem, setCurrentItem] = useState<Applicant | null>(null);
+    const [selectedCheckboxOption, setSelCheckboxOption] = useState<string[]>([]);
     
     const handleDetailCloseModal = () => setSkillShowModal(false);
 
@@ -52,42 +53,34 @@ const AdminApplicantPage = () => {
       Object.keys(filterMenuOptions)[0]
   );
 
-  // Maintain separate state arrays for Size and Color options
-  const [sizeOptions, setSizeOptions] = useState<string[]>([]);
-  const [colorOptions, setColorOptions] = useState<string[]>([]);
+  const handleCheckboxSelect = (selectedOption) => {
+      // Create a copy of the current selectedCheckboxOption state
+      const updatedSelectedCheckboxOption = [...selectedCheckboxOption];
 
-  const handleCheckboxSelect = (option) => {
-    if (selectedFilterOption === "Color") {
-        setColorOptions((prevOptions) => {
-            if (prevOptions.includes(option)) {
-                return prevOptions.filter((item) => item !== option);
-            } else {
-                return [...prevOptions, option];
-            }
-        });
-    } else if (selectedFilterOption === "Size") {
-        setSizeOptions((prevOptions) => {
-            if (prevOptions.includes(option)) {
-                return prevOptions.filter((item) => item !== option);
-            } else {
-                return [...prevOptions, option];
-            }
-        });
-    }
-};
+      // Check if the selectedOption is already in the array
+      const index = updatedSelectedCheckboxOption.indexOf(selectedOption);
+      if (index !== -1) {
+          // If it's present, remove it
+          updatedSelectedCheckboxOption.splice(index, 1);
+      } else {
+          // If it's not present, add it
+          updatedSelectedCheckboxOption.push(selectedOption);
+      }
 
-const handleFilterOptionChange = (newFilterOption) => {
-    // Clear the selected checkbox states when the filter option changes
-    setSizeOptions([]);
-    setColorOptions([]);
-    setSelFilterOption(newFilterOption);
-};
+      // Update the state with the new array
+      setSelCheckboxOption(updatedSelectedCheckboxOption);
+  };
+
+  const handleFilterOptionChange = (newFilterOption) => {
+      // Clear the selectedCheckboxOption when the filter option changes
+      setSelCheckboxOption([]);
+      setSelFilterOption(newFilterOption);
+  };
 
 useEffect(() => {
-    console.log(`Selected Size Options: ${sizeOptions}`);
-    console.log(`Selected Color Options: ${colorOptions}`);
+    console.log(`Selected Options: ${selectedCheckboxOption}`);
     // You can perform additional actions here
-}, [sizeOptions, colorOptions]);
+}, [selectedCheckboxOption]);
 
     
     
@@ -168,11 +161,7 @@ useEffect(() => {
                         <Col xs="2">
                             <input
                                 type="checkbox"
-                                checked={
-                                    selectedFilterOption === "Size"
-                                        ? selectedSizeOptions.includes(option)
-                                        : selectedColorOptions.includes(option)
-                                }
+                                checked={selectedCheckboxOption.includes(option)}
                                 onChange={() => handleCheckboxSelect(option)}
                             />
                         </Col>
