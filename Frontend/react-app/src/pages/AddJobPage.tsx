@@ -137,6 +137,7 @@ const AddJobPage: React.FC = () => {
       .catch((error) => {
         console.error('Error logging in:', error);
       });
+      navigate("/AdminRole");
   };
 
 
