@@ -1,616 +1,616 @@
-Staff_ID,Role_Name,Skill_Name,,,,,,
-140001,Account Manager,Account Management,,,,,,
-140001,Consultancy Director,Account Management,,,,,,
-140001,Consultant,Account Management,,,,,,
-140001,Sales Director,Account Management,,,,,,
-140001,Solutioning Director,Account Management,,,,,,
-140001,Account Manager,Business Development,,,,,,
-140001,Consultancy Director,Business Development,,,,,,
-140001,Consultant,Business Development,,,,,,
-140001,Sales Director,Business Development,,,,,,
-140001,Solutioning Director,Business Development,,,,,,
-140001,Sales Manager,Customer Acquisition Management,,,,,,
-140001,Developer,Database Administration,,,,,,
-140001,Finance Manager,Financial Statements Analysis,,,,,,
-140001,Account Manager,Pricing Strategy,,,,,,
-140001,Sales Director,Pricing Strategy,,,,,,
-140001,Account Manager,Product Management,,,,,,
-140001,Consultancy Director,Product Management,,,,,,
-140001,Consultant,Product Management,,,,,,
-140001,Developer,Product Management,,,,,,
-140001,Sales Director,Product Management,,,,,,
-140001,Solutioning Director,Product Management,,,,,,
-140001,Admin Executive,Technology Integration,,,,,,
-140001,HR Director,Technology Integration,,,,,,
-140001,IT Director,Technology Integration,,,,,,
-140001,Sales Manager,Technology Integration,,,,,,
-140002,Finance  Executive,Accounting and Tax Systems,,,,,,
-140002,Finance Director,Accounting and Tax Systems,,,,,,
-140002,Finance Manager,Accounting and Tax Systems,,,,,,
-140002,Developer,Business Environment Analysis,,,,,,
-140002,Admin Executive,Customer Relationship Management,,,,,,
-140002,Call Centre,Customer Relationship Management,,,,,,
-140002,Sales Manager,Customer Relationship Management,,,,,,
-140002,Finance  Executive,Professional and Business Ethics,,,,,,
-140002,Finance Director,Professional and Business Ethics,,,,,,
-140002,Finance Manager,Professional and Business Ethics,,,,,,
-140003,Finance  Executive,Accounting Standards,,,,,,
-140003,Finance Manager,Accounting Standards,,,,,,
-140003,Account Manager,Data Analytics,,,,,,
-140003,Consultancy Director,Data Analytics,,,,,,
-140003,Consultant,Data Analytics,,,,,,
-140003,Finance  Executive,Data Analytics,,,,,,
-140003,Finance Director,Data Analytics,,,,,,
-140003,Finance Manager,Data Analytics,,,,,,
-140003,Sales Director,Data Analytics,,,,,,
-140003,Solutioning Director,Data Analytics,,,,,,
-140003,Call Centre,Digital Fluency,,,,,,
-140003,HR Executive,Digital Fluency,,,,,,
-140003,Account Manager,Problem Solving,,,,,,
-140003,Admin Executive,Problem Solving,,,,,,
-140003,Call Centre,Problem Solving,,,,,,
-140003,Consultancy Director,Problem Solving,,,,,,
-140003,Consultant,Problem Solving,,,,,,
-140003,Developer,Problem Solving,,,,,,
-140003,Engineering Director,Problem Solving,,,,,,
-140003,Finance  Executive,Problem Solving,,,,,,
-140003,IT Analyst,Problem Solving,,,,,,
-140003,Junior Engineer,Problem Solving,,,,,,
-140003,L&D Executuve,Problem Solving,,,,,,
-140003,Ops Planning Exec,Problem Solving,,,,,,
-140003,Sales Director,Problem Solving,,,,,,
-140003,Sales Manager,Problem Solving,,,,,,
-140003,Senior Engineer,Problem Solving,,,,,,
-140003,Solutioning Director,Problem Solving,,,,,,
-140003,Support Engineer,Problem Solving,,,,,,
-140003,Consultancy Director,Project Management,,,,,,
-140003,Consultant,Project Management,,,,,,
-140003,Developer,Project Management,,,,,,
-140003,Finance  Executive,Project Management,,,,,,
-140003,Finance Manager,Project Management,,,,,,
-140003,HR Director,Project Management,,,,,,
-140003,IT Analyst,Project Management,,,,,,
-140003,IT Director,Project Management,,,,,,
-140003,Ops Planning Exec,Project Management,,,,,,
-140003,Sales Director,Project Management,,,,,,
-140003,Solutioning Director,Project Management,,,,,,
-140003,Support Engineer,Project Management,,,,,,
-140004,Account Manager,Account Management,,,,,,
-140004,Consultancy Director,Account Management,,,,,,
-140004,Consultant,Account Management,,,,,,
-140004,Sales Director,Account Management,,,,,,
-140004,Solutioning Director,Account Management,,,,,,
-140004,Developer,Applications Development,,,,,,
-140004,Account Manager,Business Negotiation,,,,,,
-140004,Sales Director,Business Negotiation,,,,,,
-140004,Sales Manager,Business Negotiation,,,,,,
-140004,Developer,Database Administration,,,,,,
-140004,Account Manager,Product Management,,,,,,
-140004,Consultancy Director,Product Management,,,,,,
-140004,Consultant,Product Management,,,,,,
-140004,Developer,Product Management,,,,,,
-140004,Sales Director,Product Management,,,,,,
-140004,Solutioning Director,Product Management,,,,,,
-140008,Developer,Applications Integration,,,,,,
-140008,Sales Manager,Business Presentation Delivery,,,,,,
-140008,HR Director,Developing People,,,,,,
-140008,IT Analyst,Infrastructure Support,,,,,,
-140008,Support Engineer,Infrastructure Support,,,,,,
-140008,Finance  Executive,Professional and Business Ethics,,,,,,
-140008,Finance Director,Professional and Business Ethics,,,,,,
-140008,Finance Manager,Professional and Business Ethics,,,,,,
-140008,Ops Planning Exec,SOP Development and Implementation,,,,,,
-140015,Developer,Applications Support and Enhancement,,,,,,
-140015,Call Centre,Digital Fluency,,,,,,
-140015,HR Executive,Digital Fluency,,,,,,
-140015,Finance Director,Finance Business Partnering,,,,,,
-140015,Finance Manager,Finance Business Partnering,,,,,,
-140015,Consultancy Director,Project Management,,,,,,
-140015,Consultant,Project Management,,,,,,
-140015,Developer,Project Management,,,,,,
-140015,Finance  Executive,Project Management,,,,,,
-140015,Finance Manager,Project Management,,,,,,
-140015,HR Director,Project Management,,,,,,
-140015,IT Analyst,Project Management,,,,,,
-140015,IT Director,Project Management,,,,,,
-140015,Ops Planning Exec,Project Management,,,,,,
-140015,Sales Director,Project Management,,,,,,
-140015,Solutioning Director,Project Management,,,,,,
-140015,Support Engineer,Project Management,,,,,,
-140025,Developer,Business Risk Management,,,,,,
-140025,HR Director,Financial Acumen,,,,,,
-140025,IT Director,Financial Acumen,,,,,,
-140025,Sales Manager,Sales Closure,,,,,,
-140025,Developer,System Integration,,,,,,
-140025,Support Engineer,System Integration,,,,,,
-140036,Account Manager,Sales Strategy,,,,,,
-140036,Consultancy Director,Sales Strategy,,,,,,
-140036,Sales Director,Sales Strategy,,,,,,
-140036,Solutioning Director,Sales Strategy,,,,,,
-140036,Ops Planning Exec,SOP Development and Implementation,,,,,,
-140078,Developer,Applications Support and Enhancement,,,,,,
-140078,Account Manager,Collaboration,,,,,,
-140078,Admin Executive,Collaboration,,,,,,
-140078,Call Centre,Collaboration,,,,,,
-140078,Consultant,Collaboration,,,,,,
-140078,Developer,Collaboration,,,,,,
-140078,Finance  Executive,Collaboration,,,,,,
-140078,Finance Manager,Collaboration,,,,,,
-140078,HR Executive,Collaboration,,,,,,
-140078,IT Analyst,Collaboration,,,,,,
-140078,Junior Engineer,Collaboration,,,,,,
-140078,L&D Executuve,Collaboration,,,,,,
-140078,Ops Planning Exec,Collaboration,,,,,,
-140078,Sales Director,Collaboration,,,,,,
-140078,Sales Manager,Collaboration,,,,,,
-140078,Senior Engineer,Collaboration,,,,,,
-140078,Support Engineer,Collaboration,,,,,,
-140102,Account Manager,Budgeting,,,,,,
-140102,Consultancy Director,Budgeting,,,,,,
-140102,Engineering Director,Budgeting,,,,,,
-140102,Sales Director,Budgeting,,,,,,
-140102,Sales Manager,Budgeting,,,,,,
-140102,Solutioning Director,Budgeting,,,,,,
-140102,Account Manager,Communication,,,,,,
-140102,Admin Executive,Communication,,,,,,
-140102,Call Centre,Communication,,,,,,
-140102,Consultancy Director,Communication,,,,,,
-140102,Consultant,Communication,,,,,,
-140102,Developer,Communication,,,,,,
-140102,Engineering Director,Communication,,,,,,
-140102,Finance  Executive,Communication,,,,,,
-140102,Finance Director,Communication,,,,,,
-140102,Finance Manager,Communication,,,,,,
-140102,HR Director,Communication,,,,,,
-140102,HR Executive,Communication,,,,,,
-140102,IT Analyst,Communication,,,,,,
-140102,IT Director,Communication,,,,,,
-140102,Junior Engineer,Communication,,,,,,
-140102,L&D Executuve,Communication,,,,,,
-140102,Ops Planning Exec,Communication,,,,,,
-140102,Sales Director,Communication,,,,,,
-140102,Sales Manager,Communication,,,,,,
-140102,Senior Engineer,Communication,,,,,,
-140102,Solutioning Director,Communication,,,,,,
-140102,Support Engineer,Communication,,,,,,
-140102,HR Director,Financial Acumen,,,,,,
-140102,IT Director,Financial Acumen,,,,,,
-140102,Sales Manager,Sales Closure,,,,,,
-140102,Finance  Executive,Sense Making,,,,,,
-140102,Junior Engineer,Sense Making,,,,,,
-140102,Developer,System Integration,,,,,,
-140102,Support Engineer,System Integration,,,,,,
-140103,Finance Manager,Business Acumen,,,,,,
-140103,HR Director,Business Acumen,,,,,,
-140103,IT Director,Business Acumen,,,,,,
-140103,Developer,Configuration Tracking,,,,,,
-140103,Support Engineer,Configuration Tracking,,,,,,
-140103,Account Manager,Sales Strategy,,,,,,
-140103,Consultancy Director,Sales Strategy,,,,,,
-140103,Sales Director,Sales Strategy,,,,,,
-140103,Solutioning Director,Sales Strategy,,,,,,
-140103,IT Analyst,Service Level Management,,,,,,
-140103,Support Engineer,Service Level Management,,,,,,
-140103,Call Centre,Technology Application,,,,,,
-140108,Account Manager,Business Development,,,,,,
-140108,Consultancy Director,Business Development,,,,,,
-140108,Consultant,Business Development,,,,,,
-140108,Sales Director,Business Development,,,,,,
-140108,Solutioning Director,Business Development,,,,,,
-140108,Sales Manager,Customer Acquisition Management,,,,,,
-140108,Finance  Executive,Financial Management,,,,,,
-140108,Finance Director,Financial Management,,,,,,
-140108,Finance Manager,Financial Management,,,,,,
-140108,Account Manager,Pricing Strategy,,,,,,
-140108,Sales Director,Pricing Strategy,,,,,,
-140108,Admin Executive,Technology Integration,,,,,,
-140108,HR Director,Technology Integration,,,,,,
-140108,IT Director,Technology Integration,,,,,,
-140108,Sales Manager,Technology Integration,,,,,,
-140115,Account Manager,Budgeting,,,,,,
-140115,Consultancy Director,Budgeting,,,,,,
-140115,Engineering Director,Budgeting,,,,,,
-140115,Sales Director,Budgeting,,,,,,
-140115,Sales Manager,Budgeting,,,,,,
-140115,Solutioning Director,Budgeting,,,,,,
-140115,Developer,Business Environment Analysis,,,,,,
-140115,Admin Executive,Customer Relationship Management,,,,,,
-140115,Call Centre,Customer Relationship Management,,,,,,
-140115,Sales Manager,Customer Relationship Management,,,,,,
-140115,Finance  Executive,Sense Making,,,,,,
-140115,Junior Engineer,Sense Making,,,,,,
-140115,Finance  Executive,Tax Implications,,,,,,
-140115,Finance Director,Tax Implications,,,,,,
-140115,Finance Manager,Tax Implications,,,,,,
-140115,Engineering Director,Technology Road Mapping,,,,,,
-140525,Finance Manager,Business Acumen,,,,,,
-140525,HR Director,Business Acumen,,,,,,
-140525,IT Director,Business Acumen,,,,,,
-140525,Account Manager,Business Needs Analysis,,,,,,
-140525,Consultancy Director,Business Needs Analysis,,,,,,
-140525,Consultant,Business Needs Analysis,,,,,,
-140525,Developer,Business Needs Analysis,,,,,,
-140525,IT Analyst,Business Needs Analysis,,,,,,
-140525,Sales Director,Business Needs Analysis,,,,,,
-140525,Solutioning Director,Business Needs Analysis,,,,,,
-140525,Support Engineer,Business Needs Analysis,,,,,,
-140525,Account Manager,Data Analytics,,,,,,
-140525,Consultancy Director,Data Analytics,,,,,,
-140525,Consultant,Data Analytics,,,,,,
-140525,Finance  Executive,Data Analytics,,,,,,
-140525,Finance Director,Data Analytics,,,,,,
-140525,Finance Manager,Data Analytics,,,,,,
-140525,Sales Director,Data Analytics,,,,,,
-140525,Solutioning Director,Data Analytics,,,,,,
-140525,Account Manager,Problem Solving,,,,,,
-140525,Admin Executive,Problem Solving,,,,,,
-140525,Call Centre,Problem Solving,,,,,,
-140525,Consultancy Director,Problem Solving,,,,,,
-140525,Consultant,Problem Solving,,,,,,
-140525,Developer,Problem Solving,,,,,,
-140525,Engineering Director,Problem Solving,,,,,,
-140525,Finance  Executive,Problem Solving,,,,,,
-140525,IT Analyst,Problem Solving,,,,,,
-140525,Junior Engineer,Problem Solving,,,,,,
-140525,L&D Executuve,Problem Solving,,,,,,
-140525,Ops Planning Exec,Problem Solving,,,,,,
-140525,Sales Director,Problem Solving,,,,,,
-140525,Sales Manager,Problem Solving,,,,,,
-140525,Senior Engineer,Problem Solving,,,,,,
-140525,Solutioning Director,Problem Solving,,,,,,
-140525,Support Engineer,Problem Solving,,,,,,
-140525,IT Analyst,Service Level Management,,,,,,
-140525,Support Engineer,Service Level Management,,,,,,
-140525,Call Centre,Technology Application,,,,,,
-150065,Developer,Applications Integration,,,,,,
-150065,IT Analyst,Infrastructure Support,,,,,,
-150065,Support Engineer,Infrastructure Support,,,,,,
-150065,IT Analyst,Network Administration and Maintenance,,,,,,
-150065,Support Engineer,Network Administration and Maintenance,,,,,,
-150065,Account Manager,Sales Strategy,,,,,,
-150065,Consultancy Director,Sales Strategy,,,,,,
-150065,Sales Director,Sales Strategy,,,,,,
-150065,Solutioning Director,Sales Strategy,,,,,,
-150065,Ops Planning Exec,SOP Development and Implementation,,,,,,
-150075,Developer,Applications Support and Enhancement,,,,,,
-150075,Account Manager,Collaboration,,,,,,
-150075,Admin Executive,Collaboration,,,,,,
-150075,Call Centre,Collaboration,,,,,,
-150075,Consultant,Collaboration,,,,,,
-150075,Developer,Collaboration,,,,,,
-150075,Finance  Executive,Collaboration,,,,,,
-150075,Finance Manager,Collaboration,,,,,,
-150075,HR Executive,Collaboration,,,,,,
-150075,IT Analyst,Collaboration,,,,,,
-150075,Junior Engineer,Collaboration,,,,,,
-150075,L&D Executuve,Collaboration,,,,,,
-150075,Ops Planning Exec,Collaboration,,,,,,
-150075,Sales Director,Collaboration,,,,,,
-150075,Sales Manager,Collaboration,,,,,,
-150075,Senior Engineer,Collaboration,,,,,,
-150075,Support Engineer,Collaboration,,,,,,
-150075,Support Engineer,Security Administration,,,,,,
-150076,Account Manager,Budgeting,,,,,,
-150076,Consultancy Director,Budgeting,,,,,,
-150076,Engineering Director,Budgeting,,,,,,
-150076,Sales Director,Budgeting,,,,,,
-150076,Sales Manager,Budgeting,,,,,,
-150076,Solutioning Director,Budgeting,,,,,,
-150076,Account Manager,Communication,,,,,,
-150076,Admin Executive,Communication,,,,,,
-150076,Call Centre,Communication,,,,,,
-150076,Consultancy Director,Communication,,,,,,
-150076,Consultant,Communication,,,,,,
-150076,Developer,Communication,,,,,,
-150076,Engineering Director,Communication,,,,,,
-150076,Finance  Executive,Communication,,,,,,
-150076,Finance Director,Communication,,,,,,
-150076,Finance Manager,Communication,,,,,,
-150076,HR Director,Communication,,,,,,
-150076,HR Executive,Communication,,,,,,
-150076,IT Analyst,Communication,,,,,,
-150076,IT Director,Communication,,,,,,
-150076,Junior Engineer,Communication,,,,,,
-150076,L&D Executuve,Communication,,,,,,
-150076,Ops Planning Exec,Communication,,,,,,
-150076,Sales Director,Communication,,,,,,
-150076,Sales Manager,Communication,,,,,,
-150076,Senior Engineer,Communication,,,,,,
-150076,Solutioning Director,Communication,,,,,,
-150076,Support Engineer,Communication,,,,,,
-150076,Finance  Executive,Sense Making,,,,,,
-150076,Junior Engineer,Sense Making,,,,,,
-150076,Developer,System Integration,,,,,,
-150076,Support Engineer,System Integration,,,,,,
-160008,Finance Manager,Business Acumen,,,,,,
-160008,HR Director,Business Acumen,,,,,,
-160008,IT Director,Business Acumen,,,,,,
-160008,Consultancy Director,People and Performance Management,,,,,,
-160008,Sales Director,People and Performance Management,,,,,,
-160008,Solutioning Director,People and Performance Management,,,,,,
-160008,Support Engineer,People and Performance Management,,,,,,
-160008,HR Director,Talent Management,,,,,,
-160065,HR Executive,Onboarding,,,,,,
-160065,HR Director,Skills Framework Adoption,,,,,,
-160065,HR Executive,Skills Framework Adoption,,,,,,
-160065,IT Director,Skills Framework Adoption,,,,,,
-160065,L&D Executuve,Skills Framework Adoption,,,,,,
-160065,Finance  Executive,Tax Computation,,,,,,
-160075,Admin Executive,Customer Relationship Management,,,,,,
-160075,Call Centre,Customer Relationship Management,,,,,,
-160075,Sales Manager,Customer Relationship Management,,,,,,
-160075,HR Director,Organisational Design,,,,,,
-160075,Finance  Executive,Sense Making,,,,,,
-160075,Junior Engineer,Sense Making,,,,,,
-170166,Account Manager,Collaboration,,,,,,
-170166,Admin Executive,Collaboration,,,,,,
-170166,Call Centre,Collaboration,,,,,,
-170166,Consultant,Collaboration,,,,,,
-170166,Developer,Collaboration,,,,,,
-170166,Finance  Executive,Collaboration,,,,,,
-170166,Finance Manager,Collaboration,,,,,,
-170166,HR Executive,Collaboration,,,,,,
-170166,IT Analyst,Collaboration,,,,,,
-170166,Junior Engineer,Collaboration,,,,,,
-170166,L&D Executuve,Collaboration,,,,,,
-170166,Ops Planning Exec,Collaboration,,,,,,
-170166,Sales Director,Collaboration,,,,,,
-170166,Sales Manager,Collaboration,,,,,,
-170166,Senior Engineer,Collaboration,,,,,,
-170166,Support Engineer,Collaboration,,,,,,
-170166,Finance Director,Finance Business Partnering,,,,,,
-170166,Finance Manager,Finance Business Partnering,,,,,,
-170166,Finance  Executive,Financial Management,,,,,,
-170166,Finance Director,Financial Management,,,,,,
-170166,Finance Manager,Financial Management,,,,,,
-170166,Finance  Executive,Tax Computation,,,,,,
-170208,Finance  Executive,Audit Compliance,,,,,,
-170208,Finance Director,Audit Compliance,,,,,,
-170208,Finance Manager,Audit Compliance,,,,,,
-170208,Developer,Business Risk Management,,,,,,
-170208,Account Manager,Communication,,,,,,
-170208,Admin Executive,Communication,,,,,,
-170208,Call Centre,Communication,,,,,,
-170208,Consultancy Director,Communication,,,,,,
-170208,Consultant,Communication,,,,,,
-170208,Developer,Communication,,,,,,
-170208,Engineering Director,Communication,,,,,,
-170208,Finance  Executive,Communication,,,,,,
-170208,Finance Director,Communication,,,,,,
-170208,Finance Manager,Communication,,,,,,
-170208,HR Director,Communication,,,,,,
-170208,HR Executive,Communication,,,,,,
-170208,IT Analyst,Communication,,,,,,
-170208,IT Director,Communication,,,,,,
-170208,Junior Engineer,Communication,,,,,,
-170208,L&D Executuve,Communication,,,,,,
-170208,Ops Planning Exec,Communication,,,,,,
-170208,Sales Director,Communication,,,,,,
-170208,Sales Manager,Communication,,,,,,
-170208,Senior Engineer,Communication,,,,,,
-170208,Solutioning Director,Communication,,,,,,
-170208,Support Engineer,Communication,,,,,,
-170208,HR Director,Financial Acumen,,,,,,
-170208,IT Director,Financial Acumen,,,,,,
-170208,Finance Director,Financial Planning,,,,,,
-170208,Finance Manager,Financial Planning,,,,,,
-170208,Finance  Executive,Sense Making,,,,,,
-170208,Junior Engineer,Sense Making,,,,,,
-170208,Finance  Executive,Tax Implications,,,,,,
-170208,Finance Director,Tax Implications,,,,,,
-170208,Finance Manager,Tax Implications,,,,,,
-170215,Finance Manager,Audit Frameworks,,,,,,
-170215,Finance  Executive,Financial Closing,,,,,,
-170215,Finance  Executive,Financial Reporting,,,,,,
-170215,Finance Director,Financial Reporting,,,,,,
-170215,Finance Manager,Financial Reporting,,,,,,
-170215,Consultancy Director,People and Performance Management,,,,,,
-170215,Sales Director,People and Performance Management,,,,,,
-170215,Solutioning Director,People and Performance Management,,,,,,
-170215,Support Engineer,People and Performance Management,,,,,,
-170215,Call Centre,Technology Application,,,,,,
-180001,Developer,Applications Support and Enhancement,,,,,,
-180001,Account Manager,Collaboration,,,,,,
-180001,Admin Executive,Collaboration,,,,,,
-180001,Call Centre,Collaboration,,,,,,
-180001,Consultant,Collaboration,,,,,,
-180001,Developer,Collaboration,,,,,,
-180001,Finance  Executive,Collaboration,,,,,,
-180001,Finance Manager,Collaboration,,,,,,
-180001,HR Executive,Collaboration,,,,,,
-180001,IT Analyst,Collaboration,,,,,,
-180001,Junior Engineer,Collaboration,,,,,,
-180001,L&D Executuve,Collaboration,,,,,,
-180001,Ops Planning Exec,Collaboration,,,,,,
-180001,Sales Director,Collaboration,,,,,,
-180001,Sales Manager,Collaboration,,,,,,
-180001,Senior Engineer,Collaboration,,,,,,
-180001,Support Engineer,Collaboration,,,,,,
-180001,Sales Manager,Customer Acquisition Management,,,,,,
-180001,Finance  Executive,Financial Management,,,,,180003,Business Acumen
-180001,Finance Director,Financial Management,,,,,180003,Configuration Tracking
-180001,Finance Manager,Financial Management,,,,,180003,Data Analytics
-180001,Finance Manager,Financial Statements Analysis,,,,,180003,Human Resource Advisory
-180001,Account Manager,Pricing Strategy,,,,,180003,Problem Solving
-180001,Sales Director,Pricing Strategy,,,,,180003,Service Level Management
-180001,Support Engineer,Security Administration,,,,,180003,Software Design
-180001,HR Director,Skills Framework Adoption,,,,,180003,Technology Application
-180001,HR Executive,Skills Framework Adoption,,,,,,
-180001,IT Director,Skills Framework Adoption,,,,,,
-180001,L&D Executuve,Skills Framework Adoption,,,,,,
-180001,Finance  Executive,Tax Computation,,,,,,
-180002,Finance  Executive,Audit Compliance,,,,,,
-180002,Finance Director,Audit Compliance,,,,,,
-180002,Finance Manager,Audit Compliance,,,,,,
-180002,Account Manager,Budgeting,,,,,,
-180002,Consultancy Director,Budgeting,,,,,,
-180002,Engineering Director,Budgeting,,,,,,
-180002,Sales Director,Budgeting,,,,,,
-180002,Sales Manager,Budgeting,,,,,,
-180002,Solutioning Director,Budgeting,,,,,,
-180002,Account Manager,Communication,,,,,,
-180002,Admin Executive,Communication,,,,,,
-180002,Call Centre,Communication,,,,,,
-180002,Consultancy Director,Communication,,,,,,
-180002,Consultant,Communication,,,,,,
-180002,Developer,Communication,,,,,,
-180002,Engineering Director,Communication,,,,,,
-180002,Finance  Executive,Communication,,,,,,
-180002,Finance Director,Communication,,,,,,
-180002,Finance Manager,Communication,,,,,,
-180002,HR Director,Communication,,,,,,
-180002,HR Executive,Communication,,,,,,
-180002,IT Analyst,Communication,,,,,,
-180002,IT Director,Communication,,,,,,
-180002,Junior Engineer,Communication,,,,,,
-180002,L&D Executuve,Communication,,,,,,
-180002,Ops Planning Exec,Communication,,,,,,
-180002,Sales Director,Communication,,,,,,
-180002,Sales Manager,Communication,,,,,,
-180002,Senior Engineer,Communication,,,,,,
-180002,Solutioning Director,Communication,,,,,,
-180002,Support Engineer,Communication,,,,,,
-180002,Admin Executive,Customer Relationship Management,,,,,,
-180002,Call Centre,Customer Relationship Management,,,,,,
-180002,Sales Manager,Customer Relationship Management,,,,,,
-180002,Consultancy Director,Problem Management,,,,,,
-180002,Consultant,Problem Management,,,,,,
-180002,Developer,Problem Management,,,,,,
-180002,Solutioning Director,Problem Management,,,,,,
-180002,Support Engineer,Problem Management,,,,,,
-180002,Finance  Executive,Sense Making,,,,,,
-180002,Junior Engineer,Sense Making,,,,,,
-180002,Developer,Software Configuration,,,,,,
-180002,Finance  Executive,Tax Implications,,,,,,
-180002,Finance Director,Tax Implications,,,,,,
-180002,Finance Manager,Tax Implications,,,,,,
-180003,Finance Manager,Business Acumen,,,,,,
-180003,HR Director,Business Acumen,,,,,,
-180003,IT Director,Business Acumen,,,,,,
-180003,Developer,Configuration Tracking,,,,,,
-180003,Support Engineer,Configuration Tracking,,,,,,
-180003,Account Manager,Data Analytics,,,,,,
-180003,Consultancy Director,Data Analytics,,,,,,
-180003,Consultant,Data Analytics,,,,,,
-180003,Finance  Executive,Data Analytics,,,,,,
-180003,Finance Director,Data Analytics,,,,,,
-180003,Finance Manager,Data Analytics,,,,,,
-180003,Sales Director,Data Analytics,,,,,,
-180003,Solutioning Director,Data Analytics,,,,,,
-180003,HR Director,Human Resource Advisory,,,,,,
-180003,IT Director,Human Resource Advisory,,,,,,
-180003,Account Manager,Problem Solving,,,,,,
-180003,Admin Executive,Problem Solving,,,,,,
-180003,Call Centre,Problem Solving,,,,,,
-180003,Consultancy Director,Problem Solving,,,,,,
-180003,Consultant,Problem Solving,,,,,,
-180003,Developer,Problem Solving,,,,,,
-180003,Engineering Director,Problem Solving,,,,,,
-180003,Finance  Executive,Problem Solving,,,,,,
-180003,IT Analyst,Problem Solving,,,,,,
-180003,Junior Engineer,Problem Solving,,,,,,
-180003,L&D Executuve,Problem Solving,,,,,,
-180003,Ops Planning Exec,Problem Solving,,,,,,
-180003,Sales Director,Problem Solving,,,,,,
-180003,Sales Manager,Problem Solving,,,,,,
-180003,Senior Engineer,Problem Solving,,,,,,
-180003,Solutioning Director,Problem Solving,,,,,,
-180003,Support Engineer,Problem Solving,,,,,,
-180003,IT Analyst,Service Level Management,,,,,,
-180003,Support Engineer,Service Level Management,,,,,,
-180003,Developer,Software Design,,,,,,
-180003,Call Centre,Technology Application,,,,,,
-190001,Account Manager,Business Development,,,,,,
-190001,Consultancy Director,Business Development,,,,,,
-190001,Consultant,Business Development,,,,,,
-190001,Sales Director,Business Development,,,,,,
-190001,Solutioning Director,Business Development,,,,,,
-190001,Support Engineer,Security Administration,,,,,,
-190001,Admin Executive,Technology Integration,,,,,,
-190001,HR Director,Technology Integration,,,,,,
-190001,IT Director,Technology Integration,,,,,,
-190001,Sales Manager,Technology Integration,,,,,,
-190003,Developer,Business Environment Analysis,,,,,,
-190003,Admin Executive,Customer Relationship Management,,,,,,
-190003,Call Centre,Customer Relationship Management,,,,,,
-190003,Sales Manager,Customer Relationship Management,,,,,,
-190003,Consultancy Director,Problem Management,,,,,,
-190003,Consultant,Problem Management,,,,,,
-190003,Developer,Problem Management,,,,,,
-190003,Solutioning Director,Problem Management,,,,,,
-190003,Support Engineer,Problem Management,,,,,,
-190003,Finance  Executive,Sense Making,,,,,,
-190003,Junior Engineer,Sense Making,,,,,,
-190003,Developer,Software Configuration,,,,,,
-190004,Finance Manager,Business Acumen,,,,,,
-190004,HR Director,Business Acumen,,,,,,
-190004,IT Director,Business Acumen,,,,,,
-190004,Account Manager,Business Needs Analysis,,,,,,
-190004,Consultancy Director,Business Needs Analysis,,,,,,
-190004,Consultant,Business Needs Analysis,,,,,,
-190004,Developer,Business Needs Analysis,,,,,,
-190004,IT Analyst,Business Needs Analysis,,,,,,
-190004,Sales Director,Business Needs Analysis,,,,,,
-190004,Solutioning Director,Business Needs Analysis,,,,,,
-190004,Support Engineer,Business Needs Analysis,,,,,,
-190004,Account Manager,Data Analytics,,,,,,
-190004,Consultancy Director,Data Analytics,,,,,,
-190004,Consultant,Data Analytics,,,,,,
-190004,Finance  Executive,Data Analytics,,,,,,
-190004,Finance Director,Data Analytics,,,,,,
-190004,Finance Manager,Data Analytics,,,,,,
-190004,Sales Director,Data Analytics,,,,,,
-190004,Solutioning Director,Data Analytics,,,,,,
-190004,Account Manager,Problem Solving,,,,,,
-190004,Admin Executive,Problem Solving,,,,,,
-190004,Call Centre,Problem Solving,,,,,,
-190004,Consultancy Director,Problem Solving,,,,,,
-190004,Consultant,Problem Solving,,,,,,
-190004,Developer,Problem Solving,,,,,,
-190004,Engineering Director,Problem Solving,,,,,,
-190004,Finance  Executive,Problem Solving,,,,,,
-190004,IT Analyst,Problem Solving,,,,,,
-190004,Junior Engineer,Problem Solving,,,,,,
-190004,L&D Executuve,Problem Solving,,,,,,
-190004,Ops Planning Exec,Problem Solving,,,,,,
-190004,Sales Director,Problem Solving,,,,,,
-190004,Sales Manager,Problem Solving,,,,,,
-190004,Senior Engineer,Problem Solving,,,,,,
-190004,Solutioning Director,Problem Solving,,,,,,
-190004,Support Engineer,Problem Solving,,,,,,
-190004,IT Analyst,Service Level Management,,,,,,
-190004,Support Engineer,Service Level Management,,,,,,
-190004,Call Centre,Technology Application,,,,,,
-190004,Developer,User Interface Design,,,,,,
-210001,Finance Manager,Business Acumen,,,,,,
-210001,HR Director,Business Acumen,,,,,,
-210001,IT Director,Business Acumen,,,,,,
-210001,Developer,Configuration Tracking,,,,,,
-210001,Support Engineer,Configuration Tracking,,,,,,
-210001,Account Manager,Data Analytics,,,,,,
-210001,Consultancy Director,Data Analytics,,,,,,
-210001,Consultant,Data Analytics,,,,,,
-210001,Finance  Executive,Data Analytics,,,,,,
-210001,Finance Director,Data Analytics,,,,,,
-210001,Finance Manager,Data Analytics,,,,,,
-210001,Sales Director,Data Analytics,,,,,,
-210001,Solutioning Director,Data Analytics,,,,,,
-210001,Call Centre,Technology Application,,,,,,
-210017,Developer,Database Administration,,,,,,
-210017,Support Engineer,Security Administration,,,,,,
-210017,Admin Executive,Technology Integration,,,,,,
-210017,HR Director,Technology Integration,,,,,,
-210017,IT Director,Technology Integration,,,,,,
-210017,Sales Manager,Technology Integration,,,,,,
-210018,Developer,Business Environment Analysis,,,,,,
-210018,Admin Executive,Customer Relationship Management,,,,,,
-210018,Call Centre,Customer Relationship Management,,,,,,
-210018,Sales Manager,Customer Relationship Management,,,,,,
-210018,Consultancy Director,Problem Management,,,,,,
-210018,Consultant,Problem Management,,,,,,
-210018,Developer,Problem Management,,,,,,
-210018,Solutioning Director,Problem Management,,,,,,
-210018,Support Engineer,Problem Management,,,,,,
-210018,Finance  Executive,Sense Making,,,,,,
-210018,Junior Engineer,Sense Making,,,,,,
-210018,Developer,Software Configuration,,,,,,
+Staff_ID,Role_Name,Skill_Name
+140001,Account Manager,Account Management
+140001,Consultancy Director,Account Management
+140001,Consultant,Account Management
+140001,Sales Director,Account Management
+140001,Solutioning Director,Account Management
+140001,Account Manager,Business Development
+140001,Consultancy Director,Business Development
+140001,Consultant,Business Development
+140001,Sales Director,Business Development
+140001,Solutioning Director,Business Development
+140001,Sales Manager,Customer Acquisition Management
+140001,Developer,Database Administration
+140001,Finance Manager,Financial Statements Analysis
+140001,Account Manager,Pricing Strategy
+140001,Sales Director,Pricing Strategy
+140001,Account Manager,Product Management
+140001,Consultancy Director,Product Management
+140001,Consultant,Product Management
+140001,Developer,Product Management
+140001,Sales Director,Product Management
+140001,Solutioning Director,Product Management
+140001,Admin Executive,Technology Integration
+140001,HR Director,Technology Integration
+140001,IT Director,Technology Integration
+140001,Sales Manager,Technology Integration
+140002,Finance  Executive,Accounting and Tax Systems
+140002,Finance Director,Accounting and Tax Systems
+140002,Finance Manager,Accounting and Tax Systems
+140002,Developer,Business Environment Analysis
+140002,Admin Executive,Customer Relationship Management
+140002,Call Centre,Customer Relationship Management
+140002,Sales Manager,Customer Relationship Management
+140002,Finance  Executive,Professional and Business Ethics
+140002,Finance Director,Professional and Business Ethics
+140002,Finance Manager,Professional and Business Ethics
+140003,Finance  Executive,Accounting Standards
+140003,Finance Manager,Accounting Standards
+140003,Account Manager,Data Analytics
+140003,Consultancy Director,Data Analytics
+140003,Consultant,Data Analytics
+140003,Finance  Executive,Data Analytics
+140003,Finance Director,Data Analytics
+140003,Finance Manager,Data Analytics
+140003,Sales Director,Data Analytics
+140003,Solutioning Director,Data Analytics
+140003,Call Centre,Digital Fluency
+140003,HR Executive,Digital Fluency
+140003,Account Manager,Problem Solving
+140003,Admin Executive,Problem Solving
+140003,Call Centre,Problem Solving
+140003,Consultancy Director,Problem Solving
+140003,Consultant,Problem Solving
+140003,Developer,Problem Solving
+140003,Engineering Director,Problem Solving
+140003,Finance  Executive,Problem Solving
+140003,IT Analyst,Problem Solving
+140003,Junior Engineer,Problem Solving
+140003,L&D Executuve,Problem Solving
+140003,Ops Planning Exec,Problem Solving
+140003,Sales Director,Problem Solving
+140003,Sales Manager,Problem Solving
+140003,Senior Engineer,Problem Solving
+140003,Solutioning Director,Problem Solving
+140003,Support Engineer,Problem Solving
+140003,Consultancy Director,Project Management
+140003,Consultant,Project Management
+140003,Developer,Project Management
+140003,Finance  Executive,Project Management
+140003,Finance Manager,Project Management
+140003,HR Director,Project Management
+140003,IT Analyst,Project Management
+140003,IT Director,Project Management
+140003,Ops Planning Exec,Project Management
+140003,Sales Director,Project Management
+140003,Solutioning Director,Project Management
+140003,Support Engineer,Project Management
+140004,Account Manager,Account Management
+140004,Consultancy Director,Account Management
+140004,Consultant,Account Management
+140004,Sales Director,Account Management
+140004,Solutioning Director,Account Management
+140004,Developer,Applications Development
+140004,Account Manager,Business Negotiation
+140004,Sales Director,Business Negotiation
+140004,Sales Manager,Business Negotiation
+140004,Developer,Database Administration
+140004,Account Manager,Product Management
+140004,Consultancy Director,Product Management
+140004,Consultant,Product Management
+140004,Developer,Product Management
+140004,Sales Director,Product Management
+140004,Solutioning Director,Product Management
+140008,Developer,Applications Integration
+140008,Sales Manager,Business Presentation Delivery
+140008,HR Director,Developing People
+140008,IT Analyst,Infrastructure Support
+140008,Support Engineer,Infrastructure Support
+140008,Finance  Executive,Professional and Business Ethics
+140008,Finance Director,Professional and Business Ethics
+140008,Finance Manager,Professional and Business Ethics
+140008,Ops Planning Exec,SOP Development and Implementation
+140015,Developer,Applications Support and Enhancement
+140015,Call Centre,Digital Fluency
+140015,HR Executive,Digital Fluency
+140015,Finance Director,Finance Business Partnering
+140015,Finance Manager,Finance Business Partnering
+140015,Consultancy Director,Project Management
+140015,Consultant,Project Management
+140015,Developer,Project Management
+140015,Finance  Executive,Project Management
+140015,Finance Manager,Project Management
+140015,HR Director,Project Management
+140015,IT Analyst,Project Management
+140015,IT Director,Project Management
+140015,Ops Planning Exec,Project Management
+140015,Sales Director,Project Management
+140015,Solutioning Director,Project Management
+140015,Support Engineer,Project Management
+140025,Developer,Business Risk Management
+140025,HR Director,Financial Acumen
+140025,IT Director,Financial Acumen
+140025,Sales Manager,Sales Closure
+140025,Developer,System Integration
+140025,Support Engineer,System Integration
+140036,Account Manager,Sales Strategy
+140036,Consultancy Director,Sales Strategy
+140036,Sales Director,Sales Strategy
+140036,Solutioning Director,Sales Strategy
+140036,Ops Planning Exec,SOP Development and Implementation
+140078,Developer,Applications Support and Enhancement
+140078,Account Manager,Collaboration
+140078,Admin Executive,Collaboration
+140078,Call Centre,Collaboration
+140078,Consultant,Collaboration
+140078,Developer,Collaboration
+140078,Finance  Executive,Collaboration
+140078,Finance Manager,Collaboration
+140078,HR Executive,Collaboration
+140078,IT Analyst,Collaboration
+140078,Junior Engineer,Collaboration
+140078,L&D Executuve,Collaboration
+140078,Ops Planning Exec,Collaboration
+140078,Sales Director,Collaboration
+140078,Sales Manager,Collaboration
+140078,Senior Engineer,Collaboration
+140078,Support Engineer,Collaboration
+140102,Account Manager,Budgeting
+140102,Consultancy Director,Budgeting
+140102,Engineering Director,Budgeting
+140102,Sales Director,Budgeting
+140102,Sales Manager,Budgeting
+140102,Solutioning Director,Budgeting
+140102,Account Manager,Communication
+140102,Admin Executive,Communication
+140102,Call Centre,Communication
+140102,Consultancy Director,Communication
+140102,Consultant,Communication
+140102,Developer,Communication
+140102,Engineering Director,Communication
+140102,Finance  Executive,Communication
+140102,Finance Director,Communication
+140102,Finance Manager,Communication
+140102,HR Director,Communication
+140102,HR Executive,Communication
+140102,IT Analyst,Communication
+140102,IT Director,Communication
+140102,Junior Engineer,Communication
+140102,L&D Executuve,Communication
+140102,Ops Planning Exec,Communication
+140102,Sales Director,Communication
+140102,Sales Manager,Communication
+140102,Senior Engineer,Communication
+140102,Solutioning Director,Communication
+140102,Support Engineer,Communication
+140102,HR Director,Financial Acumen
+140102,IT Director,Financial Acumen
+140102,Sales Manager,Sales Closure
+140102,Finance  Executive,Sense Making
+140102,Junior Engineer,Sense Making
+140102,Developer,System Integration
+140102,Support Engineer,System Integration
+140103,Finance Manager,Business Acumen
+140103,HR Director,Business Acumen
+140103,IT Director,Business Acumen
+140103,Developer,Configuration Tracking
+140103,Support Engineer,Configuration Tracking
+140103,Account Manager,Sales Strategy
+140103,Consultancy Director,Sales Strategy
+140103,Sales Director,Sales Strategy
+140103,Solutioning Director,Sales Strategy
+140103,IT Analyst,Service Level Management
+140103,Support Engineer,Service Level Management
+140103,Call Centre,Technology Application
+140108,Account Manager,Business Development
+140108,Consultancy Director,Business Development
+140108,Consultant,Business Development
+140108,Sales Director,Business Development
+140108,Solutioning Director,Business Development
+140108,Sales Manager,Customer Acquisition Management
+140108,Finance  Executive,Financial Management
+140108,Finance Director,Financial Management
+140108,Finance Manager,Financial Management
+140108,Account Manager,Pricing Strategy
+140108,Sales Director,Pricing Strategy
+140108,Admin Executive,Technology Integration
+140108,HR Director,Technology Integration
+140108,IT Director,Technology Integration
+140108,Sales Manager,Technology Integration
+140115,Account Manager,Budgeting
+140115,Consultancy Director,Budgeting
+140115,Engineering Director,Budgeting
+140115,Sales Director,Budgeting
+140115,Sales Manager,Budgeting
+140115,Solutioning Director,Budgeting
+140115,Developer,Business Environment Analysis
+140115,Admin Executive,Customer Relationship Management
+140115,Call Centre,Customer Relationship Management
+140115,Sales Manager,Customer Relationship Management
+140115,Finance  Executive,Sense Making
+140115,Junior Engineer,Sense Making
+140115,Finance  Executive,Tax Implications
+140115,Finance Director,Tax Implications
+140115,Finance Manager,Tax Implications
+140115,Engineering Director,Technology Road Mapping
+140525,Finance Manager,Business Acumen
+140525,HR Director,Business Acumen
+140525,IT Director,Business Acumen
+140525,Account Manager,Business Needs Analysis
+140525,Consultancy Director,Business Needs Analysis
+140525,Consultant,Business Needs Analysis
+140525,Developer,Business Needs Analysis
+140525,IT Analyst,Business Needs Analysis
+140525,Sales Director,Business Needs Analysis
+140525,Solutioning Director,Business Needs Analysis
+140525,Support Engineer,Business Needs Analysis
+140525,Account Manager,Data Analytics
+140525,Consultancy Director,Data Analytics
+140525,Consultant,Data Analytics
+140525,Finance  Executive,Data Analytics
+140525,Finance Director,Data Analytics
+140525,Finance Manager,Data Analytics
+140525,Sales Director,Data Analytics
+140525,Solutioning Director,Data Analytics
+140525,Account Manager,Problem Solving
+140525,Admin Executive,Problem Solving
+140525,Call Centre,Problem Solving
+140525,Consultancy Director,Problem Solving
+140525,Consultant,Problem Solving
+140525,Developer,Problem Solving
+140525,Engineering Director,Problem Solving
+140525,Finance  Executive,Problem Solving
+140525,IT Analyst,Problem Solving
+140525,Junior Engineer,Problem Solving
+140525,L&D Executuve,Problem Solving
+140525,Ops Planning Exec,Problem Solving
+140525,Sales Director,Problem Solving
+140525,Sales Manager,Problem Solving
+140525,Senior Engineer,Problem Solving
+140525,Solutioning Director,Problem Solving
+140525,Support Engineer,Problem Solving
+140525,IT Analyst,Service Level Management
+140525,Support Engineer,Service Level Management
+140525,Call Centre,Technology Application
+150065,Developer,Applications Integration
+150065,IT Analyst,Infrastructure Support
+150065,Support Engineer,Infrastructure Support
+150065,IT Analyst,Network Administration and Maintenance
+150065,Support Engineer,Network Administration and Maintenance
+150065,Account Manager,Sales Strategy
+150065,Consultancy Director,Sales Strategy
+150065,Sales Director,Sales Strategy
+150065,Solutioning Director,Sales Strategy
+150065,Ops Planning Exec,SOP Development and Implementation
+150075,Developer,Applications Support and Enhancement
+150075,Account Manager,Collaboration
+150075,Admin Executive,Collaboration
+150075,Call Centre,Collaboration
+150075,Consultant,Collaboration
+150075,Developer,Collaboration
+150075,Finance  Executive,Collaboration
+150075,Finance Manager,Collaboration
+150075,HR Executive,Collaboration
+150075,IT Analyst,Collaboration
+150075,Junior Engineer,Collaboration
+150075,L&D Executuve,Collaboration
+150075,Ops Planning Exec,Collaboration
+150075,Sales Director,Collaboration
+150075,Sales Manager,Collaboration
+150075,Senior Engineer,Collaboration
+150075,Support Engineer,Collaboration
+150075,Support Engineer,Security Administration
+150076,Account Manager,Budgeting
+150076,Consultancy Director,Budgeting
+150076,Engineering Director,Budgeting
+150076,Sales Director,Budgeting
+150076,Sales Manager,Budgeting
+150076,Solutioning Director,Budgeting
+150076,Account Manager,Communication
+150076,Admin Executive,Communication
+150076,Call Centre,Communication
+150076,Consultancy Director,Communication
+150076,Consultant,Communication
+150076,Developer,Communication
+150076,Engineering Director,Communication
+150076,Finance  Executive,Communication
+150076,Finance Director,Communication
+150076,Finance Manager,Communication
+150076,HR Director,Communication
+150076,HR Executive,Communication
+150076,IT Analyst,Communication
+150076,IT Director,Communication
+150076,Junior Engineer,Communication
+150076,L&D Executuve,Communication
+150076,Ops Planning Exec,Communication
+150076,Sales Director,Communication
+150076,Sales Manager,Communication
+150076,Senior Engineer,Communication
+150076,Solutioning Director,Communication
+150076,Support Engineer,Communication
+150076,Finance  Executive,Sense Making
+150076,Junior Engineer,Sense Making
+150076,Developer,System Integration
+150076,Support Engineer,System Integration
+160008,Finance Manager,Business Acumen
+160008,HR Director,Business Acumen
+160008,IT Director,Business Acumen
+160008,Consultancy Director,People and Performance Management
+160008,Sales Director,People and Performance Management
+160008,Solutioning Director,People and Performance Management
+160008,Support Engineer,People and Performance Management
+160008,HR Director,Talent Management
+160065,HR Executive,Onboarding
+160065,HR Director,Skills Framework Adoption
+160065,HR Executive,Skills Framework Adoption
+160065,IT Director,Skills Framework Adoption
+160065,L&D Executuve,Skills Framework Adoption
+160065,Finance  Executive,Tax Computation
+160075,Admin Executive,Customer Relationship Management
+160075,Call Centre,Customer Relationship Management
+160075,Sales Manager,Customer Relationship Management
+160075,HR Director,Organisational Design
+160075,Finance  Executive,Sense Making
+160075,Junior Engineer,Sense Making
+170166,Account Manager,Collaboration
+170166,Admin Executive,Collaboration
+170166,Call Centre,Collaboration
+170166,Consultant,Collaboration
+170166,Developer,Collaboration
+170166,Finance  Executive,Collaboration
+170166,Finance Manager,Collaboration
+170166,HR Executive,Collaboration
+170166,IT Analyst,Collaboration
+170166,Junior Engineer,Collaboration
+170166,L&D Executuve,Collaboration
+170166,Ops Planning Exec,Collaboration
+170166,Sales Director,Collaboration
+170166,Sales Manager,Collaboration
+170166,Senior Engineer,Collaboration
+170166,Support Engineer,Collaboration
+170166,Finance Director,Finance Business Partnering
+170166,Finance Manager,Finance Business Partnering
+170166,Finance  Executive,Financial Management
+170166,Finance Director,Financial Management
+170166,Finance Manager,Financial Management
+170166,Finance  Executive,Tax Computation
+170208,Finance  Executive,Audit Compliance
+170208,Finance Director,Audit Compliance
+170208,Finance Manager,Audit Compliance
+170208,Developer,Business Risk Management
+170208,Account Manager,Communication
+170208,Admin Executive,Communication
+170208,Call Centre,Communication
+170208,Consultancy Director,Communication
+170208,Consultant,Communication
+170208,Developer,Communication
+170208,Engineering Director,Communication
+170208,Finance  Executive,Communication
+170208,Finance Director,Communication
+170208,Finance Manager,Communication
+170208,HR Director,Communication
+170208,HR Executive,Communication
+170208,IT Analyst,Communication
+170208,IT Director,Communication
+170208,Junior Engineer,Communication
+170208,L&D Executuve,Communication
+170208,Ops Planning Exec,Communication
+170208,Sales Director,Communication
+170208,Sales Manager,Communication
+170208,Senior Engineer,Communication
+170208,Solutioning Director,Communication
+170208,Support Engineer,Communication
+170208,HR Director,Financial Acumen
+170208,IT Director,Financial Acumen
+170208,Finance Director,Financial Planning
+170208,Finance Manager,Financial Planning
+170208,Finance  Executive,Sense Making
+170208,Junior Engineer,Sense Making
+170208,Finance  Executive,Tax Implications
+170208,Finance Director,Tax Implications
+170208,Finance Manager,Tax Implications
+170215,Finance Manager,Audit Frameworks
+170215,Finance  Executive,Financial Closing
+170215,Finance  Executive,Financial Reporting
+170215,Finance Director,Financial Reporting
+170215,Finance Manager,Financial Reporting
+170215,Consultancy Director,People and Performance Management
+170215,Sales Director,People and Performance Management
+170215,Solutioning Director,People and Performance Management
+170215,Support Engineer,People and Performance Management
+170215,Call Centre,Technology Application
+180001,Developer,Applications Support and Enhancement
+180001,Account Manager,Collaboration
+180001,Admin Executive,Collaboration
+180001,Call Centre,Collaboration
+180001,Consultant,Collaboration
+180001,Developer,Collaboration
+180001,Finance  Executive,Collaboration
+180001,Finance Manager,Collaboration
+180001,HR Executive,Collaboration
+180001,IT Analyst,Collaboration
+180001,Junior Engineer,Collaboration
+180001,L&D Executuve,Collaboration
+180001,Ops Planning Exec,Collaboration
+180001,Sales Director,Collaboration
+180001,Sales Manager,Collaboration
+180001,Senior Engineer,Collaboration
+180001,Support Engineer,Collaboration
+180001,Sales Manager,Customer Acquisition Management
+180001,Finance  Executive,Financial Management
+180001,Finance Director,Financial Management
+180001,Finance Manager,Financial Management
+180001,Finance Manager,Financial Statements Analysis
+180001,Account Manager,Pricing Strategy
+180001,Sales Director,Pricing Strategy
+180001,Support Engineer,Security Administration
+180001,HR Director,Skills Framework Adoption
+180001,HR Executive,Skills Framework Adoption
+180001,IT Director,Skills Framework Adoption
+180001,L&D Executuve,Skills Framework Adoption
+180001,Finance  Executive,Tax Computation
+180002,Finance  Executive,Audit Compliance
+180002,Finance Director,Audit Compliance
+180002,Finance Manager,Audit Compliance
+180002,Account Manager,Budgeting
+180002,Consultancy Director,Budgeting
+180002,Engineering Director,Budgeting
+180002,Sales Director,Budgeting
+180002,Sales Manager,Budgeting
+180002,Solutioning Director,Budgeting
+180002,Account Manager,Communication
+180002,Admin Executive,Communication
+180002,Call Centre,Communication
+180002,Consultancy Director,Communication
+180002,Consultant,Communication
+180002,Developer,Communication
+180002,Engineering Director,Communication
+180002,Finance  Executive,Communication
+180002,Finance Director,Communication
+180002,Finance Manager,Communication
+180002,HR Director,Communication
+180002,HR Executive,Communication
+180002,IT Analyst,Communication
+180002,IT Director,Communication
+180002,Junior Engineer,Communication
+180002,L&D Executuve,Communication
+180002,Ops Planning Exec,Communication
+180002,Sales Director,Communication
+180002,Sales Manager,Communication
+180002,Senior Engineer,Communication
+180002,Solutioning Director,Communication
+180002,Support Engineer,Communication
+180002,Admin Executive,Customer Relationship Management
+180002,Call Centre,Customer Relationship Management
+180002,Sales Manager,Customer Relationship Management
+180002,Consultancy Director,Problem Management
+180002,Consultant,Problem Management
+180002,Developer,Problem Management
+180002,Solutioning Director,Problem Management
+180002,Support Engineer,Problem Management
+180002,Finance  Executive,Sense Making
+180002,Junior Engineer,Sense Making
+180002,Developer,Software Configuration
+180002,Finance  Executive,Tax Implications
+180002,Finance Director,Tax Implications
+180002,Finance Manager,Tax Implications
+180003,Finance Manager,Business Acumen
+180003,HR Director,Business Acumen
+180003,IT Director,Business Acumen
+180003,Developer,Configuration Tracking
+180003,Support Engineer,Configuration Tracking
+180003,Account Manager,Data Analytics
+180003,Consultancy Director,Data Analytics
+180003,Consultant,Data Analytics
+180003,Finance  Executive,Data Analytics
+180003,Finance Director,Data Analytics
+180003,Finance Manager,Data Analytics
+180003,Sales Director,Data Analytics
+180003,Solutioning Director,Data Analytics
+180003,HR Director,Human Resource Advisory
+180003,IT Director,Human Resource Advisory
+180003,Account Manager,Problem Solving
+180003,Admin Executive,Problem Solving
+180003,Call Centre,Problem Solving
+180003,Consultancy Director,Problem Solving
+180003,Consultant,Problem Solving
+180003,Developer,Problem Solving
+180003,Engineering Director,Problem Solving
+180003,Finance  Executive,Problem Solving
+180003,IT Analyst,Problem Solving
+180003,Junior Engineer,Problem Solving
+180003,L&D Executuve,Problem Solving
+180003,Ops Planning Exec,Problem Solving
+180003,Sales Director,Problem Solving
+180003,Sales Manager,Problem Solving
+180003,Senior Engineer,Problem Solving
+180003,Solutioning Director,Problem Solving
+180003,Support Engineer,Problem Solving
+180003,IT Analyst,Service Level Management
+180003,Support Engineer,Service Level Management
+180003,Developer,Software Design
+180003,Call Centre,Technology Application
+190001,Account Manager,Business Development
+190001,Consultancy Director,Business Development
+190001,Consultant,Business Development
+190001,Sales Director,Business Development
+190001,Solutioning Director,Business Development
+190001,Support Engineer,Security Administration
+190001,Admin Executive,Technology Integration
+190001,HR Director,Technology Integration
+190001,IT Director,Technology Integration
+190001,Sales Manager,Technology Integration
+190003,Developer,Business Environment Analysis
+190003,Admin Executive,Customer Relationship Management
+190003,Call Centre,Customer Relationship Management
+190003,Sales Manager,Customer Relationship Management
+190003,Consultancy Director,Problem Management
+190003,Consultant,Problem Management
+190003,Developer,Problem Management
+190003,Solutioning Director,Problem Management
+190003,Support Engineer,Problem Management
+190003,Finance  Executive,Sense Making
+190003,Junior Engineer,Sense Making
+190003,Developer,Software Configuration
+190004,Finance Manager,Business Acumen
+190004,HR Director,Business Acumen
+190004,IT Director,Business Acumen
+190004,Account Manager,Business Needs Analysis
+190004,Consultancy Director,Business Needs Analysis
+190004,Consultant,Business Needs Analysis
+190004,Developer,Business Needs Analysis
+190004,IT Analyst,Business Needs Analysis
+190004,Sales Director,Business Needs Analysis
+190004,Solutioning Director,Business Needs Analysis
+190004,Support Engineer,Business Needs Analysis
+190004,Account Manager,Data Analytics
+190004,Consultancy Director,Data Analytics
+190004,Consultant,Data Analytics
+190004,Finance  Executive,Data Analytics
+190004,Finance Director,Data Analytics
+190004,Finance Manager,Data Analytics
+190004,Sales Director,Data Analytics
+190004,Solutioning Director,Data Analytics
+190004,Account Manager,Problem Solving
+190004,Admin Executive,Problem Solving
+190004,Call Centre,Problem Solving
+190004,Consultancy Director,Problem Solving
+190004,Consultant,Problem Solving
+190004,Developer,Problem Solving
+190004,Engineering Director,Problem Solving
+190004,Finance  Executive,Problem Solving
+190004,IT Analyst,Problem Solving
+190004,Junior Engineer,Problem Solving
+190004,L&D Executuve,Problem Solving
+190004,Ops Planning Exec,Problem Solving
+190004,Sales Director,Problem Solving
+190004,Sales Manager,Problem Solving
+190004,Senior Engineer,Problem Solving
+190004,Solutioning Director,Problem Solving
+190004,Support Engineer,Problem Solving
+190004,IT Analyst,Service Level Management
+190004,Support Engineer,Service Level Management
+190004,Call Centre,Technology Application
+190004,Developer,User Interface Design
+210001,Finance Manager,Business Acumen
+210001,HR Director,Business Acumen
+210001,IT Director,Business Acumen
+210001,Developer,Configuration Tracking
+210001,Support Engineer,Configuration Tracking
+210001,Account Manager,Data Analytics
+210001,Consultancy Director,Data Analytics
+210001,Consultant,Data Analytics
+210001,Finance  Executive,Data Analytics
+210001,Finance Director,Data Analytics
+210001,Finance Manager,Data Analytics
+210001,Sales Director,Data Analytics
+210001,Solutioning Director,Data Analytics
+210001,Call Centre,Technology Application
+210017,Developer,Database Administration
+210017,Support Engineer,Security Administration
+210017,Admin Executive,Technology Integration
+210017,HR Director,Technology Integration
+210017,IT Director,Technology Integration
+210017,Sales Manager,Technology Integration
+210018,Developer,Business Environment Analysis
+210018,Admin Executive,Customer Relationship Management
+210018,Call Centre,Customer Relationship Management
+210018,Sales Manager,Customer Relationship Management
+210018,Consultancy Director,Problem Management
+210018,Consultant,Problem Management
+210018,Developer,Problem Management
+210018,Solutioning Director,Problem Management
+210018,Support Engineer,Problem Management
+210018,Finance  Executive,Sense Making
+210018,Junior Engineer,Sense Making
+210018,Developer,Software Configuration
