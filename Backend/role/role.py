@@ -23,6 +23,7 @@ def viewRoles():
         for role in roles:
             temp_role = role.json()
             temp_role['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role.json()["hiring_manager_id"]}').json()
+            temp_role['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{temp_role["upd_hiring_manager_id"]}').json()
             processed_roles += [temp_role]
 
             # Return a JSON response with the list of roles
@@ -51,21 +52,112 @@ def getSkillsByRoleName(inputRoleID):
         return jsonify({"error": str(e)}), 500
 
 #search for role by name
-@role_routes.route('/API/v1/searchRole/<string:inputRoleName>')
-def getRolebyName(inputRoleName):
+@role_routes.route('/API/v1/searchRole', methods=['POST'])
+def getRolebyName():
     try:
-        inputRoleName = "%{}%".format(inputRoleName)
+        resp = request.get_json()
+        inputSkillsLst = []
+        inputRoleName = "%{}%".format("")
 
-        subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
-        query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
-        role_search_results = query.filter(Role.role_name(inputRoleName)).all()
+        if "skills" in resp:
+            if resp['skills'] != []:
+                inputSkillsLst = resp['skills']
+        
+        if "search" in resp:
+            if resp['search'] != "":
+                inputRoleName = "%{}%".format(resp['search'])
 
-        if not role_search_results:
+        subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+        query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
+        
+        if len(inputSkillsLst) > 0:
+            skills = query.filter(RoleListingSkills.skills.in_(inputSkillsLst)).all()
+        
+            skills_match = {}
+
+            # Process skills match
+            for skill in skills:    
+                if skill.json()['role_id'] not in skills_match:
+                    skills_match[skill.json()['role_id']] = [skill.json()['skill_name']]
+                else:
+                    skills_match[skill.json()['role_id']] += [skill.json()['skill_name']]
+
+            # given skills_match dict where i have skills_matched, sort is descending order
+            skills_match_desc = dict(sorted(skills_match.items(), key=lambda item: len(item[1]), reverse=True))
+            output_processed = []
+            for r_id in skills_match_desc:
+
+                subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+                query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+                role = query.filter(Role.role_id == r_id, Role.role_name.like(inputRoleName)).all()
+                if len(role) == 1:
+                    role = role[0]
+                    role_json = role.json()
+                    role_json['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["hiring_manager_id"]}').json()
+                    role_json['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["upd_hiring_manager_id"]}').json()
+                    role_json['skills_matched'] = skills_match_desc[r_id]
+                    role_json['skills_matched_count'] = len(skills_match_desc[r_id])
+
+                    output_processed += [role_json]
+        else:
+            subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+            query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+            roles = query.filter(Role.role_name.like(inputRoleName)).all()
+
+            output_processed = []
+            
+            # for each role found
+            for role in roles:
+                temp_role = role.json()
+                temp_role['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role.json()["hiring_manager_id"]}').json()
+                temp_role['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{temp_role["upd_hiring_manager_id"]}').json()
+                output_processed += [temp_role]
+
+        if not output_processed:
             return jsonify({"error": "No role found with search criteria"}), 200
 
-        return jsonify([role.json() for role in role_search_results]), 200
+        return jsonify(output_processed), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@role_routes.route('/API/v1/role/filter', methods=['POST'])
+def getFilter():
+
+    inputSkillsLst = request.get_json()['skills']
+    
+    try:
+        subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+        query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
+        skills = query.filter(RoleListingSkills.skills.in_(inputSkillsLst)).all()
+        
+        skills_match = {}
+
+        # Process skills match
+        for skill in skills:    
+            if skill.json()['role_id'] not in skills_match:
+                skills_match[skill.json()['role_id']] = [skill.json()['skill_name']]
+            else:
+                skills_match[skill.json()['role_id']] += [skill.json()['skill_name']]
+        # given skills_match dict where i have skills_matched, sort is descending order
+        skills_match_desc = dict(sorted(skills_match.items(), key=lambda item: len(item[1]), reverse=True))
+        output_processed = []
+        for r_id in skills_match_desc:
+
+            subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+            query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+            role = query.filter(Role.role_id == r_id).all()[0]
+
+            role_json = role.json()
+            role_json['skills_matched'] = skills_match_desc[r_id]
+            role_json['skills_matched_count'] = len(skills_match_desc[r_id])
+
+            output_processed += [role_json]
+
+        return jsonify(output_processed), 200
+    except Exception as e:
+
+        return f"Error: {str(e)}", 500
+
     
 @role_routes.route('/API/v1/searchAllRoleVer/<string:inputRoleId>')
 def getAllRoleVer(inputRoleId):
@@ -345,3 +437,4 @@ def getSkills():
     except Exception as e:
 
         return f"Error inserting data: {str(e)}", 500
+
