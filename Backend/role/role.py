@@ -23,6 +23,7 @@ def viewRoles():
         for role in roles:
             temp_role = role.json()
             temp_role['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role.json()["hiring_manager_id"]}').json()
+            temp_role['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{temp_role["upd_hiring_manager_id"]}').json()
             processed_roles += [temp_role]
 
             # Return a JSON response with the list of roles
@@ -91,6 +92,7 @@ def getRolebyName():
                     role = role[0]
                     role_json = role.json()
                     role_json['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["hiring_manager_id"]}').json()
+                    role_json['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["upd_hiring_manager_id"]}').json()
                     role_json['skills_matched'] = skills_match_desc[r_id]
                     role_json['skills_matched_count'] = len(skills_match_desc[r_id])
 
