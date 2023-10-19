@@ -80,7 +80,7 @@ def getRolebyName():
                 skills_match[skill.json()['role_id']] = [skill.json()['skill_name']]
             else:
                 skills_match[skill.json()['role_id']] += [skill.json()['skill_name']]
-                
+
         # given skills_match dict where i have skills_matched, sort is descending order
         skills_match_desc = dict(sorted(skills_match.items(), key=lambda item: len(item[1]), reverse=True))
         output_processed = []
@@ -92,6 +92,7 @@ def getRolebyName():
             if len(role) == 1:
                 role = role[0]
                 role_json = role.json()
+                role_json['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["hiring_manager_id"]}').json()
                 role_json['skills_matched'] = skills_match_desc[r_id]
                 role_json['skills_matched_count'] = len(skills_match_desc[r_id])
 
