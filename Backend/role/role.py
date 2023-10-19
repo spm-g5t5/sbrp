@@ -345,3 +345,41 @@ def getSkills():
     except Exception as e:
 
         return f"Error inserting data: {str(e)}", 500
+
+@role_routes.route('/API/v1/role/filter', methods=['POST'])
+def getFilter():
+
+    inputSkillsLst = request.get_json()['skills']
+    
+    try:
+        subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+        query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
+        skills = query.filter(RoleListingSkills.skills.in_(inputSkillsLst)).all()
+        
+        skills_match = {}
+
+        # Process skills match
+        for skill in skills:    
+            if skill.json()['role_id'] not in skills_match:
+                skills_match[skill.json()['role_id']] = [skill.json()['skill_name']]
+            else:
+                skills_match[skill.json()['role_id']] += [skill.json()['skill_name']]
+        # given skills_match dict where i have skills_matched, sort is descending order
+        skills_match_desc = dict(sorted(skills_match.items(), key=lambda item: len(item[1]), reverse=True))
+        output_processed = []
+        for r_id in skills_match_desc:
+
+            subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+            query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+            role = query.filter(Role.role_id == r_id).all()[0]
+
+            role_json = role.json()
+            role_json['skills_matched'] = skills_match_desc[r_id]
+            role_json['skills_matched_count'] = len(skills_match_desc[r_id])
+
+            output_processed += [role_json]
+
+        return jsonify(output_processed), 200
+    except Exception as e:
+
+        return f"Error: {str(e)}", 500
