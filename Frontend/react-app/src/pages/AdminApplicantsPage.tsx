@@ -99,20 +99,7 @@ const AdminApplicantsPage = () => {
                 <CardText>Current department: {item.applicant_existing_dept}</CardText>
                 <CardText>Current role: {item.applicant_existing_role}</CardText>
                 <Button onClick={() => onHandleSkills(item)} variant="primary">View Skills</Button>
-{/* 
-                <CardText>
-                    Role's needed skills: {item.role_skills.map((RoleSkill)=>(
-                        <Badge bg="primary">{RoleSkill.skill_name}</Badge>
-                    ))}
-                </CardText>
-                <CardText>Applicant's skills: {item.staff_skill.map((StaffSkill)=>(
-                    <Badge bg="success">{StaffSkill.skill_name}</Badge>
-                ))}
-                </CardText>
-                <CardText>Applicant's skills Match Percentage:
-                
-        
-                </CardText> */}
+
             </CardBody>
         
         </Card>
@@ -120,11 +107,6 @@ const AdminApplicantsPage = () => {
         
     )}
 
-    {showSkillModal && (
-    <Modal>
-        {roleSkillMatch}
-    </Modal>
-    )}
 
     {showSkillModal && (
             <Modal show={showSkillModal} onHide={handleDetailCloseModal}>
@@ -132,6 +114,7 @@ const AdminApplicantsPage = () => {
                 <Modal.Title></Modal.Title>
               </Modal.Header>
               <Modal.Body>
+
                 <p>
                     Role's needed skills: {currentItem!.role_skills.map((RoleSkill)=>(
                         <Badge bg="primary">{RoleSkill.skill_name}</Badge>

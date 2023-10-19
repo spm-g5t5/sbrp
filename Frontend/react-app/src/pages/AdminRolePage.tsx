@@ -10,6 +10,7 @@ import {
   Badge,
   CardBody,
   CardFooter,
+  CardTitle,
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { BsFillXCircleFill } from "react-icons/bs";
@@ -38,35 +39,15 @@ const AdminRolePage = () => {
   );
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
   const [showApplicationModal, setApplicationShowModal] = useState(false);
-  const [showDetailModal, setDetailShowModal] = useState(false);
 
-  const [currentItem, setCurrentItem] = useState<{
-    role_id: number;
-    role_name: string;
-    department: string;
-    job_description: string;
-    expiry_dt: Date;
-    job_type: string;
-    original_creation_dt: Date;
-    // Add other properties as needed
-  } | null>(null);
 
-  const handleDetailCloseModal = () => setDetailShowModal(false);
 
-  const handleDetailShowModal = (item: {
-    role_id: number;
-    role_name: string;
-    department: string;
-    job_description: string;
-    expiry_dt: Date;
-    job_type: string;
-    original_creation_dt: Date;
-  }) => {
-    item.expiry_dt = new Date(item.expiry_dt);
-    item.original_creation_dt = new Date(item.original_creation_dt);
-    setCurrentItem(item);
-    setDetailShowModal(true);
-  };
+  const handleDetail = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem('RoleId', roleId);
+    navigate('/ApplicantDetailsPage');
+
+  }
 
   const currentDate = new Date();
 
@@ -121,7 +102,7 @@ const AdminRolePage = () => {
           <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
             <CardHeader className="d-flex justify-content-between">
               <div>
-                <h1>{item.role_name}</h1>
+                <CardTitle>{item.role_name}</CardTitle>    
                 {item.expiry_dt > currentDate ? (
                   <Badge bg="danger">Expired</Badge>
                 ) : (
@@ -143,7 +124,6 @@ const AdminRolePage = () => {
             </CardHeader>
             <CardBody>
               Department: {item.department}
-              <RoleSkills key={item.role_name.toString()} item={item} />
             </CardBody>
             <CardFooter>
               <Button
@@ -154,7 +134,7 @@ const AdminRolePage = () => {
               </Button>
               <Button
                 style={{ backgroundColor: "#266C73" }}
-                onClick={() => handleDetailShowModal(item)}
+                onClick={() => handleDetail(item)}
               >
                 More details
               </Button>
@@ -162,29 +142,6 @@ const AdminRolePage = () => {
           </Card>
         ))}
 
-      {showDetailModal && (
-        <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>{currentItem!.role_name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Application Close Date:{" "}
-            <p>{currentItem!.expiry_dt.toString()}</p>
-            Job Description:<p>{currentItem!.job_description}</p>
-            Job Type: <p>{currentItem!.job_type}</p>
-            Creation Date and time:
-            <p>{currentItem!.original_creation_dt.toString()}</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              style={{ backgroundColor: "#266C73" }}
-              onClick={handleDetailCloseModal}
-            >
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
 
       {showApplicationModal && (
         <Modal

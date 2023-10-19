@@ -119,16 +119,12 @@ const AdminSpecificApplicantsPage = () => {
 )}
 
 
- {showSkillModal && (
- <Modal>
-     {roleSkillMatch}
- </Modal>
- )}
+
 
  {showSkillModal && (
          <Modal show={showSkillModal} onHide={handleDetailCloseModal}>
            <Modal.Header closeButton>
-             <Modal.Title></Modal.Title>
+             <Modal.Title>Skills</Modal.Title>
            </Modal.Header>
            <Modal.Body>
              <p>
