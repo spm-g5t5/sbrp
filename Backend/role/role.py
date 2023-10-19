@@ -59,11 +59,13 @@ def getRolebyName():
         inputSkillsLst = []
         inputRoleName = "%{}%".format("")
 
-        if "skills" in resp and resp['skills'] != []:
-            inputSkillsLst = resp['skills']
+        if "skills" in resp:
+            if resp['skills'] != []:
+                inputSkillsLst = resp['skills']
         
-        if "search" in resp and resp['search'] != "":
-            inputRoleName = "%{}%".format(resp['search'])
+        if "search" in resp:
+            if resp['search'] != "":
+                inputRoleName = "%{}%".format(resp['search'])
 
         subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
         query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
@@ -100,7 +102,7 @@ def getRolebyName():
         else:
             subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
             query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
-            roles = query.all()
+            roles = query.filter(Role.role_name.like(inputRoleName)).all()
 
             output_processed = []
             
