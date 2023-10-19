@@ -108,11 +108,12 @@ def getRolebyName():
             for role in roles:
                 temp_role = role.json()
                 temp_role['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role.json()["hiring_manager_id"]}').json()
+                temp_role['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{temp_role["upd_hiring_manager_id"]}').json()
                 output_processed += [temp_role]
 
         if not output_processed:
             return jsonify({"error": "No role found with search criteria"}), 200
-        print(output_processed)
+
         return jsonify(output_processed), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
