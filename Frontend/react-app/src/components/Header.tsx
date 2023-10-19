@@ -4,12 +4,15 @@ import '../styles/Header.css';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   accessRights: number;
 }
 
-function Header({ accessRights }: HeaderProps) {
+
+const Header: React.FC<HeaderProps> = ({ accessRights }) => {
+  const navigate = useNavigate();
   return (
     <Navbar expand="lg" className="bgcolor">
       <Container>
@@ -31,8 +34,8 @@ function Header({ accessRights }: HeaderProps) {
           ) : (
             // Render different content when accessRights is not 1
             <Nav className="justify-content-end">
-              <Nav.Link href="#role-listing" className="text-white">Role Listing</Nav.Link>
-              <Nav.Link href="#applicants" className="text-white">Applicants</Nav.Link>
+              <Nav.Link onClick={() => navigate("/AdminRolePage")} className="text-white">Role Listing</Nav.Link>
+              <Nav.Link onClick={() => navigate("/AdminApplicantsPage")} className="text-white">Applicants</Nav.Link>
             </Nav>
           )}
         </Navbar.Collapse>

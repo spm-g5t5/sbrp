@@ -18,7 +18,7 @@ const AdminHomePage = () => {
   }, [accessRights, navigate]);
 
   return (
-    <div className="container center-vertically">
+    <div className="container-center-vertically">
       {accessRights === "3" ? (
         <div className="row">
           <div className="col-sm-3"></div>

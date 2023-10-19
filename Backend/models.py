@@ -74,7 +74,7 @@ class Role(db.Model):
     role_name = db.Column(db.String(20), nullable=False)
     job_type = db.Column(db.String(50), nullable=False)
     department = db.Column(db.String(50), nullable=False)
-    job_description = db.Column(db.String(50), nullable=False)
+    job_description = db.Column(db.Text, nullable=False)
     original_creation_dt = db.Column(db.DateTime, nullable=False)
     expiry_dt = db.Column(db.DateTime, nullable=False)
     hiring_manager_id = db.Column(db.Integer, nullable=False)

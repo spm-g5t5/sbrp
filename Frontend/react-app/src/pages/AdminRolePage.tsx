@@ -10,12 +10,14 @@ import {
   Badge,
   CardBody,
   CardFooter,
+  CardTitle,
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { BsFillXCircleFill } from "react-icons/bs";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate,Link } from "react-router-dom";
 
-const AdminRole = () => {
+const AdminRolePage = () => {
+  
   const [data, setData] = useState<
     {
       role_id: number;
@@ -31,38 +33,21 @@ const AdminRole = () => {
     }[]
   >([]);
   const navigate = useNavigate();
-  const accessRights = localStorage.getItem("AccessRights");
+  const accessRights = parseInt(
+    localStorage.getItem("AccessRights") || "0",
+    10
+  );
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
   const [showApplicationModal, setApplicationShowModal] = useState(false);
-  const [showDetailModal, setDetailShowModal] = useState(false);
 
-  const [currentItem, setCurrentItem] = useState<{
-    role_id: number;
-    role_name: string;
-    department: string;
-    job_description: string;
-    expiry_dt: Date;
-    job_type: string;
-    original_creation_dt: Date;
-    // Add other properties as needed
-  } | null>(null);
 
-  const handleDetailCloseModal = () => setDetailShowModal(false);
 
-  const handleDetailShowModal = (item: {
-    role_id: number;
-    role_name: string;
-    department: string;
-    job_description: string;
-    expiry_dt: Date;
-    job_type: string;
-    original_creation_dt: Date;
-  }) => {
-    item.expiry_dt = new Date(item.expiry_dt);
-    item.original_creation_dt = new Date(item.original_creation_dt);
-    setCurrentItem(item);
-    setDetailShowModal(true);
-  };
+  const handleDetail = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem('RoleId', roleId);
+    navigate('/ApplicantDetailsPage');
+
+  }
 
   const currentDate = new Date();
 
@@ -77,18 +62,12 @@ const AdminRole = () => {
       });
   }, []);
 
-  const handleViewApplications = (role_id: number) => {
-    setApplicationShowModal(true);
-    axios
-      .get(`http://127.0.0.1:5000/API/v1/viewApplicants/role/${role_id}`)
-      .then((response) => {
-        setApplications(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
+  const handleViewApplications = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem('RoleId', roleId);
+    navigate('/AdminSpecificApplicants');
+
+  }
 
   const handleRemoveRole = (item: { role_id: number }) => {
     axios
@@ -103,23 +82,27 @@ const AdminRole = () => {
       });
   };
 
+  const handleUpdateRole = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem('RoleId', roleId);
+    navigate('/UpdateRoleListingPage');
+
+  }
+
   return (
     <div>
       <Header accessRights={accessRights} />
       <SearchBar />
-      <Button
-            onClick={() => navigate("/AddJobPage")}
-            variant="success"
-          >
-            <span>Add Job</span>
-          </Button>
+      <Button onClick={() => navigate("/AddJobPage")} variant="success">
+        <span>Add Job</span>
+      </Button>
       {data
         .filter((item) => item.active_status == 1)
         .map((item) => (
           <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
             <CardHeader className="d-flex justify-content-between">
               <div>
-                <h1>{item.role_name}</h1>
+                <CardTitle>{item.role_name}</CardTitle>    
                 {item.expiry_dt > currentDate ? (
                   <Badge bg="danger">Expired</Badge>
                 ) : (
@@ -128,7 +111,7 @@ const AdminRole = () => {
               </div>
               <div className="d-flex">
                 <Button
-                  onClick={() => navigate("/UpdateRoleListingPage")}
+                  onClick={() => handleUpdateRole(item)}
                   variant="warning"
                 >
                   <span>Update</span>
@@ -141,18 +124,17 @@ const AdminRole = () => {
             </CardHeader>
             <CardBody>
               Department: {item.department}
-              <RoleSkills key={item.role_name.toString()} item={item} />
             </CardBody>
             <CardFooter>
               <Button
                 style={{ backgroundColor: "#266C73" }}
-                onClick={() => handleViewApplications(item.role_id)}
+                onClick={() => handleViewApplications(item)}
               >
                 View Applications
               </Button>
               <Button
                 style={{ backgroundColor: "#266C73" }}
-                onClick={() => handleDetailShowModal(item)}
+                onClick={() => handleDetail(item)}
               >
                 More details
               </Button>
@@ -160,29 +142,6 @@ const AdminRole = () => {
           </Card>
         ))}
 
-      {showDetailModal && (
-        <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>{currentItem!.role_name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Application Close Date:{" "}
-            <p>{currentItem!.expiry_dt.toLocaleDateString()}</p>
-            Job Description:<p>{currentItem!.job_description}</p>
-            Job Type: <p>{currentItem!.job_type}</p>
-            Creation Date and time:
-            <p>{currentItem!.original_creation_dt.toLocaleDateString()}</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              style={{ backgroundColor: "#266C73" }}
-              onClick={handleDetailCloseModal}
-            >
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
 
       {showApplicationModal && (
         <Modal
@@ -212,4 +171,4 @@ const AdminRole = () => {
   );
 };
 
-export default AdminRole;
+export default AdminRolePage;
