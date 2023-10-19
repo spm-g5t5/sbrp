@@ -30,7 +30,32 @@ def viewRoles():
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
+    
+#get specific role for admin
+@role_routes.route('/API/v1/viewRoles/<int:id>')
+def viewRolesById(id): 
+    try:
+        subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+        query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+        roles = query.filter_by(role_id=id).all()
 
+        processed_roles = []
+        if not roles:
+            # If there are no roles found, return a 200 Not Found status
+            return jsonify({"error": "No roles found"}), 200
+        
+        # for each role found
+        for role in roles:
+            temp_role = role.json()
+            temp_role['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role.json()["hiring_manager_id"]}').json()
+            processed_roles += [temp_role]
+
+            # Return a JSON response with the list of roles
+        return jsonify(processed_roles), 200
+    except Exception as e:
+        # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
+        return jsonify({"error": str(e)}), 500
+    
 #get skills needed for a specific role
 @role_routes.route('/API/v1/viewRoles/skill/<string:inputRoleID>')
 def getSkillsByRoleName(inputRoleID):

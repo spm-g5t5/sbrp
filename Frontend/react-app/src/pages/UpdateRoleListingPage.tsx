@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Outlet, useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
+import RoleSkills from "../components/RoleSkills";
 
 
 const UpdateRoleListingPage = () => {
@@ -34,23 +35,32 @@ const UpdateRoleListingPage = () => {
     }
   }, [accessRights, navigate]);
 
-  // useEffect(() => {
-  // axios
-  // // to call backend api viewRole/role/${roleId}
-  //     .get(`http://127.0.0.1:5000/API/v1/viewApplicants/role/${roleId}`)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data:", error);
-  //     });
-  // }, []);
+  useEffect(() => {
+  axios
+  // to call backend api viewRole/role/${roleId}
+      .get(`http://127.0.0.1:5000/API/v1/viewRoles/${roleId}`)
+      .then((response) => {
+        console.log(response.data);
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
 
   return (
     <div>
-      update
+      <Header accessRights={accessRights} />
+      {data.map((item) => (
+        <div key={item.role_id.toString()}>
+          <div> {item.role_name} </div>
+          <div> {item.job_description} </div>
+          <div> {item.expiry_dt.toString()} </div>
+          <div> {item.original_creation_dt.toString()} </div>
+          <RoleSkills key={item.role_name.toString()} item={item} />
+        </div>
+      ))}
     </div>
   );
 }

@@ -169,11 +169,11 @@ const AdminRolePage = () => {
           </Modal.Header>
           <Modal.Body>
             Application Close Date:{" "}
-            <p>{currentItem!.expiry_dt.toLocaleDateString()}</p>
+            <p>{currentItem!.expiry_dt.toString()}</p>
             Job Description:<p>{currentItem!.job_description}</p>
             Job Type: <p>{currentItem!.job_type}</p>
             Creation Date and time:
-            <p>{currentItem!.original_creation_dt.toLocaleDateString()}</p>
+            <p>{currentItem!.original_creation_dt.toString()}</p>
           </Modal.Body>
           <Modal.Footer>
             <Button
