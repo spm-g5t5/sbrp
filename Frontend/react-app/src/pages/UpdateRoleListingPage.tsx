@@ -9,16 +9,38 @@ const UpdateRoleListingPage = () => {
     10
   );
   const roleId = parseInt(localStorage.getItem("RoleId") || "0", 10);
+  const staffId = localStorage.getItem("StaffId") || "";
+
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  interface FormData {
+    role_name: string;
+    job_type: string;
+    department: string;
+    job_description: string;
+    expiry_dt: string;
+    role_listing_skills: (string | number)[][];
+    hiring_manager_id: any;
+    orig_role_listing: {};
+    active_status: number;
+  }
+
+  const [formData, setFormData] = useState<FormData>({
     role_name: "",
-    department: "",
     job_type: "",
+    department: "",
     job_description: "",
     expiry_dt: "",
-    role_skills: [{ skillName: "", proficiency: 1 }], // Initialize with an empty array or pre-populate it as needed
+    role_listing_skills: [[ "", 1]],
+    hiring_manager_id: staffId,
+    orig_role_listing:{},
+    active_status: 1
   });
+
+
+  const [expiry_date, setExpiryDate] = useState("");
+
+  const [expiry_time, setExpiryTime] = useState("");
 
   useEffect(() => {
     if (accessRights !== 3) {
@@ -35,14 +57,15 @@ const UpdateRoleListingPage = () => {
           // Get the last object in the array
           const lastObject = data[data.length - 1];
           const roleData = lastObject.role;
-          setFormData({
-            role_name: roleData.role_name,
-            department: roleData.department,
-            job_type: roleData.job_type,
-            job_description: roleData.job_description,
-            expiry_dt: roleData.expiry_dt,
-            role_skills: [], // Initialize with an empty array or pre-populate it as needed
-          });
+          console.log(lastObject)
+          // setFormData({
+          //   role_name: roleData.role_name,
+          //   department: roleData.department,
+          //   job_type: roleData.job_type,
+          //   job_description: roleData.job_description,
+          //   expiry_dt: roleData.expiry_dt,
+          //   role_listing_skills: [], // Initialize with an empty array or pre-populate it as needed
+          // });
         }
       })
       .catch((error) => {
@@ -50,12 +73,37 @@ const UpdateRoleListingPage = () => {
       });
   }, [roleId]);
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
+  const handleInputChange = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = event.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
+  };
+
+  const handleInputChangeDate = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = event.target;
+
+    setExpiryDate(value); // Update the expiry_date state with the input date
+  };
+
+  const handleInputChangeTime = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = event.target;
+
+    setExpiryTime(value); // Update the expiry_time state with the input time
   };
 
   const handleSkillChange = (
@@ -65,19 +113,22 @@ const UpdateRoleListingPage = () => {
     const { name, value } = event.target;
 
     setFormData((prevData) => {
-      const updatedSkills = prevData.role_skills.map((skill, i) => {
+      const updatedSkills = prevData.role_listing_skills.map((skill, i) => {
         if (i === index) {
-          return {
-            ...skill,
-            [name]: name === "proficiency" ? parseInt(value) : value,
-          };
+          if (name === "skillName") {
+            // Update skillName at role_listing_skills[index][0]
+            return [value, skill[1]];
+          } else if (name === "proficiency") {
+            // Update proficiency at role_listing_skills[index][1]
+            return [skill[0], parseInt(value, 10)];
+          }
         }
         return skill;
       });
 
       return {
         ...prevData,
-        role_skills: updatedSkills,
+        role_listing_skills: updatedSkills,
       };
     });
   };
@@ -85,7 +136,7 @@ const UpdateRoleListingPage = () => {
   const addSkill = () => {
     setFormData((prevData) => ({
       ...prevData,
-      role_skills: [...prevData.role_skills, { skillName: "", proficiency: 1 }],
+      role_listing_skills: [...prevData.role_listing_skills, [ "", 1 ]],
     }));
   };
 
@@ -102,6 +153,7 @@ const UpdateRoleListingPage = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
+
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -137,7 +189,7 @@ const UpdateRoleListingPage = () => {
       .catch((error) => {
         console.error("Error logging in:", error);
       });
-    // navigate("/AdminRole");
+    navigate("/AdminRole");
   };
 
   return (
@@ -201,15 +253,28 @@ const UpdateRoleListingPage = () => {
             <input
               className="inputaddrole"
               type="date"
-              name="expiry_dt"
-              value={formData.expiry_dt}
-              onChange={handleInputChange}
+              name="expiry_date"
+              value={expiry_date}
+              onChange={handleInputChangeDate}
+              required // Add the required attribute
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="label">Expiry Time:</label>
+            <input
+              className="inputaddrole"
+              type="time"
+              name="expiry_time"
+              value={expiry_time}
+              onChange={handleInputChangeTime}
+              required // Add the required attribute
             />
           </div>
 
           <div className="form-group">
             <div className="skill-section">
-              {formData.role_skills.map((skill, index) => (
+              {formData.role_listing_skills.map((skill, index) => (
                 <div key={index} className="skill-card">
                   <div className="skill-row">
                     <label className="label-skill">Skills:</label>
