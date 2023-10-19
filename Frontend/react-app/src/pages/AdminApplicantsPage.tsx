@@ -39,18 +39,25 @@ interface Applicant {
   }
 
 const AdminApplicantsPage = () => {
-  
+    const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
     const [showSkillModal, setSkillShowModal] = useState(false);
     const [data, setData] = useState<Applicant[]>([]);
-    const [roleSkillMatch, setRoleSkillMatch] = useState()
+    const [roleSkillMatch, setRoleSkillMatch] = useState<RoleSkillMatch[]>([]);
     const [currentItem, setCurrentItem] = useState<Applicant | null>(null);
+    const [isArrayEmpty, setIsArrayEmpty] = useState(false);
     
     const handleDetailCloseModal = () => setSkillShowModal(false);
 
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/API/v1/viewApplicants')
           .then((response) => {
-            setData(response.data);
+            if (Array.isArray(response.data)) {
+              setData(response.data);
+              
+            } else {
+              console.log("Response data is not an array.");
+              setIsArrayEmpty(true)
+            }
 
           })
           .catch((error) => {
@@ -77,8 +84,11 @@ const AdminApplicantsPage = () => {
 
   return (
     <div>
-       <Header />
-       {data.map((item) => (
+       <Header accessRights={accessRights}/>
+       {isArrayEmpty ? ( // Check if the data array is empty
+        <p>No applicants</p> // Display "No applicants" if the array is empty
+      ) : (
+       data.map((item) => (
         <Card style={{ margin: '30px' }} key={item.application_id.toString()}>
             <CardHeader>
                 <Card.Title>Application no.{item.application_id}</Card.Title>
@@ -108,7 +118,7 @@ const AdminApplicantsPage = () => {
         </Card>
        ))
         
-    }
+    )}
 
     {showSkillModal && (
     <Modal>
