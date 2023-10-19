@@ -88,7 +88,7 @@ const ApplicantDetailsPage = () => {
   
             <div className="form-group">
               <label className="label">Job Description:</label>
-              <textarea className="inputaddrole-textarea">{data[0].job_description}</textarea>
+              <textarea readOnly={true} className="inputaddrole-textarea">{data[0].job_description}</textarea>
             </div>
   
             <div className="form-group">
