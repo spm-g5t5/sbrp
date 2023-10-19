@@ -38,18 +38,26 @@ interface Applicant {
     // Add other properties as needed
   }
 
-const AdminApplicants = () => {
+const AdminApplicantsPage = () => {
+    const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
     const [showSkillModal, setSkillShowModal] = useState(false);
     const [data, setData] = useState<Applicant[]>([]);
-    const [roleSkillMatch, setRoleSkillMatch] = useState()
+    const [roleSkillMatch, setRoleSkillMatch] = useState<RoleSkillMatch[]>([]);
     const [currentItem, setCurrentItem] = useState<Applicant | null>(null);
+    const [isArrayEmpty, setIsArrayEmpty] = useState(false);
     
     const handleDetailCloseModal = () => setSkillShowModal(false);
 
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/API/v1/viewApplicants')
           .then((response) => {
-            setData(response.data);
+            if (Array.isArray(response.data)) {
+              setData(response.data);
+              
+            } else {
+              console.log("Response data is not an array.");
+              setIsArrayEmpty(true)
+            }
 
           })
           .catch((error) => {
@@ -76,8 +84,11 @@ const AdminApplicants = () => {
 
   return (
     <div>
-       <Header />
-       {data.map((item) => (
+       <Header accessRights={accessRights}/>
+       {isArrayEmpty ? ( // Check if the data array is empty
+        <p>No applicants</p> // Display "No applicants" if the array is empty
+      ) : (
+       data.map((item) => (
         <Card style={{ margin: '30px' }} key={item.application_id.toString()}>
             <CardHeader>
                 <Card.Title>Application no.{item.application_id}</Card.Title>
@@ -88,32 +99,14 @@ const AdminApplicants = () => {
                 <CardText>Current department: {item.applicant_existing_dept}</CardText>
                 <CardText>Current role: {item.applicant_existing_role}</CardText>
                 <Button onClick={() => onHandleSkills(item)} variant="primary">View Skills</Button>
-{/* 
-                <CardText>
-                    Role's needed skills: {item.role_skills.map((RoleSkill)=>(
-                        <Badge bg="primary">{RoleSkill.skill_name}</Badge>
-                    ))}
-                </CardText>
-                <CardText>Applicant's skills: {item.staff_skill.map((StaffSkill)=>(
-                    <Badge bg="success">{StaffSkill.skill_name}</Badge>
-                ))}
-                </CardText>
-                <CardText>Applicant's skills Match Percentage:
-                
-        
-                </CardText> */}
+
             </CardBody>
         
         </Card>
        ))
         
-    }
-
-    {showSkillModal && (
-    <Modal>
-        {roleSkillMatch}
-    </Modal>
     )}
+
 
     {showSkillModal && (
             <Modal show={showSkillModal} onHide={handleDetailCloseModal}>
@@ -121,6 +114,7 @@ const AdminApplicants = () => {
                 <Modal.Title></Modal.Title>
               </Modal.Header>
               <Modal.Body>
+
                 <p>
                     Role's needed skills: {currentItem!.role_skills.map((RoleSkill)=>(
                         <Badge bg="primary">{RoleSkill.skill_name}</Badge>
@@ -151,4 +145,4 @@ const AdminApplicants = () => {
   );
 };
 
-export default AdminApplicants;
+export default AdminApplicantsPage;
