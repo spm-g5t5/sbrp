@@ -1,0 +1,10 @@
+.multiselect {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 50vh;
+    padding-top: 20px;
+  }
+  
