@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Context from './Context';
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -87,7 +88,8 @@ const Chip = styled.span`
 const MultiSelect: React.FC<MultiSelectProps> = ({
   raised = true,
   items,
-  placeholder = "Select an Item"
+  placeholder = "Select an Item",
+  sendDataToFilter
 }) => {
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [opened, setIsOpened] = useState(false);
@@ -127,6 +129,11 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     // console.log("on dropdown clicked called");
     setSelectedItems([...selectedItems, newItem]);
   };
+
+  useEffect(() => {
+    // <Context.Provider value={selectedItems}></Context.Provider>
+    sendDataToFilter(selectedItems);
+  }, [selectedItems])
 
 //   console.log(
 //     "selctedItems--",

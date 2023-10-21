@@ -4,10 +4,10 @@ import { useState } from 'react';
 import MultiSelect from './Multiselect'
 
 interface FilterProps {
-    
-}
+    sendDataToApplicant: (data: any) => void; // Define the function signature
+  }
 
-const Filter: React.FC<FilterProps> = (props) => {
+const Filter: React.FC<FilterProps> = ({ sendDataToApplicant }) => {
     
     const [allSKills, setAllSkills] = useState<object[]>([]); // Initialize as an empty array
 
@@ -32,10 +32,15 @@ const Filter: React.FC<FilterProps> = (props) => {
 
     const items = arrayToObjects(allSKills)
 
+
+    const handleDataFromMulti = (data: any) => {
+        sendDataToApplicant(data);
+    }
+
     return (
     <div className="multiselect">
         <h5>Filter by skill</h5>
-        <MultiSelect items={items} placeholder="Select a Skill" />
+        <MultiSelect sendDataToFilter={handleDataFromMulti} items={items} placeholder="Select a Skill" />
     </div>
     );
 };
