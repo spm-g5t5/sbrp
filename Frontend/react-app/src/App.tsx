@@ -17,7 +17,6 @@ import AdminApplicantsPage from "./pages/AdminApplicantsPage";
 import AdminRolePage from  './pages/AdminRolePage'; 
 import UpdateRoleListingPage from  './pages/UpdateRoleListingPage'; 
 import AddJobPage from  './pages/AddJobPage';
-// import ApplicantPage from "./pages/ApplicantPage"; 
 import AdminSpecificApplicantsPage from "./pages/AdminSpecificApplicantsPage";
 import ApplicantDetailsPage from "./pages/ApplicantDetailsPage";
 
