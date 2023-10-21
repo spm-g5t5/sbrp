@@ -57,7 +57,7 @@ mySQLCursor.execute(sqlDropUser)
 createUser(mySQLCursor, DB_USER, DB_PASSWORD)
 
 # Grant privileges
-sqlUpdatePermissions = f"GRANT SELECT, INSERT ON {DB_SCHEMA}.* TO '{DB_USER}'@'{DB_HOST}';"
+sqlUpdatePermissions = f"GRANT SELECT, INSERT, UPDATE ON {DB_SCHEMA}.* TO '{DB_USER}'@'{DB_HOST}';"
 mySQLCursor.execute(sqlUpdatePermissions)
 mySQLConnection.close()
 
