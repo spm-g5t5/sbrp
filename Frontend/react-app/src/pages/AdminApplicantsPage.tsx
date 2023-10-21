@@ -7,7 +7,6 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Filter from '../components/Filter';
-import Context from '../components/Context';
 
 interface Applicant {
     application_id: number;

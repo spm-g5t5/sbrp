@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import Context from './Context';
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
