@@ -5,7 +5,7 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
-import { CardBody, CardHeader, CardSubtitle, CardText, Container } from 'react-bootstrap';
+import { CardBody, CardHeader, CardSubtitle, CardText, ProgressBar } from 'react-bootstrap';
 
 interface Applicant {
   application_id: number;
@@ -138,7 +138,8 @@ const AdminSpecificApplicantsPage = () => {
              ))}
              </p>
              <p>
-             Applicant's skills Match Percentage: {roleSkillMatch}%
+             Applicant's skills Match Percentage: 
+             <ProgressBar now={roleSkillMatch} label={`${roleSkillMatch}%`} />
              </p>
              
            </Modal.Body>
