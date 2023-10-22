@@ -89,7 +89,6 @@ const AdminSpecificApplicantsPage = () => {
     })
     .then((response) => {
         setRoleSkillMatch(response.data.skill_match_pct);
-        console.log(response.data.skill_match_pct);
     })
     .catch((error) => {
         console.error('Error fetching data:', error);
