@@ -14,7 +14,7 @@ def getSkillsByRoleName():
         
         # Query staff skills
         staff_skills = StaffSkill.query.filter(StaffSkill.staff_id == input_staff_id).all()
-        staff_skills = StaffSkill.query.all()
+
         # Query role skills
         subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
         query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
