@@ -19,6 +19,7 @@
     justify-content: space-between;
     width: 80%;
     margin-bottom: 20px;
+    
   }
   
   .label {
@@ -59,6 +60,7 @@
     border-radius: 10px;
     font-size: 1rem;
     cursor: pointer;
+    margin: 10px;
 }
 
 .submitaddskill {
