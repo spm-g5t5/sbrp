@@ -149,7 +149,7 @@ def getRolebyName():
                 role_json['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["upd_hiring_manager_id"]}').json()
 
                 output_processed += [role_json]
-        print(output_processed)
+        
         if len(inputDeptLst) > 0:
             to_remove = []
             for output in output_processed:
