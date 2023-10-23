@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -32,10 +31,10 @@ const UpdateRoleListingPage = () => {
     department: "",
     job_description: "",
     expiry_dt: "",
-    role_listing_skills: [[ "", 1]],
-    hiring_manager_id: staffId,
-    orig_role_listing:{},
-    active_status: 1
+    role_listing_skills: [["", 1]],
+    hiring_manager_id: "",
+    orig_role_listing: {},
+    active_status: 1,
   });
 
 
@@ -58,21 +57,50 @@ const UpdateRoleListingPage = () => {
           // Get the last object in the array
           const lastObject = data[data.length - 1];
           const roleData = lastObject.role;
+          const roleSkill = lastObject.role_listing_skills;
           console.log(lastObject)
-          // setFormData({
-          //   role_name: roleData.role_name,
-          //   department: roleData.department,
-          //   job_type: roleData.job_type,
-          //   job_description: roleData.job_description,
-          //   expiry_dt: roleData.expiry_dt,
-          //   role_listing_skills: [], // Initialize with an empty array or pre-populate it as needed
-          // });
+          const formattedSkills = roleSkill.map((skill: any) => [
+            skill.skill_name,
+            skill.skills_proficiency,
+          ]);
+
+          // Parse the original expiry date string
+          const originalExpiryDate = new Date(roleData.expiry_dt);
+
+          // Format date as "yyyy-MM-dd"
+          const year = originalExpiryDate.getFullYear();
+          const month = String(originalExpiryDate.getMonth() + 1).padStart(2, '0');
+          const day = String(originalExpiryDate.getDate()).padStart(2, '0');
+          const formattedDate = `${year}-${month}-${day}`;
+  
+          // Format time as "HH:mm:ss"
+          const hours = String(originalExpiryDate.getHours()).padStart(2, '0');
+          const minutes = String(originalExpiryDate.getMinutes()).padStart(2, '0');
+          const formattedTime = `${hours}:${minutes}`;
+
+
+          setFormData({
+            role_name: roleData.role_name,
+            department: roleData.department,
+            job_type: roleData.job_type,
+            job_description: roleData.job_description,
+            expiry_dt: roleData.expiry_dt,
+            role_listing_skills: formattedSkills,
+            hiring_manager_id: staffId,
+            orig_role_listing: roleData,
+            active_status: 1,
+          });
+
+          setExpiryDate(formattedDate);
+          setExpiryTime(formattedTime);
+
         }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, [roleId]);
+
 
   const handleInputChange = (
     event: React.ChangeEvent<
@@ -137,7 +165,7 @@ const UpdateRoleListingPage = () => {
   const addSkill = () => {
     setFormData((prevData) => ({
       ...prevData,
-      role_listing_skills: [...prevData.role_listing_skills, [ "", 1 ]],
+      role_listing_skills: [...prevData.role_listing_skills, ["", 1]],
     }));
   };
 
@@ -154,7 +182,6 @@ const UpdateRoleListingPage = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
-
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -177,9 +204,7 @@ const UpdateRoleListingPage = () => {
     setFormData(updatedFormData);
 
     console.log(updatedFormData);
-    // You can send the form data to your server here.
 
-    // Now, formData.expiryDate will be "2023-10-26 23:59:59"
     axios
       .post("http://127.0.0.1:5000/API/v1/updateRole", updatedFormData)
       .then((response) => {
@@ -248,7 +273,6 @@ const UpdateRoleListingPage = () => {
               required
             />
           </div>
-
           <div className="form-group">
             <label className="label">Expiry Date:</label>
             <input
@@ -257,10 +281,9 @@ const UpdateRoleListingPage = () => {
               name="expiry_date"
               value={expiry_date}
               onChange={handleInputChangeDate}
-              required // Add the required attribute
+              required
             />
           </div>
-
           <div className="form-group">
             <label className="label">Expiry Time:</label>
             <input
@@ -269,7 +292,7 @@ const UpdateRoleListingPage = () => {
               name="expiry_time"
               value={expiry_time}
               onChange={handleInputChangeTime}
-              required // Add the required attribute
+              required
             />
           </div>
 
@@ -282,7 +305,7 @@ const UpdateRoleListingPage = () => {
                     <select
                       className="inputaddrole"
                       name="skillName"
-                      value={skill.skillName}
+                      value={skill[0]}
                       onChange={(event) => handleSkillChange(event, index)}
                     >
                       <option value="">Select Skill</option>
@@ -298,7 +321,7 @@ const UpdateRoleListingPage = () => {
                     <select
                       className="inputaddrole"
                       name="proficiency"
-                      value={skill.proficiency}
+                      value={skill[1]}
                       onChange={(event) => handleSkillChange(event, index)}
                     >
                       <option value={1}>Basic</option>
