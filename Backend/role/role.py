@@ -112,16 +112,15 @@ def getRolebyName():
             skills = query.filter(RoleListingSkills.skills.in_(inputSkillsLst)).all()
 
             totalSkillsMatch = len(inputSkillsLst)
-
-            # Process skills match
+            
             for skill in skills:    
                 if skill.json()['role_id'] not in skills_match:
                     skills_match[skill.json()['role_id']] = [skill.json()['skill_name']]
                 else:
                     skills_match[skill.json()['role_id']] += [skill.json()['skill_name']]
-            print(skills_match)
-            # given skills_match dict where i have skills_matched, sort is descending order
+
             output_processed = []
+
             for r_id in skills_match:
                 if len(skills_match[r_id]) == totalSkillsMatch:
                     subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
@@ -150,12 +149,22 @@ def getRolebyName():
                 role_json['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["upd_hiring_manager_id"]}').json()
 
                 output_processed += [role_json]
-
+        print(output_processed)
         if len(inputDeptLst) > 0:
-            inputDeptLst = [Role.department == dept for dept in inputDeptLst]
+            to_remove = []
+            for output in output_processed:
+                if output['department'] not in inputDeptLst:
+                    to_remove.append(output)
+            for remove in to_remove:
+                output_processed.remove(remove)
 
         if len(inputJobTypeLst) > 0:
-            inputJobTypeLst = [Role.job_type == jobtype for jobtype in inputJobTypeLst]
+            to_remove = []
+            for output in output_processed:
+                if output['job_type'] not in inputJobTypeLst:
+                    to_remove.append(output)
+            for remove in to_remove:
+                output_processed.remove(remove)
                         
         if not output_processed:
             return jsonify({"error": "No role found with search criteria"}), 200
