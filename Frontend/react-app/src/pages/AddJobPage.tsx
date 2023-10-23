@@ -159,7 +159,7 @@ const AddJobPage: React.FC = () => {
       .catch((error) => {
         console.error("Error logging in:", error);
       });
-    navigate("/AdminRole");
+    navigate("/AdminRolePage");
   };
 
   return (
@@ -292,7 +292,7 @@ const AddJobPage: React.FC = () => {
             <button
               className="submitaddrole"
               type="button"
-              onClick={() => navigate("/AdminRole")}
+              onClick={() => navigate("/AdminRolePage")}
               style={{ backgroundColor: "#F32013", color: "white" }}
             >
               Cancel
