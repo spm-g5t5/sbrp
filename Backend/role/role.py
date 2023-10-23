@@ -83,6 +83,19 @@ def getRolebyName():
         resp = request.get_json()
         inputSkillsLst = []
         inputRoleName = "%{}%".format("")
+        inputDeptLst = []
+        inputJobTypeLst = []
+        output_processed = []
+        roles = []
+        skills_match = {}
+
+        if "department" in resp:
+            if resp['department'] != []:
+                inputDeptLst = resp['department']
+        
+        if "jobtype" in resp:
+            if resp['jobtype'] != []:
+                inputJobTypeLst = resp['jobtype']
 
         if "skills" in resp:
             if resp['skills'] != []:
@@ -92,13 +105,13 @@ def getRolebyName():
             if resp['search'] != "":
                 inputRoleName = "%{}%".format(resp['search'])
 
-        subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
-        query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
         
         if len(inputSkillsLst) > 0:
+            subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+            query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
             skills = query.filter(RoleListingSkills.skills.in_(inputSkillsLst)).all()
-        
-            skills_match = {}
+
+            totalSkillsMatch = len(inputSkillsLst)
 
             # Process skills match
             for skill in skills:    
@@ -106,38 +119,44 @@ def getRolebyName():
                     skills_match[skill.json()['role_id']] = [skill.json()['skill_name']]
                 else:
                     skills_match[skill.json()['role_id']] += [skill.json()['skill_name']]
-
+            print(skills_match)
             # given skills_match dict where i have skills_matched, sort is descending order
-            skills_match_desc = dict(sorted(skills_match.items(), key=lambda item: len(item[1]), reverse=True))
             output_processed = []
-            for r_id in skills_match_desc:
+            for r_id in skills_match:
+                if len(skills_match[r_id]) == totalSkillsMatch:
+                    subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
+                    query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
+                    role = query.filter(Role.role_id == r_id, Role.role_name.like(inputRoleName)).all()
+                    if len(role) == 1:
+                        role = role[0]
+                        role_json = role.json()
+                        role_json['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["hiring_manager_id"]}').json()
+                        role_json['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["upd_hiring_manager_id"]}').json()
+                        role_json['skills_matched'] = skills_match[r_id]
+                        role_json['skills_matched_count'] = len(skills_match[r_id])
 
-                subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
-                query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
-                role = query.filter(Role.role_id == r_id, Role.role_name.like(inputRoleName)).all()
-                if len(role) == 1:
-                    role = role[0]
-                    role_json = role.json()
-                    role_json['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["hiring_manager_id"]}').json()
-                    role_json['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["upd_hiring_manager_id"]}').json()
-                    role_json['skills_matched'] = skills_match_desc[r_id]
-                    role_json['skills_matched_count'] = len(skills_match_desc[r_id])
-
-                    output_processed += [role_json]
+                        output_processed += [role_json]
         else:
+
+            output_processed = []
+
             subquery = db.session.query(Role.role_id, db.func.max(Role.role_listing_ver).label('max_ver')).group_by(Role.role_id).subquery()
             query = db.session.query(Role).join(subquery, db.and_(Role.role_id == subquery.c.role_id, Role.role_listing_ver == subquery.c.max_ver))
             roles = query.filter(Role.role_name.like(inputRoleName)).all()
 
-            output_processed = []
-            
-            # for each role found
             for role in roles:
-                temp_role = role.json()
-                temp_role['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role.json()["hiring_manager_id"]}').json()
-                temp_role['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{temp_role["upd_hiring_manager_id"]}').json()
-                output_processed += [temp_role]
+                role_json = role.json()
+                role_json['hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["hiring_manager_id"]}').json()
+                role_json['upd_hiring_manager'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{role_json["upd_hiring_manager_id"]}').json()
 
+                output_processed += [role_json]
+
+        if len(inputDeptLst) > 0:
+            inputDeptLst = [Role.department == dept for dept in inputDeptLst]
+
+        if len(inputJobTypeLst) > 0:
+            inputJobTypeLst = [Role.job_type == jobtype for jobtype in inputJobTypeLst]
+                        
         if not output_processed:
             return jsonify({"error": "No role found with search criteria"}), 200
 
