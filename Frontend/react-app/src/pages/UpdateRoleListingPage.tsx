@@ -190,7 +190,7 @@ const UpdateRoleListingPage = () => {
       .catch((error) => {
         console.error("Error logging in:", error);
       });
-    navigate("/AdminRole");
+    navigate("/AdminRolePage");
   };
 
   return (
@@ -321,6 +321,7 @@ const UpdateRoleListingPage = () => {
             <button
               className="submitaddrole"
               type="submit"
+              onClick={() => navigate("/AdminRolePage")}
               style={{ backgroundColor: "#F32013", color: "white" }}
             >
               Cancel
