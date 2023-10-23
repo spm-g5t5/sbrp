@@ -5,15 +5,17 @@ import requests
 apply_routes = Blueprint('apply_routes', __name__)
 
 #get all applications
-@apply_routes.route('/API/v1/viewApplicants', methods=['POST'])
+@apply_routes.route('/API/v1/viewApplicants', methods=['GET', 'POST'])
 def viewApplicants():
     try:
-        resp = request.get_json()
         inputSkillsLst = []
 
-        if "skills" in resp:
-            if resp['skills'] != []:
-                inputSkillsLst = resp['skills']
+        if request.method == "POST":
+            resp = request.get_json()
+
+            if "skills" in resp:
+                if resp['skills'] != []:
+                    inputSkillsLst = resp['skills']
 
         processed_applications = []
         applications = Apply.query.all()
