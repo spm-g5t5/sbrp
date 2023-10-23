@@ -468,15 +468,15 @@ def getDepartment():
     try:
         departments = db.session.query(Role.department).distinct().all()
         departments = [department[0] for department in departments]
-        return jsonify(skills), 200
+        return jsonify(departments), 200
     except Exception as e:
 
         return f"Error inserting data: {str(e)}", 500
 
 @role_routes.route('/API/v1/getJobType')
-def getDepartment():
+def getJobType():
     try:
-        jobTypes = db.session.query(Role.jobType).distinct().all()
+        jobTypes = db.session.query(Role.job_type).distinct().all()
         jobTypes = [jobType[0] for jobType in jobTypes]
         return jsonify(jobTypes), 200
     except Exception as e:
