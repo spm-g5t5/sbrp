@@ -462,4 +462,15 @@ def getSkills():
     except Exception as e:
 
         return f"Error inserting data: {str(e)}", 500
+    
+@role_routes.route('/API/v1/getDepartment')
+def getDepartment():
+    try:
+        departments = db.session.query(Role.department).distinct().all()
+        departments = [department[0] for department in departments]
+        return jsonify(departments), 200
+    except Exception as e:
+
+        return f"Error inserting data: {str(e)}", 500
+
 
