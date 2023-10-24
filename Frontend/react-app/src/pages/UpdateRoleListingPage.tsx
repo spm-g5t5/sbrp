@@ -37,7 +37,6 @@ const UpdateRoleListingPage = () => {
     active_status: 1,
   });
 
-
   const [expiry_date, setExpiryDate] = useState("");
 
   const [expiry_time, setExpiryTime] = useState("");
@@ -58,7 +57,6 @@ const UpdateRoleListingPage = () => {
           const lastObject = data[data.length - 1];
           const roleData = lastObject.role;
           const roleSkill = lastObject.role_listing_skills;
-          console.log(lastObject)
           const formattedSkills = roleSkill.map((skill: any) => [
             skill.skill_name,
             skill.skills_proficiency,
@@ -69,16 +67,24 @@ const UpdateRoleListingPage = () => {
 
           // Format date as "yyyy-MM-dd"
           const year = originalExpiryDate.getFullYear();
-          const month = String(originalExpiryDate.getMonth() + 1).padStart(2, '0');
-          const day = String(originalExpiryDate.getDate()).padStart(2, '0');
+          const month = String(originalExpiryDate.getMonth() + 1).padStart(
+            2,
+            "0"
+          );
+          const day = String(originalExpiryDate.getDate()).padStart(2, "0");
           const formattedDate = `${year}-${month}-${day}`;
-  
+
           // Format time as "HH:mm:ss"
-          const hours = String(originalExpiryDate.getHours()).padStart(2, '0');
-          const minutes = String(originalExpiryDate.getMinutes()).padStart(2, '0');
-          const formattedTime = `${hours}:${minutes}`;
-
-
+          const gmtExpiryDate = new Date(
+            Date.UTC(
+              originalExpiryDate.getUTCFullYear(),
+              originalExpiryDate.getUTCMonth(),
+              originalExpiryDate.getUTCDate(),
+              originalExpiryDate.getUTCHours(),
+              originalExpiryDate.getUTCMinutes()
+            )
+          );
+          const formattedTime = gmtExpiryDate.toISOString().slice(11, 19); // Extract the time part
           setFormData({
             role_name: roleData.role_name,
             department: roleData.department,
@@ -93,14 +99,12 @@ const UpdateRoleListingPage = () => {
 
           setExpiryDate(formattedDate);
           setExpiryTime(formattedTime);
-
         }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, [roleId]);
-
 
   const handleInputChange = (
     event: React.ChangeEvent<
@@ -186,22 +190,24 @@ const UpdateRoleListingPage = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // Extract the current `expiry_dt` from the formData
-    const existingExpiry_dt = new Date(formData.expiry_dt);
+    // Combine date and time and format it
+    const combinedDateTime = `${expiry_date} ${expiry_time}`;
+    const combinedDateTimeAsDate = new Date(combinedDateTime);
+    combinedDateTimeAsDate.setSeconds(59); // Set seconds to 59
+    combinedDateTimeAsDate.setUTCHours(combinedDateTimeAsDate.getUTCHours()+8);
+    const formattedExpiry_dt = combinedDateTimeAsDate.toUTCString();
 
-    // Set the hours, minutes, and seconds to 23:59:59
-    existingExpiry_dt.setHours(23, 59, 59);
 
-    // Format the `existingExpiry_dt` to the desired format: %a, %d %b %Y %H:%M:%S %Z
-    const formattedExpiry_dt = existingExpiry_dt.toUTCString();
-
-    // Create a copy of the formData and update the expiry_dt
     const updatedFormData = {
       ...formData,
       expiry_dt: formattedExpiry_dt,
     };
 
-    setFormData(updatedFormData);
+    setFormData((prevData) => ({
+      ...prevData,
+      expiry_dt: formattedExpiry_dt,
+    }));
+
 
     console.log(updatedFormData);
 
