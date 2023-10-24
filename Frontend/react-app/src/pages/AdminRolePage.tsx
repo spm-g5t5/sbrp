@@ -41,7 +41,6 @@ const AdminRolePage = () => {
   const [showApplicationModal, setApplicationShowModal] = useState(false);
 
 
-
   const handleDetail = (item: { role_id: number }) => {
     const roleId = item.role_id.toString(); // Convert number to string
     localStorage.setItem('RoleId', roleId);
@@ -89,13 +88,31 @@ const AdminRolePage = () => {
 
   }
 
+  const handleSearch = (searchText: string) => {
+    const searchData = {
+      search: searchText,
+    };
+    axios.post('http://127.0.0.1:5000/API/v1/searchRole', searchData)
+    .then(response => {
+      setData(response.data);
+      
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+  }
+  console.log(data)
+
   return (
     <div>
       <Header accessRights={accessRights} />
-      <SearchBar />
+      <div className='adminsearchbar'>
+      <SearchBar onSearch={handleSearch} />
       <Button onClick={() => navigate("/AddJobPage")} variant="success">
         <span>Add Job</span>
       </Button>
+      </div>
       {data
         .filter((item) => item.active_status == 1)
         .map((item) => (
