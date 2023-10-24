@@ -10,7 +10,7 @@ interface FormData {
   department: string;
   job_description: string;
   expiry_dt: string;
-  role_listing_skills: Array<[string, number ]>;
+  role_listing_skills: Array<[string, number]>;
   hiring_manager_id: string;
 }
 
@@ -24,7 +24,7 @@ const AddJobPage: React.FC = () => {
     department: "",
     job_description: "",
     expiry_dt: "",
-    role_listing_skills: [[ "", 1]],
+    role_listing_skills: [["", 1]],
     hiring_manager_id: staffId,
   });
 
@@ -112,7 +112,7 @@ const AddJobPage: React.FC = () => {
   const addSkill = () => {
     setFormData((prevData) => ({
       ...prevData,
-      role_listing_skills: [...prevData.role_listing_skills, [ "", 1 ]],
+      role_listing_skills: [...prevData.role_listing_skills, ["", 1]],
     }));
   };
 
@@ -137,6 +137,9 @@ const AddJobPage: React.FC = () => {
     const combinedDateTime = `${expiry_date} ${expiry_time}`;
     const combinedDateTimeAsDate = new Date(combinedDateTime);
     combinedDateTimeAsDate.setSeconds(59); // Set seconds to 59
+    combinedDateTimeAsDate.setUTCHours(
+      combinedDateTimeAsDate.getUTCHours() + 8
+    );
     const formattedExpiry_dt = combinedDateTimeAsDate.toUTCString();
 
     const updatedFormData = {
@@ -159,7 +162,7 @@ const AddJobPage: React.FC = () => {
       .catch((error) => {
         console.error("Error logging in:", error);
       });
-    navigate("/AdminRole");
+    navigate("/AdminRolePage");
   };
 
   return (
@@ -292,7 +295,7 @@ const AddJobPage: React.FC = () => {
             <button
               className="submitaddrole"
               type="button"
-              onClick={() => navigate("/AdminRole")}
+              onClick={() => navigate("/AdminRolePage")}
               style={{ backgroundColor: "#F32013", color: "white" }}
             >
               Cancel
