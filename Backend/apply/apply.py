@@ -1,5 +1,6 @@
 from flask import jsonify, Blueprint, request
 from models import Apply, ApplySkill, Role, RoleSkill, StaffSkill, RoleListingSkills, db
+from datetime import datetime
 import requests
 
 apply_routes = Blueprint('apply_routes', __name__)
@@ -124,3 +125,48 @@ def getApplicantBySkillId(id):
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
 
+@apply_routes.route('/API/v1/createApplication', methods=['POST'])
+def createApplication():
+    try:
+        resp = request.get_json()
+        inputStaffId = resp['staff_id']
+        inputRoleId = resp['role_id']
+        inputRoleVer = resp['role_ver']
+
+        roles = requests.get(f'{request.url_root.rstrip("/")}/API/v1/viewRoles/{inputRoleId}').json()
+        if 'error' in roles:
+            return jsonify({"error": "Role does not exist"}), 200
+        else:
+            if roles[0]['active_status'] == True:
+                results = Apply.query.filter_by(applicant_staff_id = inputStaffId, applied_role_id = inputRoleId).all()
+                if len(results) == 0:
+
+                    staff = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{inputStaffId}').json()
+                    # staff_role = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/getstaffrole/{inputStaffId}').json()
+
+                    # Create a new role record
+                    new_app = Apply(
+                        application_id= None,
+                        applicant_staff_id = inputStaffId,
+                        applicant_existing_role = '', #TODO: Connect somewhere after clarification of spec
+                        applicant_existing_dept = staff['dept'],
+                        application_status = "PENDING",
+                        date_applied = datetime.now(),
+                        applied_role_id = inputRoleId,
+                        applied_role_ver = inputRoleVer
+                        )
+
+                    # Add the new role to the session
+                    db.session.add(new_app)
+                    result = db.session.commit()
+                    print(result)
+                    # Return a JSON response with the list of applicants for the specified skill ID
+                    return jsonify([new_app.json()]), 200
+                else:
+                    return jsonify({"error": "Application already exists"}), 300
+            else: 
+                return jsonify({"error": "Role is not active"}), 200
+    
+    except Exception as e:
+        # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
+        return jsonify({"error": str(e)}), 500
