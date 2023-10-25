@@ -1,11 +1,12 @@
 import React, { useEffect, useState} from 'react';
-import { CardBody, CardHeader, CardSubtitle, CardText, Container } from 'react-bootstrap';
+import { CardBody, CardHeader, CardSubtitle, CardText, Col, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import Badge from 'react-bootstrap/Badge';
 import Header from '../components/Header';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 interface Applicant {
     application_id: number;
@@ -74,7 +75,6 @@ const AdminApplicantsPage = () => {
         })
         .then((response) => {
             setRoleSkillMatch(response.data.skill_match_pct);
-            console.log(response.data.skill_match_pct);
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
@@ -85,46 +85,33 @@ const AdminApplicantsPage = () => {
   return (
     <div>
        <Header accessRights={accessRights}/>
-       {isArrayEmpty ? ( // Check if the data array is empty
+       <Row>
+        <Col md='8'>
+        {isArrayEmpty ? ( // Check if the data array is empty
         <p>No applicants</p> // Display "No applicants" if the array is empty
-      ) : (
-       data.map((item) => (
-        <Card style={{ margin: '30px' }} key={item.application_id.toString()}>
-            <CardHeader>
-                <Card.Title>Application no.{item.application_id}</Card.Title>
-                <CardSubtitle>Role: {item.role.role_name}</CardSubtitle>
-            </CardHeader>
-            <CardBody>
-                <Card.Text>Name: {item.staff.staff_fname} {item.staff.staff_lname}</Card.Text>
-                <CardText>Current department: {item.applicant_existing_dept}</CardText>
-                <CardText>Current role: {item.applicant_existing_role}</CardText>
-                <Button onClick={() => onHandleSkills(item)} variant="primary">View Skills</Button>
-{/* 
-                <CardText>
-                    Role's needed skills: {item.role_skills.map((RoleSkill)=>(
-                        <Badge bg="primary">{RoleSkill.skill_name}</Badge>
-                    ))}
-                </CardText>
-                <CardText>Applicant's skills: {item.staff_skill.map((StaffSkill)=>(
-                    <Badge bg="success">{StaffSkill.skill_name}</Badge>
-                ))}
-                </CardText>
-                <CardText>Applicant's skills Match Percentage:
-                
-        
-                </CardText> */}
-            </CardBody>
-        
-        </Card>
-       ))
-        
-    )}
+          ) : (
+          data.map((item) => (
+            <Card style={{ margin: '30px' }} key={item.application_id.toString()}>
+                <CardHeader>
+                    <Card.Title>Application no.{item.application_id}</Card.Title>
+                    <CardSubtitle>Role: {item.role.role_name}</CardSubtitle>
+                </CardHeader>
+                <CardBody>
+                    <Card.Text>Name: {item.staff.staff_fname} {item.staff.staff_lname}</Card.Text>
+                    <CardText>Current department: {item.applicant_existing_dept}</CardText>
+                    <CardText>Current role: {item.applicant_existing_role}</CardText>
+                    <Button onClick={() => onHandleSkills(item)} variant="primary">View Skills</Button>
 
-    {showSkillModal && (
-    <Modal>
-        {roleSkillMatch}
-    </Modal>
-    )}
+                </CardBody>
+            
+            </Card>
+          ))
+            
+        )}
+        </Col>
+       </Row>
+       
+
 
     {showSkillModal && (
             <Modal show={showSkillModal} onHide={handleDetailCloseModal}>
@@ -132,6 +119,7 @@ const AdminApplicantsPage = () => {
                 <Modal.Title></Modal.Title>
               </Modal.Header>
               <Modal.Body>
+
                 <p>
                     Role's needed skills: {currentItem!.role_skills.map((RoleSkill)=>(
                         <Badge bg="primary">{RoleSkill.skill_name}</Badge>
@@ -142,9 +130,10 @@ const AdminApplicantsPage = () => {
                     <Badge bg="success">{StaffSkill.skill_name}</Badge>
                 ))}
                 </p>
-                <p>
-                Applicant's skills Match Percentage: {roleSkillMatch}%
-                </p>
+              <p>
+             Applicant's skills Match Percentage: 
+             <ProgressBar now={roleSkillMatch} label={`${roleSkillMatch}%`} />
+             </p>
                 
               </Modal.Body>
               <Modal.Footer>

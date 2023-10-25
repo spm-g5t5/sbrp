@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ accessRights }) => {
           ) : (
             // Render different content when accessRights is not 1
             <Nav className="justify-content-end">
-              <Nav.Link onClick={() => navigate("/AdminRole")} className="text-white">Role Listing</Nav.Link>
+              <Nav.Link onClick={() => navigate("/AdminRolePage")} className="text-white">Role Listing</Nav.Link>
               <Nav.Link onClick={() => navigate("/AdminApplicantsPage")} className="text-white">Applicants</Nav.Link>
             </Nav>
           )}

@@ -18,6 +18,7 @@ import UpdateRoleListingPage from  './pages/UpdateRoleListingPage';
 import AddJobPage from  './pages/AddJobPage';
 // import ApplicantPage from "./pages/ApplicantPage"; 
 import AdminSpecificApplicantsPage from "./pages/AdminSpecificApplicantsPage";
+import ApplicantDetailsPage from "./pages/ApplicantDetailsPage";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
       <Route path="/AdminApplicantsPage" element={<AdminApplicantsPage />} />
       <Route path="/AdminSpecificApplicants" element={<AdminSpecificApplicantsPage />} />
       <Route path="/UpdateRoleListingPage" element={<UpdateRoleListingPage />} />
+      <Route path="/ApplicantDetailsPage" element={<ApplicantDetailsPage />} />
       <Route path="/AddJobPage" element={<AddJobPage />} />
       {/* <Route path="/ApplicantPage" element={<ApplicantPage />} /> */}
       <Route path="*" element={<NoPage />} />
