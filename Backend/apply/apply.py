@@ -142,13 +142,16 @@ def createApplication():
                 if len(results) == 0:
 
                     staff = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{inputStaffId}').json()
-                    # staff_role = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/getstaffrole/{inputStaffId}').json()
-
+                    staff_role = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/getstaffrole/{inputStaffId}').json()
+                    if 'role_name' in staff_role:
+                        inputStaffRole = staff_role['role_name']
+                    else:
+                        inputStaffRole = ""
                     # Create a new role record
                     new_app = Apply(
                         application_id= None,
                         applicant_staff_id = inputStaffId,
-                        applicant_existing_role = '', #TODO: Connect somewhere after clarification of spec
+                        applicant_existing_role = inputStaffRole,
                         applicant_existing_dept = staff['dept'],
                         application_status = "PENDING",
                         date_applied = datetime.now(),

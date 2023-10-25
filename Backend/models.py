@@ -153,3 +153,15 @@ class StaffRoleSkill(db.Model):
 
     def json(self):
         return {"staff_id": self.staff_id, "role_name": self.role_name, "skill_name": self.skill_name}
+    
+class StaffRole(db.Model):
+    __tablename__ = 'staff_role'
+    staff_id = db.Column(db.Integer, primary_key=True)
+    role_name = db.Column(db.String(20), primary_key=True)
+
+    def __init__(self, staff_id, role_name):
+        self.staff_id = staff_id
+        self.role_name = role_name
+
+    def json(self):
+        return {"staff_id": self.staff_id, "role_name": self.role_name}

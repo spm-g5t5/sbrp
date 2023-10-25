@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, Blueprint, render_template, current_app
 import json
 import requests
-from models import Staff, StaffAccess, StaffRoleSkill, db
+from models import Staff, StaffAccess, StaffRole, db
 
 staff_routes = Blueprint('staff_routes', __name__)
 
@@ -57,16 +57,11 @@ def getStaffDetails(input_staff_id):
 @staff_routes.route('/API/v1/staff/getstaffrole/<int:input_staff_id>')
 def getStaffRole(input_staff_id):
     try:
-        staffs = StaffRoleSkill.query.filter_by(staff_id=input_staff_id).all()
-        unique_role = []
-        for staff in staffs:
-            if staff.json()['role_name'] not in unique_role:
-                unique_role += [staff.json()['role_name']]
-        print(unique_role)
-        if len(unique_role) == 1:
+        staffs = StaffRole.query.filter_by(staff_id=input_staff_id).all()
+        if len(staffs) == 1:
             return jsonify(
-                unique_role[0]
-            ), 200        
+                staffs[0].json()
+            ), 200
         else:
             return jsonify({
                 "error": "Staff does not exist"
