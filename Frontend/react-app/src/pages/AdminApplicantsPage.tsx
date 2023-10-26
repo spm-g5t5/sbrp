@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Filter from '../components/Filter';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 interface Applicant {
     application_id: number;
@@ -76,7 +76,6 @@ const AdminApplicantsPage = () => {
         })
         .then((response) => {
             setRoleSkillMatch(response.data.skill_match_pct);
-            console.log(response.data.skill_match_pct);
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
@@ -141,9 +140,10 @@ const AdminApplicantsPage = () => {
                     <Badge bg="success">{StaffSkill.skill_name}</Badge>
                 ))}
                 </p>
-                <p>
-                Applicant's skills Match Percentage: {roleSkillMatch}%
-                </p>
+              <p>
+             Applicant's skills Match Percentage: 
+             <ProgressBar now={roleSkillMatch} label={`${roleSkillMatch}%`} />
+             </p>
                 
               </Modal.Body>
               <Modal.Footer>
