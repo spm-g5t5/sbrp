@@ -34,13 +34,12 @@ const Header: React.FC<HeaderProps> = ({ accessRights }) => {
             </div> // You can add your additional content here
           ) : (
             // Render different content when accessRights is not 1
-            <div>
-              <Navbar.Brand className='text-white'>Admin Application Portal</Navbar.Brand>
-              <Nav className="justify-content-end">
-                <Nav.Link onClick={() => navigate("/AdminRole")} className="text-white">Role Listing</Nav.Link>
-                <Nav.Link onClick={() => navigate("/ApplicantPage")} className="text-white">Applicants</Nav.Link>
-              </Nav>
-            </div>
+
+            <Nav className="justify-content-end">
+              <Nav.Link onClick={() => navigate("/AdminRolePage")} className="text-white">Role Listing</Nav.Link>
+              <Nav.Link onClick={() => navigate("/AdminApplicantsPage")} className="text-white">Applicants</Nav.Link>
+            </Nav>
+
           )}
         </Navbar.Collapse>
       </Container>

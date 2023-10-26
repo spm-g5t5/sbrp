@@ -1,5 +1,23 @@
 .searchbar {
-    margin: 30px;
-    justify-content: center;
-    display: flex;
+  margin: 30px;
+  justify-content: center;
+  display: flex;
+}
+
+.search-input {
+  position: relative;
+  width: 100%; /* Set the width to 100% */
+}
+
+.clear-icon {
+  position: absolute;
+  right: 10px; /* Adjust the right value as needed */
+  top: 50%; /* Vertically center the icon */
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999; /* Adjust the color as needed */
+}
+
+.clear-icon:hover {
+  color: #ff0000; /* Change color on hover if desired */
 }
