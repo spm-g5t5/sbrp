@@ -1,18 +1,5 @@
-// import React from 'react';
-
-// const StaffRoleListingPage = () => {
-//   return (
-//     <div>
-//       This is the staff role listing page
-//     </div>
-//   );
-// }
-
-// export default StaffRoleListingPage;
-//#######################################################
-
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { all } from "axios";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import RoleSkills from "../components/RoleSkills";
@@ -27,6 +14,8 @@ import {
 import Card from "react-bootstrap/Card";
 import { BsFillXCircleFill } from "react-icons/bs";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import {Row, Col} from "react-bootstrap";
+import Filter from "../components/FilterRole";
 
 const StaffRoleListingPage = () => {
   const [data, setData] = useState<
@@ -51,6 +40,10 @@ const StaffRoleListingPage = () => {
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
   const [showApplicationModal, setApplicationShowModal] = useState(false);
   const [showDetailModal, setDetailShowModal] = useState(false);
+  const [allFilters, setAllFilters] = useState<{ [key: string]: any }>({});
+  const [skillFilter, setSkillFilter] = useState<string[]>([]);
+  const [departmentFilter, setDepartmentFilter] = useState<string[]>([]);
+  const [jobTypeFilter, setJobTypeFilter] = useState<string[]>([]);
 
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
@@ -99,13 +92,54 @@ const StaffRoleListingPage = () => {
     navigate('/StaffApplicationPage')
   }
 
+  // to check if object is empty
+  function isObjectEmpty(obj: any) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false; // Object has at least one own property
+      }
+    }
+    return true; // Object is empty (has no own properties)
+  }
+
+
+  
+  const handleDataFromFilter = (data: any) => {
+    if (isObjectEmpty(data)){
+      console.log("empty")
+    }else{
+      setAllFilters((prev) => ({
+        ...prev,
+        ...data,
+      }));
+    }
+
+  }
+
+  function onHandleSubmitFilterButton() {
+    axios.post('http://127.0.0.1:5000/API/v1/searchRole',{
+      "skills": allFilters["skills"],
+      "department": allFilters["department"],
+      "jobtype":  allFilters["jobtype"]
+    })
+    .then((response) => {
+        setData(response.data);
+        console.log(response.data);
+        
+
+    })
+    .catch((error) => {
+        console.error('Error fetching data:', error);
+    });
+  }
+
   return (
     <div>
       <Header accessRights={accessRights} />
       <SearchBar />
-      <div class="col-8">
-
-
+      <Row>
+      <Col md='8'>
+        
         {data
           .filter((item) => item.active_status == 1)
           .map((item) => (
@@ -141,6 +175,13 @@ const StaffRoleListingPage = () => {
               </CardFooter>
             </Card>
           ))}
+          </Col>  
+          <Col md='4'>
+          <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
+          <Filter sendDataToRoleListing={handleDataFromFilter}></Filter>
+          </Col>
+        </Row>
+
 
         {showDetailModal && (
           <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
@@ -191,12 +232,7 @@ const StaffRoleListingPage = () => {
           </Modal>
         )}
       </div>
-
-      <div className="sidebar" class="col-2">
-        <h2>Filters</h2>
-
-      </div>
-    </div>
+ 
   );
 };
 

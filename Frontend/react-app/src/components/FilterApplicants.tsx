@@ -2,13 +2,12 @@ import axios, { all } from 'axios';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import MultiSelect from './Multiselect'
-import Button from 'react-bootstrap/Button';
 
 interface FilterProps {
     sendDataToApplicant: (data: any) => void; // Define the function signature
   }
 
-const Filter: React.FC<FilterProps> = ({ sendDataToApplicant }) => {
+const FilterApplicants: React.FC<FilterProps> = ({ sendDataToApplicant }) => {
     
   const [allSKills, setAllSkills] = useState<string[]>([]); // Initialize as an empty array
 
@@ -46,4 +45,4 @@ const Filter: React.FC<FilterProps> = ({ sendDataToApplicant }) => {
     );
 };
 
-export default Filter;
+export default FilterApplicants;

@@ -130,7 +130,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   };
 
   useEffect(() => {
-    // <Context.Provider value={selectedItems}></Context.Provider>
     sendDataToFilter(selectedItems);
   }, [selectedItems])
 

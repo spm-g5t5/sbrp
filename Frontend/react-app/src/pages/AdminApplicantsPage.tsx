@@ -7,7 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import Filter from '../components/Filter';
+import Filter from '../components/FilterApplicants';
 
 interface Applicant {
     application_id: number;
