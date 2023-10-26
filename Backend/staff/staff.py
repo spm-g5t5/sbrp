@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, Blueprint, render_template, current_app
 import json
 import requests
-from models import Staff, StaffAccess
+from models import Staff, StaffAccess, StaffRole, db
 
 staff_routes = Blueprint('staff_routes', __name__)
 
@@ -49,6 +49,23 @@ def getStaffDetails(input_staff_id):
             useraccess_records[0].json()
         ), 200        
             
+    except:
+        return jsonify({
+            "error": "An error occured"
+        }), 400
+
+@staff_routes.route('/API/v1/staff/getstaffrole/<int:input_staff_id>')
+def getStaffRole(input_staff_id):
+    try:
+        staffs = StaffRole.query.filter_by(staff_id=input_staff_id).all()
+        if len(staffs) == 1:
+            return jsonify(
+                staffs[0].json()
+            ), 200
+        else:
+            return jsonify({
+                "error": "Staff does not exist"
+            }), 400
     except:
         return jsonify({
             "error": "An error occured"
