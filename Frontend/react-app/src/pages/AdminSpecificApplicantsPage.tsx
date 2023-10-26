@@ -68,6 +68,7 @@ const AdminSpecificApplicantsPage = () => {
       .then((response) => {
         if (Array.isArray(response.data)) {
           setData(response.data);
+          console.log(response.data)
           
         } else {
           console.log("Response data is not an array.");

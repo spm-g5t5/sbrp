@@ -17,7 +17,7 @@ import {
 import Card from "react-bootstrap/Card";
 import { Navigate, Outlet, useNavigate, Link } from "react-router-dom";
 import "../styles/AdminRolePage.css";
-import { FaPlus, FaTimes, FaBuilding, FaBriefcase, FaCalendar, FaExclamation} from "react-icons/fa";
+import { FaPlus, FaTimes, FaBuilding, FaBriefcase, FaPen, FaUser} from "react-icons/fa";
 
 const AdminRolePage = () => {
   const [data, setData] = useState<
@@ -26,7 +26,7 @@ const AdminRolePage = () => {
       role_name: string;
       department: string;
       job_description: string;
-      expiry_dt: string;
+      expiry_dt: Date;
       job_type: string;
       original_creation_dt: Date;
       active_status: number;
@@ -178,10 +178,10 @@ const AdminRolePage = () => {
                 <FaBriefcase /> Job Type: {item.job_type}
               </Card.Text>
               <Card.Text>
-                <FaExclamation /> Apply By: {item.expiry_dt.slice(5, 16)}
+                <FaPen /> Apply By: {item.expiry_dt.toString().slice(5, 16)}
               </Card.Text>
               <Card.Text>
-                <FaCalendar /> Last updated by {item.upd_hiring_manager.staff_fname} {item.upd_hiring_manager.staff_lname} on {item.upd_dt.slice(5, 22)}
+                <FaUser /> Last updated by {item.upd_hiring_manager.staff_fname} {item.upd_hiring_manager.staff_lname} on {item.upd_dt.slice(5, 22)}
               </Card.Text>
               <button
                 className="view-applicants-button"
