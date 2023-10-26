@@ -163,14 +163,9 @@ def createApplication():
 
                     # Add the new role to the session
                     db.session.add(new_app)
-                    result = db.session.commit()
-                    
-                    if result:
-                        # Return a JSON response with the list of applicants for the specified skill ID
-                        return jsonify([new_app.json()]), 200
-                    else:
-                        db.session.rollback()
-                        return jsonify({"error": "Database write failed, please try again"}), 500
+                    db.session.commit()
+                    # Return a JSON response with the list of applicants for the specified skill ID
+                    return jsonify([new_app.json()]), 200
                 else:
                     return jsonify({"error": "Application already exists"}), 200
             else: 
