@@ -6,6 +6,8 @@ import { Modal, Button } from "react-bootstrap";
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import { CardBody, CardHeader, CardSubtitle, CardText, ProgressBar } from 'react-bootstrap';
+import { FaRegSadCry } from "react-icons/fa";
+import { Row, Col } from "react-bootstrap";
 
 interface Applicant {
   application_id: number;
@@ -103,18 +105,53 @@ const AdminSpecificApplicantsPage = () => {
   <p>No applicants</p> // Display "No applicants" if the array is empty
 ) : (
   data.map((item) => (
-    <Card style={{ margin: '30px' }} key={item.application_id.toString()}>
-      <CardHeader>
-        <Card.Title>Application no.{item.application_id}</Card.Title>
-        <CardSubtitle>Role: {item.role.role_name}</CardSubtitle>
-      </CardHeader>
-      <CardBody>
-        <Card.Text>Name: {item.staff.staff_fname} {item.staff.staff_lname}</Card.Text>
-        <CardText>Current department: {item.applicant_existing_dept}</CardText>
-        <CardText>Current role: {item.applicant_existing_role}</CardText>
-        <Button onClick={() => onHandleSkills(item)} variant="primary">View Skills</Button>
-      </CardBody>
-    </Card>
+    <Row>
+    <Col xl="8">
+      {isArrayEmpty ? ( // Check if the data array is empty
+        <div>
+          <span className="errormsg">
+            <FaRegSadCry />
+            No Applicants
+            <FaRegSadCry />
+          </span>
+        </div> // Display "No applicants" if the array is empty
+      ) : (
+        data.map((item) => (
+          <Card
+            style={{ margin: "30px" }}
+            key={item.application_id.toString()}
+          >
+            <CardBody>
+              <div className="d-flex justify-content-between">
+                <div>
+                  <Card.Title>Role: {item.role.role_name}</Card.Title>
+                </div>
+                <div className="d-flex">
+                  <button
+                    className="view-applicants-button"
+                    onClick={() => onHandleSkills(item)}
+                  >
+                    View Skills
+                  </button>
+                </div>
+              </div>
+              <Card.Text>
+                Name: {item.staff.staff_fname} {item.staff.staff_lname}
+              </Card.Text>
+              <Card.Text>StaffID: {item.applicant_staff_id}</Card.Text>
+              <CardText>
+                Current department: {item.applicant_existing_dept}
+              </CardText>
+              <CardText>
+                Current role: {item.applicant_existing_role}
+              </CardText>
+            </CardBody>
+          </Card>
+        ))
+      )}
+    </Col>
+    <Col xl={4}>Filter here</Col>
+  </Row>
   ))
 )}
 
