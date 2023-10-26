@@ -131,7 +131,6 @@ def createApplication():
         resp = request.get_json()
         inputStaffId = resp['staff_id']
         inputRoleId = resp['role_id']
-        inputRoleVer = resp['role_ver']
 
         roles = requests.get(f'{request.url_root.rstrip("/")}/API/v1/viewRoles/{inputRoleId}').json()
         if 'error' in roles:
@@ -143,8 +142,11 @@ def createApplication():
 
                     staff = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{inputStaffId}').json()
                     staff_role = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/getstaffrole/{inputStaffId}').json()
+                    
                     if 'role_name' in staff_role:
                         inputStaffRole = staff_role['role_name']
+                        if (roles[0]['role_name'].lower() == staff_role['role_name'].lower()) and (roles[0]['department'].lower() == staff['dept'].lower()):
+                            return jsonify({"error": "Applicant cannot apply for a role which is the same role and department as they currently are in now"}), 200
                     else:
                         inputStaffRole = ""
                     # Create a new role record
@@ -156,17 +158,21 @@ def createApplication():
                         application_status = "PENDING",
                         date_applied = datetime.now(),
                         applied_role_id = inputRoleId,
-                        applied_role_ver = inputRoleVer
+                        applied_role_ver = roles[0]['role_listing_ver']
                         )
 
                     # Add the new role to the session
                     db.session.add(new_app)
                     result = db.session.commit()
-                    print(result)
-                    # Return a JSON response with the list of applicants for the specified skill ID
-                    return jsonify([new_app.json()]), 200
+                    
+                    if result:
+                        # Return a JSON response with the list of applicants for the specified skill ID
+                        return jsonify([new_app.json()]), 200
+                    else:
+                        db.session.rollback()
+                        return jsonify({"error": "Database write failed, please try again"}), 500
                 else:
-                    return jsonify({"error": "Application already exists"}), 300
+                    return jsonify({"error": "Application already exists"}), 200
             else: 
                 return jsonify({"error": "Role is not active"}), 200
     
