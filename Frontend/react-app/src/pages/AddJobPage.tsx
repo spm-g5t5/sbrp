@@ -207,8 +207,8 @@ const AddJobPage: React.FC = () => {
               required // Add the required attribute
             >
               <option value="">Select Job Type</option>
-              <option value="Full-time">FT</option>
-              <option value="Part-time">PT</option>
+              <option value="FT">FT</option>
+              <option value="PT">PT</option>
             </select>
           </div>
 

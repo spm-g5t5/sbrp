@@ -96,13 +96,13 @@
     flex-direction: row;
     align-items: center;
     margin-bottom: 20px; /* Add some spacing between skill cards */
-    padding-left: 280px;
+    padding-left: 225px;
   }
   
   .skill-row {
     display: flex;
     align-items: center;
-    width: 300px;
+    width: 400px;
   }
   
   /* Adjust the width as needed */
