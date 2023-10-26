@@ -264,8 +264,8 @@ const UpdateRoleListingPage = () => {
               value={formData.job_type}
               onChange={handleInputChange}
             >
-              <option value="Full-time">Full-time</option>
-              <option value="Part-time">Part-time</option>
+              <option value="FT">FT</option>
+              <option value="PT">PT</option>
             </select>
           </div>
 
