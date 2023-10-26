@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { CardBody, CardHeader, CardSubtitle, CardText, Col, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import Badge from 'react-bootstrap/Badge';
@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import Filter from '../components/Filter';
 
 interface Applicant {
     application_id: number;
@@ -39,6 +40,7 @@ interface Applicant {
     // Add other properties as needed
   }
 
+
 const AdminApplicantsPage = () => {
     const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
     const [showSkillModal, setSkillShowModal] = useState(false);
@@ -46,6 +48,7 @@ const AdminApplicantsPage = () => {
     const [roleSkillMatch, setRoleSkillMatch] = useState<RoleSkillMatch[]>([]);
     const [currentItem, setCurrentItem] = useState<Applicant | null>(null);
     const [isArrayEmpty, setIsArrayEmpty] = useState(false);
+    const [filteredSkill, setFilteredSkill] = useState<[]>([]); // Initialize as an empty array
     
     const handleDetailCloseModal = () => setSkillShowModal(false);
 
@@ -74,12 +77,39 @@ const AdminApplicantsPage = () => {
             "role_id": item.applied_role_id
         })
         .then((response) => {
-            setRoleSkillMatch(response.data.skill_match_pct);
+         setRoleSkillMatch(response.data.skill_match_pct);
+
         })
         .catch((error) => {
-            console.error('Error fetching data:', error);
+          console.error('Error fetching data:', error);
         });
     
+    }
+
+    const handleDataFromFilter = (data: any) => {
+      const skillArray = data.map((obj:{ id: number; value: string }) => obj.value);
+      setFilteredSkill(skillArray);
+    
+    }
+
+    function onHandleSubmitFilterButton() {
+      console.log(filteredSkill);
+      axios.post('http://127.0.0.1:5000/API/v1/viewApplicants',{
+        "skills": filteredSkill
+      })
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+          console.log(response.data);
+          
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true)
+        }
+      })
+      .catch((error) => {
+          console.error('Error fetching data:', error);
+      });
     }
 
   return (
@@ -87,27 +117,29 @@ const AdminApplicantsPage = () => {
        <Header accessRights={accessRights}/>
        <Row>
         <Col md='8'>
-        {isArrayEmpty ? ( // Check if the data array is empty
-        <p>No applicants</p> // Display "No applicants" if the array is empty
-          ) : (
-          data.map((item) => (
-            <Card style={{ margin: '30px' }} key={item.application_id.toString()}>
-                <CardHeader>
-                    <Card.Title>Application no.{item.application_id}</Card.Title>
-                    <CardSubtitle>Role: {item.role.role_name}</CardSubtitle>
-                </CardHeader>
-                <CardBody>
-                    <Card.Text>Name: {item.staff.staff_fname} {item.staff.staff_lname}</Card.Text>
-                    <CardText>Current department: {item.applicant_existing_dept}</CardText>
-                    <CardText>Current role: {item.applicant_existing_role}</CardText>
-                    <Button onClick={() => onHandleSkills(item)} variant="primary">View Skills</Button>
-
-                </CardBody>
-            
-            </Card>
-          ))
-            
-        )}
+        {isArrayEmpty ? (
+  <p>No applicants</p>
+) : (
+  data.map((item) => (
+      <Card style={{ margin: '30px' }} key={item.application_id.toString()}>
+        <CardHeader>
+          <Card.Title>Application no.{item.application_id}</Card.Title>
+          <CardSubtitle>Role: {item.role.role_name}</CardSubtitle>
+        </CardHeader>
+        <CardBody>
+          <Card.Text>Name: {item.staff.staff_fname} {item.staff.staff_lname}</Card.Text>
+          <CardText>Current department: {item.applicant_existing_dept}</CardText>
+          <CardText>Current role: {item.applicant_existing_role}</CardText>
+          <Button onClick={() => onHandleSkills(item)} variant="primary">View Skills</Button>
+        </CardBody>
+      </Card>
+    
+  ))
+)}
+        </Col>
+        <Col md='4'>
+          <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
+          <Filter sendDataToApplicant={handleDataFromFilter}></Filter>
         </Col>
        </Row>
        
@@ -116,7 +148,7 @@ const AdminApplicantsPage = () => {
     {showSkillModal && (
             <Modal show={showSkillModal} onHide={handleDetailCloseModal}>
               <Modal.Header closeButton>
-                <Modal.Title></Modal.Title>
+                <Modal.Title>Applicant's skills</Modal.Title>
               </Modal.Header>
               <Modal.Body>
 

@@ -21,14 +21,14 @@ const AdminHomePage = () => {
     <div className="container-center-vertically">
       {accessRights === "3" ? (
         <div className="row">
-          <div className="col-sm-3"></div>
-          <div className="col-sm-3">
+
+          <div className="col-xl-3 col-sm-6">
             <UserCard username="ST" />
           </div>
-          <div className="col-sm-3">
+          <div className="col-xl-3 col-sm-6">
             <UserCard username="MA" />
           </div>
-          <div className="col-sm-3"></div>
+
         </div>
       ) : (
         <Navigate to="/" />
