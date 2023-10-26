@@ -1,5 +1,6 @@
 from flask import jsonify, Blueprint, request
 from models import Apply, ApplySkill, Role, RoleSkill, StaffSkill, RoleListingSkills, db
+from datetime import datetime
 import requests
 
 apply_routes = Blueprint('apply_routes', __name__)
@@ -76,13 +77,15 @@ def getApplicantByRoleId(id):
             role = Role.query.filter_by(role_id=applicant.json()["applied_role_id"]).first()
             temp_application['role'] = role.json()
 
+            # Query role listing skills
             role_id = role.json()["role_id"]
-            role_skills = RoleListingSkills.query.filter_by(role_id=role_id).all()
+            subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+            query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
+            role_skills = query.filter_by(role_id=role_id).all()
             temp_application['role_skills'] = [skill.json() for skill in role_skills]
             
             staff_skill = StaffSkill.query.filter_by(staff_id=applicant.json()["applicant_staff_id"]).all()
             temp_application['staff_skill'] = [skill.json() for skill in staff_skill]
-
 
             processed_applications += [temp_application]
 
@@ -122,3 +125,52 @@ def getApplicantBySkillId(id):
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
 
+@apply_routes.route('/API/v1/createApplication', methods=['POST'])
+def createApplication():
+    try:
+        resp = request.get_json()
+        inputStaffId = resp['staff_id']
+        inputRoleId = resp['role_id']
+
+        roles = requests.get(f'{request.url_root.rstrip("/")}/API/v1/viewRoles/{inputRoleId}').json()
+        if 'error' in roles:
+            return jsonify({"error": "Role does not exist"}), 200
+        else:
+            if roles[0]['active_status'] == True:
+                results = Apply.query.filter_by(applicant_staff_id = inputStaffId, applied_role_id = inputRoleId).all()
+                if len(results) == 0:
+
+                    staff = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{inputStaffId}').json()
+                    staff_role = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/getstaffrole/{inputStaffId}').json()
+                    
+                    if 'role_name' in staff_role:
+                        inputStaffRole = staff_role['role_name']
+                        if (roles[0]['role_name'].lower() == staff_role['role_name'].lower()) and (roles[0]['department'].lower() == staff['dept'].lower()):
+                            return jsonify({"error": "Applicant cannot apply for a role which is the same role and department as they currently are in now"}), 200
+                    else:
+                        inputStaffRole = ""
+                    # Create a new role record
+                    new_app = Apply(
+                        application_id= None,
+                        applicant_staff_id = inputStaffId,
+                        applicant_existing_role = inputStaffRole,
+                        applicant_existing_dept = staff['dept'],
+                        application_status = "PENDING",
+                        date_applied = datetime.now(),
+                        applied_role_id = inputRoleId,
+                        applied_role_ver = roles[0]['role_listing_ver']
+                        )
+
+                    # Add the new role to the session
+                    db.session.add(new_app)
+                    db.session.commit()
+                    # Return a JSON response with the list of applicants for the specified skill ID
+                    return jsonify([new_app.json()]), 200
+                else:
+                    return jsonify({"error": "Application already exists"}), 200
+            else: 
+                return jsonify({"error": "Role is not active"}), 200
+    
+    except Exception as e:
+        # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
+        return jsonify({"error": str(e)}), 500
