@@ -2,6 +2,7 @@ import axios, { all } from 'axios';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import MultiSelect from './Multiselect'
+import Button from 'react-bootstrap/Button';
 
 interface FilterProps {
     sendDataToApplicant: (data: any) => void; // Define the function signature
@@ -9,7 +10,7 @@ interface FilterProps {
 
 const Filter: React.FC<FilterProps> = ({ sendDataToApplicant }) => {
     
-    const [allSKills, setAllSkills] = useState<object[]>([]); // Initialize as an empty array
+  const [allSKills, setAllSkills] = useState<string[]>([]); // Initialize as an empty array
 
       
     useEffect(() => {
@@ -23,12 +24,13 @@ const Filter: React.FC<FilterProps> = ({ sendDataToApplicant }) => {
           });
     }, []);
     
-    function arrayToObjects(inputArray: string[]): { id: number; value: string }[] {
-        return inputArray.map((item, index) => ({
-          id: index + 1, // You can start id from 1 or 0, depending on your preference
+    function arrayToObjects(inputArray: string[]): { id: string; value: string }[] {
+      return inputArray.map((item, index) => ({
+          id: (index + 1).toString(),
           value: item,
-        }));
-      }
+      }));
+  }
+  
 
     const items = arrayToObjects(allSKills)
 
@@ -39,7 +41,6 @@ const Filter: React.FC<FilterProps> = ({ sendDataToApplicant }) => {
 
     return (
     <div className="multiselect">
-        <h5>Filter by skill</h5>
         <MultiSelect sendDataToFilter={handleDataFromMulti} items={items} placeholder="Select a Skill" />
     </div>
     );

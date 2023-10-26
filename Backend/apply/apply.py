@@ -1,40 +1,57 @@
 from flask import jsonify, Blueprint, request
-from models import Apply, ApplySkill, Role, RoleSkill, StaffSkill, RoleListingSkills
+from models import Apply, ApplySkill, Role, RoleSkill, StaffSkill, RoleListingSkills, db
 import requests
 
 apply_routes = Blueprint('apply_routes', __name__)
 
 #get all applications
-@apply_routes.route('/API/v1/viewApplicants')
+@apply_routes.route('/API/v1/viewApplicants', methods=['GET', 'POST'])
 def viewApplicants():
     try:
+        inputSkillsLst = []
+
+        if request.method == "POST":
+            resp = request.get_json()
+
+            if "skills" in resp:
+                if resp['skills'] != []:
+                    inputSkillsLst = resp['skills']
+
         processed_applications = []
         applications = Apply.query.all()
         
-
         if not applications:
             # If there are no applications, return a 200 Not Found status
             return jsonify({"error": "No applicants found"}), 200
         
         # for each applicants found
         for applicant in applications:
+            skill_match_lst = []
             temp_application = applicant.json()  # Call json() on the individual applicant
             temp_application['staff'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{applicant.json()["applicant_staff_id"]}').json()
             
-
             role = Role.query.filter_by(role_id=applicant.json()["applied_role_id"]).first()
             temp_application['role'] = role.json()
 
+            # Query role listing skills
             role_id = role.json()["role_id"]
-            role_skills = RoleListingSkills.query.filter_by(role_id=role_id).all()
+            subquery = db.session.query(RoleListingSkills.role_id, db.func.max(RoleListingSkills.role_listing_ver).label('max_ver')).group_by(RoleListingSkills.role_id).subquery()
+            query = db.session.query(RoleListingSkills).join(subquery, db.and_(RoleListingSkills.role_id == subquery.c.role_id, RoleListingSkills.role_listing_ver == subquery.c.max_ver))
+            role_skills = query.filter_by(role_id=role_id).all()
             temp_application['role_skills'] = [skill.json() for skill in role_skills]
             
             staff_skill = StaffSkill.query.filter_by(staff_id=applicant.json()["applicant_staff_id"]).all()
             temp_application['staff_skill'] = [skill.json() for skill in staff_skill]
 
+            for staff_skill in temp_application['staff_skill']:
+                for skill in inputSkillsLst:
+                    if staff_skill['skill_name'] == skill:
+                        skill_match_lst.append(staff_skill['skill_name'])
 
-            processed_applications += [temp_application]
-       
+            if len(inputSkillsLst) == len(skill_match_lst):
+                temp_application['skill_matched'] = skill_match_lst
+                temp_application['skill_matched_count'] = len(skill_match_lst)
+                processed_applications += [temp_application]       
 
         return jsonify(processed_applications), 200
     except Exception as e:

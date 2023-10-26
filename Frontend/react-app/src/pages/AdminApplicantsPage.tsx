@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import Filter from '../components/Filter';
 
 interface Applicant {
     application_id: number;
@@ -38,6 +39,7 @@ interface Applicant {
     skill_match_pct: number;
     // Add other properties as needed
   }
+
 
 const AdminApplicantsPage = () => {
     const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
@@ -75,20 +77,40 @@ const AdminApplicantsPage = () => {
             "role_id": item.applied_role_id
         })
         .then((response) => {
-            setRoleSkillMatch(response.data.skill_match_pct);
+         setRoleSkillMatch(response.data.skill_match_pct);
+
         })
         .catch((error) => {
-            console.error('Error fetching data:', error);
+          console.error('Error fetching data:', error);
         });
     
     }
 
-
-    const handleDataFromFlter = (data: any) => {
-      setFilteredSkill(data);
-      console.log(data);
+    const handleDataFromFilter = (data: any) => {
+      const skillArray = data.map((obj:{ id: number; value: string }) => obj.value);
+      setFilteredSkill(skillArray);
+    
     }
 
+    function onHandleSubmitFilterButton() {
+      console.log(filteredSkill);
+      axios.post('http://127.0.0.1:5000/API/v1/viewApplicants',{
+        "skills": filteredSkill
+      })
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+          console.log(response.data);
+          
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true)
+        }
+      })
+      .catch((error) => {
+          console.error('Error fetching data:', error);
+      });
+    }
 
   return (
     <div>
@@ -114,10 +136,10 @@ const AdminApplicantsPage = () => {
     
   ))
 )}
-
         </Col>
         <Col md='4'>
-            <Filter sendDataToApplicant={handleDataFromFlter}></Filter>
+          <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
+          <Filter sendDataToApplicant={handleDataFromFilter}></Filter>
         </Col>
        </Row>
        
@@ -126,7 +148,7 @@ const AdminApplicantsPage = () => {
     {showSkillModal && (
             <Modal show={showSkillModal} onHide={handleDetailCloseModal}>
               <Modal.Header closeButton>
-                <Modal.Title></Modal.Title>
+                <Modal.Title>Applicant's skills</Modal.Title>
               </Modal.Header>
               <Modal.Body>
 
