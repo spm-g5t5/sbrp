@@ -50,7 +50,7 @@ interface RoleSkillMatch {
   // Add other properties as needed
 }
 
-
+const AdminApplicantsPage = () => {
 
     const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
     const [showSkillModal, setSkillShowModal] = useState(false);
@@ -59,8 +59,7 @@ interface RoleSkillMatch {
     const [currentItem, setCurrentItem] = useState<Applicant | null>(null);
     const [isArrayEmpty, setIsArrayEmpty] = useState(false);
     const [filteredSkill, setFilteredSkill] = useState<[]>([]); // Initialize as an empty array
-    
-    const handleDetailCloseModal = () => setSkillShowModal(false);
+
 
 
   const handleDetailCloseModal = () => setSkillShowModal(false);
@@ -170,8 +169,7 @@ interface RoleSkillMatch {
                   </CardText>
                 </CardBody>
               </Card>
-            ))
-
+            )))}
         </Col>
         <Col md='4'>
           <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
