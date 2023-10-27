@@ -17,7 +17,15 @@ import {
 import Card from "react-bootstrap/Card";
 import { Navigate, Outlet, useNavigate, Link } from "react-router-dom";
 import "../styles/AdminRolePage.css";
-import { FaPlus, FaTimes, FaBuilding, FaBriefcase, FaCalendar, FaExclamation} from "react-icons/fa";
+import {
+  FaPlus,
+  FaTimes,
+  FaBuilding,
+  FaBriefcase,
+  FaPen,
+  FaUser,
+  FaRegSadCry,
+} from "react-icons/fa";
 
 const AdminRolePage = () => {
   const [data, setData] = useState<
@@ -26,7 +34,7 @@ const AdminRolePage = () => {
       role_name: string;
       department: string;
       job_description: string;
-      expiry_dt: string;
+      expiry_dt: Date;
       job_type: string;
       original_creation_dt: Date;
       active_status: number;
@@ -102,6 +110,7 @@ const AdminRolePage = () => {
       })
       .catch((error) => {
         console.error(error);
+        console.log(error);
       });
   };
   return (
@@ -124,83 +133,94 @@ const AdminRolePage = () => {
       </Row>
       <Row>
         <Col xl={8}>
-        {data
-        .filter((item) => item.active_status == 1)
-        .map((item) => (
-          <Card
-            style={{ margin: "30px" }}
-            key={item.role_id.toString()}
-            onClick={() => handleDetail(item)}
-            className="clickable-card"
-            data-mdb-ripple-color="light"
-          >
-            <CardBody>
-              <div className="d-flex justify-content-between">
-                <div>
-                  <CardTitle>{item.role_name}</CardTitle>
-                  {item.expiry_dt > currentDate ? (
-                    <Badge pill bg="danger">
-                      Expired
-                    </Badge>
-                  ) : (
-                    <Badge pill bg="success">
-                      Active
-                    </Badge>
-                  )}
-                </div>
-                <div className="d-flex">
-                  <button
-                    className="update-job-button"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent card click
-                      handleUpdateRole(item);
-                    }}
-                  >
-                    <span>Update</span>
-                  </button>
-                  <button
-                    className="remove-job-button"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent card click
-                      handleRemoveRole(item);
-                    }}
-                  >
-                    <span>
-                      <FaTimes />
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <Card.Text>
-                <FaBuilding /> Department: {item.department}
-              </Card.Text>
-              <Card.Text>
-                <FaBriefcase /> Job Type: {item.job_type}
-              </Card.Text>
-              <Card.Text>
-                <FaExclamation /> Apply By: {item.expiry_dt.slice(5, 16)}
-              </Card.Text>
-              <Card.Text>
-                <FaCalendar /> Last updated by {item.upd_hiring_manager.staff_fname} {item.upd_hiring_manager.staff_lname} on {item.upd_dt.slice(5, 22)}
-              </Card.Text>
-              <button
-                className="view-applicants-button"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent card click
-                  handleViewApplications(item);
-                }}
-              >
-                View Applicants
-              </button>
-            </CardBody>
-          </Card>
-        ))}
+          {data.length > 0 ? (
+            data
+              .filter((item) => item.active_status == 1)
+              .map((item) => (
+                <Card
+                  style={{ margin: "30px" }}
+                  key={item.role_id.toString()}
+                  onClick={() => handleDetail(item)}
+                  className="clickable-card"
+                  data-mdb-ripple-color="light"
+                >
+                  <CardBody>
+                    <div className="d-flex justify-content-between">
+                      <div>
+                        <CardTitle>{item.role_name}</CardTitle>
+                        {item.expiry_dt > currentDate ? (
+                          <Badge pill bg="danger">
+                            Expired
+                          </Badge>
+                        ) : (
+                          <Badge pill bg="success">
+                            Active
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="d-flex">
+                        <button
+                          className="update-job-button"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card click
+                            handleUpdateRole(item);
+                          }}
+                        >
+                          <span>Update</span>
+                        </button>
+                        <button
+                          className="remove-job-button"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card click
+                            handleRemoveRole(item);
+                          }}
+                        >
+                          <span>
+                            <FaTimes />
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    <Card.Text>
+                      <FaBuilding /> Department: {item.department}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaBriefcase /> Job Type: {item.job_type}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaPen /> Apply By:{" "}
+                      {item.expiry_dt.toString().slice(5, 16)}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaUser /> Last updated by{" "}
+                      {item.upd_hiring_manager.staff_fname}{" "}
+                      {item.upd_hiring_manager.staff_lname} on{" "}
+                      {item.upd_dt.slice(5, 22)}
+                    </Card.Text>
+                    <button
+                      className="view-applicants-button"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click
+                        handleViewApplications(item);
+                      }}
+                    >
+                      View Applicants
+                    </button>
+                  </CardBody>
+                </Card>
+              ))
+          ) : (
+            <div>
+              <span className="errormsg">
+                <FaRegSadCry />
+                No items to display
+                <FaRegSadCry />
+              </span>
+            </div>
+          )}
         </Col>
-        <Col xl={4}>
-        Put Filter here
-        </Col>
+        <Col xl={4}>Put Filter here</Col>
       </Row>
-      
 
       {/* {showApplicationModal && (
         <Modal
