@@ -2,6 +2,8 @@ import axios, { all } from 'axios';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import MultiSelect from './Multiselect'
+import { Modal } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 
 interface FilterProps {
     sendDataToRoleListing: (data: any) => void; // Define the function signature
@@ -81,12 +83,12 @@ const FilterRole: React.FC<FilterProps> = ({ sendDataToRoleListing }) => {
         sendDataToRoleListing(allFilters);
     }
 
-
     return (
-    <div className="multiselect">
-        <MultiSelect sendDataToFilter={handleSkillDataFromMulti} items={SkillItems} placeholder="Select a Skill" />
-        <MultiSelect sendDataToFilter={handleDepartmentDataFromMulti} items={DepartmentItem} placeholder="Select a department" />
-        <MultiSelect sendDataToFilter={handleJobTypeDataFromMulti} items={JobTypeItem} placeholder="Select a job type" />
+    <div>
+            <MultiSelect sendDataToFilter={handleSkillDataFromMulti} items={SkillItems} zIndex={3} placeholder="Select a Skill" />
+            <MultiSelect sendDataToFilter={handleDepartmentDataFromMulti} items={DepartmentItem} zIndex={2} placeholder="Select a department" />
+            <MultiSelect sendDataToFilter={handleJobTypeDataFromMulti} items={JobTypeItem} zIndex={1} placeholder="Select a job type" />
+       
     </div>
     );
 };

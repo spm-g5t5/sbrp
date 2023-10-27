@@ -22,6 +22,7 @@ const Wrapper = styled.div<{ raised?: boolean }>`
   &:hover {
     cursor: pointer;
   }
+  
 `;
 
 export type Item = {
@@ -50,9 +51,10 @@ const DropDown = styled.ul<{
   opened: boolean;
   raised?: boolean;
   wrapperClientHeight: number;
+  zIndex: number;
 }>`
   position: absolute;
-  top: ${({ wrapperClientHeight }) => wrapperClientHeight - 10}px;
+  top: ${({ wrapperClientHeight }) => wrapperClientHeight - 1}px;
   left: 0px;
   height: "inherit";
 
@@ -64,6 +66,9 @@ const DropDown = styled.ul<{
   border-radius: 6px;
   padding: 6px;
   transition: all 0.2s linear 0.1s;
+  z-index: ${({ zIndex }) => zIndex};
+  background-color: white;
+  color: black;
   & > li {
     list-style: none;
     padding: 8px;
@@ -88,12 +93,13 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   raised = true,
   items,
   placeholder = "Select an Item",
-  sendDataToFilter
+  sendDataToFilter,
+  zIndex
 }) => {
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [opened, setIsOpened] = useState(false);
   const wrapperRef = useRef(null);
-  const [wrapperClientHeight, setWrapperClientHeight] = useState(40);
+  const [wrapperClientHeight, setWrapperClientHeight] = useState(45);
 
   const onClickWrapper = () => {
     setIsOpened(!opened);
@@ -113,7 +119,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
         setWrapperClientHeight(newwrapperClientHeight);
       } else {
-        setWrapperClientHeight(40);
+        setWrapperClientHeight(45);
       }
     }
   }, [selectedItems]);
@@ -176,6 +182,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           opened={opened}
           raised={raised}
           wrapperClientHeight={wrapperClientHeight}
+          zIndex={zIndex}
         >
           {filteredItems.map(({ id, value }) => (
             <li
