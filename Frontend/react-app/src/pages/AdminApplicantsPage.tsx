@@ -13,7 +13,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { FaRegSadCry } from "react-icons/fa";
-import Filter from '../components/Filter';
+import FilterApplicants from "../components/FilterApplicants";
 
 interface Applicant {
   application_id: number;
@@ -169,7 +169,7 @@ const AdminApplicantsPage = () => {
         </Col>
         <Col md='4'>
           <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
-          <Filter sendDataToApplicant={handleDataFromFilter}></Filter>
+          <FilterApplicants sendDataToApplicant={handleDataFromFilter}></FilterApplicants>
         </Col>
        </Row>
        
