@@ -1,70 +1,80 @@
-import React, { useEffect, useState} from 'react';
-import { CardBody, CardHeader, CardSubtitle, CardText, Col, Container, Row } from 'react-bootstrap';
-import axios from 'axios';
-import Badge from 'react-bootstrap/Badge';
-import Header from '../components/Header';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import React, { useEffect, useState } from "react";
+import {
+  CardBody,
+  CardText,
+  Col,
+  Row,
+} from "react-bootstrap";
+import axios from "axios";
+import Badge from "react-bootstrap/Badge";
+import Header from "../components/Header";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import ProgressBar from "react-bootstrap/ProgressBar";
+import { FaRegSadCry } from "react-icons/fa";
+import FilterApplicants from "../components/FilterApplicants";
 
 interface Applicant {
-    application_id: number;
-    applicant_staff_id: number;
-    applicant_existing_role: string;
-    applicant_existing_dept: string;
-    application_status: string;
-    date_applied: string;
-    applied_role_id: number;
-    role: {
-      role_name: string;
-    };
-    staff: {
-      staff_fname: string;
-      staff_lname: string;
-    };
-    staff_skill: {
-      skill_name: string;
-    }[];
-    role_skills: {
-      skill_name: string;
-    }[];
-    // Add other properties as needed
-  }
-  
-  interface RoleSkillMatch {
-    staff_id: number;
-    role_id: number;
-    skill_match_pct: number;
-    // Add other properties as needed
-  }
+  application_id: number;
+  applicant_staff_id: number;
+  applicant_existing_role: string;
+  applicant_existing_dept: string;
+  application_status: string;
+  date_applied: string;
+  applied_role_id: number;
+  role: {
+    role_name: string;
+  };
+  staff: {
+    staff_fname: string;
+    staff_lname: string;
+  };
+  staff_skill: {
+    skill_name: string;
+  }[];
+  role_skills: {
+    skill_name: string;
+  }[];
+  // Add other properties as needed
+}
+
+interface RoleSkillMatch {
+  staff_id: number;
+  role_id: number;
+  skill_match_pct: number;
+  // Add other properties as needed
+}
 
 const AdminApplicantsPage = () => {
+
     const accessRights = parseInt(localStorage.getItem("AccessRights") || '0', 10);
     const [showSkillModal, setSkillShowModal] = useState(false);
     const [data, setData] = useState<Applicant[]>([]);
     const [roleSkillMatch, setRoleSkillMatch] = useState<RoleSkillMatch[]>([]);
     const [currentItem, setCurrentItem] = useState<Applicant | null>(null);
     const [isArrayEmpty, setIsArrayEmpty] = useState(false);
-    
-    const handleDetailCloseModal = () => setSkillShowModal(false);
+    const [filteredSkill, setFilteredSkill] = useState<[]>([]); // Initialize as an empty array
 
-    useEffect(() => {
-        axios.get('http://127.0.0.1:5000/API/v1/viewApplicants')
-          .then((response) => {
-            if (Array.isArray(response.data)) {
-              setData(response.data);
-              
-            } else {
-              console.log("Response data is not an array.");
-              setIsArrayEmpty(true)
-            }
 
-          })
-          .catch((error) => {
-            console.error('Error fetching data:', error);
-          });
-      }, []);
+
+  const handleDetailCloseModal = () => setSkillShowModal(false);
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:5000/API/v1/viewApplicants")
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
     function onHandleSkills(item: Applicant) {
         setCurrentItem(item);
@@ -74,40 +84,92 @@ const AdminApplicantsPage = () => {
             "role_id": item.applied_role_id
         })
         .then((response) => {
-            setRoleSkillMatch(response.data.skill_match_pct);
+         setRoleSkillMatch(response.data.skill_match_pct);
+
         })
         .catch((error) => {
-            console.error('Error fetching data:', error);
+          console.error('Error fetching data:', error);
         });
     
     }
 
+
+    const handleDataFromFilter = (data: any) => {
+      const skillArray = data.map((obj:{ id: number; value: string }) => obj.value);
+      setFilteredSkill(skillArray);
+    
+    }
+
+    function onHandleSubmitFilterButton() {
+      console.log(filteredSkill);
+      axios.post('http://127.0.0.1:5000/API/v1/viewApplicants',{
+        "skills": filteredSkill
+      })
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+          console.log(response.data);
+          
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true)
+        }
+      })
+      .catch((error) => {
+          console.error('Error fetching data:', error);
+      });
+    }
+
   return (
     <div>
-       <Header accessRights={accessRights}/>
-       <Row>
-        <Col md='8'>
-        {isArrayEmpty ? ( // Check if the data array is empty
-        <p>No applicants</p> // Display "No applicants" if the array is empty
+      <Header accessRights={accessRights} />
+      <Row>
+        <Col xl="8">
+          {isArrayEmpty ? ( // Check if the data array is empty
+            <div>
+              <span className="errormsg">
+                <FaRegSadCry />
+                No Applicants
+                <FaRegSadCry />
+              </span>
+            </div> // Display "No applicants" if the array is empty
           ) : (
-          data.map((item) => (
-            <Card style={{ margin: '30px' }} key={item.application_id.toString()}>
-                <CardHeader>
-                    <Card.Title>Application no.{item.application_id}</Card.Title>
-                    <CardSubtitle>Role: {item.role.role_name}</CardSubtitle>
-                </CardHeader>
+            data.map((item) => (
+              <Card
+                style={{ margin: "30px" }}
+                key={item.application_id.toString()}
+              >
                 <CardBody>
-                    <Card.Text>Name: {item.staff.staff_fname} {item.staff.staff_lname}</Card.Text>
-                    <CardText>Current department: {item.applicant_existing_dept}</CardText>
-                    <CardText>Current role: {item.applicant_existing_role}</CardText>
-                    <Button onClick={() => onHandleSkills(item)} variant="primary">View Skills</Button>
-
+                  <div className="d-flex justify-content-between">
+                    <div>
+                      <Card.Title>Role: {item.role.role_name}</Card.Title>
+                    </div>
+                    <div className="d-flex">
+                      <button
+                        className="view-applicants-button"
+                        onClick={() => onHandleSkills(item)}
+                      >
+                        View Skills
+                      </button>
+                    </div>
+                  </div>
+                  <Card.Text>
+                    Name: {item.staff.staff_fname} {item.staff.staff_lname}
+                  </Card.Text>
+                  <Card.Text>StaffID: {item.applicant_staff_id}</Card.Text>
+                  <CardText>
+                    Current department: {item.applicant_existing_dept}
+                  </CardText>
+                  <CardText>
+                    Current role: {item.applicant_existing_role}
+                  </CardText>
                 </CardBody>
-            
-            </Card>
-          ))
-            
-        )}
+              </Card>
+            )))}
+        </Col>
+        <Col md='4'>
+          <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
+          <FilterApplicants sendDataToApplicant={handleDataFromFilter}></FilterApplicants>
         </Col>
        </Row>
        
@@ -116,7 +178,7 @@ const AdminApplicantsPage = () => {
     {showSkillModal && (
             <Modal show={showSkillModal} onHide={handleDetailCloseModal}>
               <Modal.Header closeButton>
-                <Modal.Title></Modal.Title>
+                <Modal.Title>Applicant's skills</Modal.Title>
               </Modal.Header>
               <Modal.Body>
 
@@ -145,8 +207,8 @@ const AdminApplicantsPage = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
-          )}
-
+          
+      )}
     </div>
   );
 };
