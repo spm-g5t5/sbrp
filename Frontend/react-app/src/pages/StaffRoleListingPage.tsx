@@ -4,16 +4,14 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import RoleSkills from "../components/RoleSkills";
 import {
-  Button,
-  CardHeader,
   Modal,
   Badge,
   CardBody,
   CardFooter,
+  CardTitle
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { BsFillXCircleFill } from "react-icons/bs";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {Row, Col} from "react-bootstrap";
 import Filter from "../components/FilterRole";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -173,21 +171,12 @@ const StaffRoleListingPage = () => {
       <Col md='8'>
         
         {data
-          .filter((item) => item.active_status == 1)
+          .filter((item) => item.active_status == 1 && new Date(item.expiry_dt) > currentDate)
           .map((item) => (
             <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
-              <CardHeader className="d-flex justify-content-between">
-                <div>
-                  <h1>{item.role_name}</h1>
-                  {item.expiry_dt > currentDate ? (
-                    <Badge bg="danger">Expired</Badge>
-                  ) : (
-                    <Badge>Active</Badge>
-                  )}
-                </div>
-
-              </CardHeader>
+             
               <CardBody>
+              <CardTitle>{item.role_name}</CardTitle>
                 Department: {item.department}
                 <RoleSkills key={item.role_name.toString()} item={item} />
               </CardBody>
