@@ -68,6 +68,7 @@ const AdminRolePage = () => {
       .get("http://127.0.0.1:5000/API/v1/viewRoles")
       .then((response) => {
         setData(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -107,6 +108,7 @@ const AdminRolePage = () => {
       .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
       .then((response) => {
         setData(response.data);
+        
       })
       .catch((error) => {
         console.error(error);
@@ -135,7 +137,6 @@ const AdminRolePage = () => {
         <Col xl={8}>
           {data.length > 0 ? (
             data
-              .filter((item) => item.active_status == 1)
               .map((item) => (
                 <Card
                   style={{ margin: "30px" }}
@@ -148,7 +149,7 @@ const AdminRolePage = () => {
                     <div className="d-flex justify-content-between">
                       <div>
                         <CardTitle>{item.role_name}</CardTitle>
-                        {item.expiry_dt > currentDate ? (
+                        {new Date(item.expiry_dt) < currentDate ? (
                           <Badge pill bg="danger">
                             Expired
                           </Badge>
@@ -157,6 +158,16 @@ const AdminRolePage = () => {
                             Active
                           </Badge>
                         )}
+                        {item.active_status ? (
+                        <Badge pill bg="success">
+                          Visible
+                        </Badge>
+                        ) : (                         
+                        <Badge pill bg="danger">
+                           Hidden
+                         </Badge>
+                        )
+                        }
                       </div>
                       <div className="d-flex">
                         <button

@@ -2,6 +2,7 @@ import { Form, FormControl, Button, Row, Col } from 'react-bootstrap';
 import '../styles/SearchBar.css';
 import { useState } from 'react';
 import { BsSearch, BsX } from "react-icons/bs";
+import React from 'react';
 
 interface SearchBarProps {
   onSearch: (searchText: string) => void;
