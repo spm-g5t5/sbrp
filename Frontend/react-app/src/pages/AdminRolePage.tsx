@@ -94,6 +94,19 @@ const AdminRolePage = () => {
       });
   };
 
+  const handleUnHideRole = (item: { role_id: number }) => {
+    axios
+      .get(`http://127.0.0.1:5000/API/v1/unhideRole/${item.role_id}`)
+      .then((response) => {
+        setApplications(response.data);
+        console.log(response.data);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
   const handleUpdateRole = (item: { role_id: number }) => {
     const roleId = item.role_id.toString(); // Convert number to string
     localStorage.setItem("RoleId", roleId);
@@ -179,10 +192,12 @@ const AdminRolePage = () => {
                         >
                           <span>Update</span>
                         </button>
+                        
+                      {item.active_status ? (
                         <button
                           className="remove-job-button"
                           onClick={(e) => {
-                            e.stopPropagation(); // Prevent card click
+                            e.stopPropagation(); 
                             handleRemoveRole(item);
                           }}
                         >
@@ -190,6 +205,21 @@ const AdminRolePage = () => {
                             <FaTimes />
                           </span>
                         </button>
+                      ) : (
+                        <button
+                          className="unhide-job-button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleUnHideRole(item);
+                          }}
+                        >
+                          <span>
+                            <FaPlus />
+                          </span>
+                        </button>
+                      )
+                    }
+                         
                       </div>
                     </div>
                     <Card.Text>

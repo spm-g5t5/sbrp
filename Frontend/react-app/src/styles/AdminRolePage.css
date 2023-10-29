@@ -44,6 +44,18 @@
   border: none;
 }
 
+.unhide-job-button {
+  margin: 10px 5px ;
+  text-align: left;
+  background-color: #6ff77c; /* Background color with 35% transparency */
+  border-radius: 20px;
+  color: black; /* Text color */
+  font-family: 'Inter', sans-serif; /* Custom font family */
+  padding: 10px 20px; /* Adjust padding as needed */
+  cursor: pointer;
+  border: none;
+}
+
 .remove-job-button:hover  {
   background-color: #CB3C3C; /* Background color on hover */
   color: white;
