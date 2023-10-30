@@ -104,7 +104,6 @@ const AdminSpecificApplicantsPage = () => {
     {isArrayEmpty ? ( // Check if the data array is empty
   <p>No applicants</p> // Display "No applicants" if the array is empty
 ) : (
-  data.map((item) => (
     <Row>
     <Col xl="8">
       {isArrayEmpty ? ( // Check if the data array is empty
@@ -152,7 +151,7 @@ const AdminSpecificApplicantsPage = () => {
     </Col>
     <Col xl={4}>Filter here</Col>
   </Row>
-  ))
+  
 )}
 
 

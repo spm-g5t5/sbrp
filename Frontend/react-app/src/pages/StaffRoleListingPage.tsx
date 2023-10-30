@@ -4,46 +4,45 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import RoleSkills from "../components/RoleSkills";
 import {
-  Button,
-  CardHeader,
   Modal,
   Badge,
   CardBody,
   CardFooter,
+  CardTitle
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { BsFillXCircleFill } from "react-icons/bs";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {Row, Col} from "react-bootstrap";
 import Filter from "../components/FilterRole";
+import ProgressBar from "react-bootstrap/ProgressBar";
+
+interface Role {
+  role_id: number;
+  role_name: string;
+  department: string;
+  job_description: string;
+  expiry_dt: Date;
+  job_type: string;
+  original_creation_dt: Date;
+  active_status: number;
+  orig_role_listing: object;
+  // Add other properties as needed
+}
 
 const StaffRoleListingPage = () => {
-  const [data, setData] = useState<
-    {
-      role_id: number;
-      role_name: string;
-      department: string;
-      job_description: string;
-      expiry_dt: Date;
-      job_type: string;
-      original_creation_dt: Date;
-      active_status: number;
-      orig_role_listing: object;
-      // Add other properties as needed
-    }[]
-  >([]);
   const navigate = useNavigate();
+  const [data, setData] = useState<Role[]>([]);
   const accessRights = parseInt(
     localStorage.getItem("AccessRights") || "0",
     10
   );
-  const [Applications, setApplications] = useState<{ [key: string]: any }>({});
-  const [showApplicationModal, setApplicationShowModal] = useState(false);
   const [showDetailModal, setDetailShowModal] = useState(false);
   const [allFilters, setAllFilters] = useState<{ [key: string]: any }>({});
-  const [skillFilter, setSkillFilter] = useState<string[]>([]);
-  const [departmentFilter, setDepartmentFilter] = useState<string[]>([]);
-  const [jobTypeFilter, setJobTypeFilter] = useState<string[]>([]);
+  const [showSkillModal, setSkillShowModal] = useState(false);
+  const [roleSkillMatch, setRoleSkillMatch] = useState<number>(0);
+  const [staffMatchSkill, setStaffMatchSkill] = useState<[]>([]);
+  const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
+  const [roleListingSkill, setRoleListingSkill] = useState<[]>([]);
 
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
@@ -56,7 +55,9 @@ const StaffRoleListingPage = () => {
     // Add other properties as needed
   } | null>(null);
 
+  
   const handleDetailCloseModal = () => setDetailShowModal(false);
+  const handleSkillCloseModal = () => setSkillShowModal(false);
 
   const handleDetailShowModal = (item: {
     role_id: number;
@@ -133,6 +134,35 @@ const StaffRoleListingPage = () => {
     });
   }
 
+  const staffId = localStorage.getItem('StaffId');
+  function onHandleSkills(item: Role) {
+
+    axios.get('http://127.0.0.1:5000/API/v1/viewRoles/skill/'+item.role_id)
+    .then((response) => {
+      setRoleListingSkill(response.data);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+
+    setSkillShowModal(true);
+    axios.post('http://127.0.0.1:5000/API/v1/getRoleSkillMatch', {
+        "staff_id": staffId,
+        "role_id": item.role_id
+    })
+    .then((response) => {
+     setRoleSkillMatch(response.data.skill_match_pct);
+     setStaffMatchSkill(response.data.skill_match);
+     setStaffUnmatchSkill(response.data.staff_skills_unmatch);
+
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+
+}
+
+
   return (
     <div>
       <Header accessRights={accessRights} />
@@ -141,43 +171,40 @@ const StaffRoleListingPage = () => {
       <Col md='8'>
         
         {data
-          .filter((item) => item.active_status == 1)
+          .filter((item) => item.active_status == 1 && new Date(item.expiry_dt) > currentDate)
           .map((item) => (
             <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
-              <CardHeader className="d-flex justify-content-between">
-                <div>
-                  <h1>{item.role_name}</h1>
-                  {item.expiry_dt > currentDate ? (
-                    <Badge bg="danger">Expired</Badge>
-                  ) : (
-                    <Badge>Active</Badge>
-                  )}
-                </div>
-
-              </CardHeader>
+             
               <CardBody>
+              <CardTitle>{item.role_name}</CardTitle>
                 Department: {item.department}
                 <RoleSkills key={item.role_name.toString()} item={item} />
               </CardBody>
               <CardFooter>
-                <Button
-                  style={{ backgroundColor: "#266C73" }}
+                <button
+                  className="view-applicants-button"
                   onClick={() => handleDetailShowModal(item)}
                 >
                   More details
-                </Button>
-                <Button
-                  style={{ backgroundColor: "#266C73" }}
+                </button>
+                <button
+                  className="view-applicants-button"
                   onClick={() => handleApplication()}
                 >
                   Apply
-                </Button>
+                </button>
+                <button
+                  className="view-applicants-button"
+                  onClick={() => onHandleSkills(item)}
+                >
+                  View Skills
+                </button>
               </CardFooter>
             </Card>
           ))}
           </Col>  
           <Col md='4'>
-          <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
+          <button className="view-applicants-button"  onClick={onHandleSubmitFilterButton}> Filter</button>
           <Filter sendDataToRoleListing={handleDataFromFilter}></Filter>
           </Col>
         </Row>
@@ -197,40 +224,55 @@ const StaffRoleListingPage = () => {
               <p>{currentItem!.original_creation_dt.toLocaleDateString()}</p>
             </Modal.Body>
             <Modal.Footer>
-              <Button
-                style={{ backgroundColor: "#266C73" }}
+              <button
+                className="view-applicants-button"
                 onClick={handleDetailCloseModal}
               >
                 Close
-              </Button>
+              </button>
             </Modal.Footer>
           </Modal>
         )}
 
-        {showApplicationModal && (
-          <Modal
-            show={showApplicationModal}
-            onHide={() => setApplicationShowModal(false)}
-          >
+
+        {showSkillModal && (
+          <Modal show={showSkillModal} onHide={handleSkillCloseModal}>
             <Modal.Header closeButton>
-              <Modal.Title>Applications</Modal.Title>
+              <Modal.Title>Applicant's skills</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <p>Applicant by staff ID</p>
-              {Object.keys(Applications).map((key: string) => (
-                <li key={key}>{Applications[key].applicant_staff_id}</li>
-              ))}
+
+              <p>
+                  Role's needed skills: {roleListingSkill.map((RoleSkill)=>(
+                      <Badge bg="primary">{RoleSkill.skill_name}</Badge>
+                  ))}
+              </p>
+              <p>
+                Your skills: 
+                {staffMatchSkill.map((skill)=>(
+                    <Badge bg="success">{skill}</Badge>
+                ))}
+                {staffUnmatchSkill.map((skill)=>(
+                    <Badge bg="danger">{skill}</Badge>
+                ))}
+              </p>
+            <p>
+            Applicant's skills Match Percentage: 
+            <ProgressBar now={roleSkillMatch} label={`${roleSkillMatch}%`} />
+            </p>
+              
             </Modal.Body>
             <Modal.Footer>
-              <Button
-                style={{ backgroundColor: "#266C73" }}
-                onClick={() => setApplicationShowModal(false)}
+              <button
+                className="view-applicants-button"
+                onClick={handleSkillCloseModal}
               >
                 Close
-              </Button>
+              </button>
             </Modal.Footer>
           </Modal>
-        )}
+          
+      )}
       </div>
  
   );

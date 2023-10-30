@@ -54,11 +54,11 @@ const AdminApplicantsPage = () => {
     const [roleSkillMatch, setRoleSkillMatch] = useState<RoleSkillMatch[]>([]);
     const [currentItem, setCurrentItem] = useState<Applicant | null>(null);
     const [isArrayEmpty, setIsArrayEmpty] = useState(false);
-    const [filteredSkill, setFilteredSkill] = useState<[]>([]); // Initialize as an empty array
+    const [filteredSkill, setFilteredSkill] = useState<[]>([]);
+    const [staffMatchSkill, setStaffMatchSkill] = useState<[]>([]);
+    const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
 
-
-
-  const handleDetailCloseModal = () => setSkillShowModal(false);
+    const handleDetailCloseModal = () => setSkillShowModal(false);
 
   useEffect(() => {
     axios
@@ -84,7 +84,9 @@ const AdminApplicantsPage = () => {
             "role_id": item.applied_role_id
         })
         .then((response) => {
-         setRoleSkillMatch(response.data.skill_match_pct);
+          setRoleSkillMatch(response.data.skill_match_pct);
+          setStaffMatchSkill(response.data.skill_match);
+          setStaffUnmatchSkill(response.data.staff_skills_unmatch);
 
         })
         .catch((error) => {
@@ -183,13 +185,17 @@ const AdminApplicantsPage = () => {
               <Modal.Body>
 
                 <p>
-                    Role's needed skills: {currentItem!.role_skills.map((RoleSkill)=>(
-                        <Badge bg="primary">{RoleSkill.skill_name}</Badge>
-                    ))}
+                  Role's needed skills: {currentItem!.role_skills.map((RoleSkill)=>(
+                      <Badge bg="primary">{RoleSkill.skill_name}</Badge>
+                  ))}
                 </p>
                 <p>
-                Applicant's skills: {currentItem!.staff_skill.map((StaffSkill)=>(
-                    <Badge bg="success">{StaffSkill.skill_name}</Badge>
+                Applicant's skills:
+                {staffMatchSkill.map((skill)=>(
+                    <Badge bg="success">{skill}</Badge>
+                ))}
+                {staffUnmatchSkill.map((skill)=>(
+                    <Badge bg="danger">{skill}</Badge>
                 ))}
                 </p>
               <p>
