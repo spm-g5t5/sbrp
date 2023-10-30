@@ -132,6 +132,7 @@ const AddJobPage: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    
 
     // Combine date and time and format it
     const combinedDateTime = `${expiry_date} ${expiry_time}`;
@@ -258,6 +259,7 @@ const AddJobPage: React.FC = () => {
                       name="skillName"
                       value={skill[0]}
                       onChange={(event) => handleSkillChange(event, index)}
+                      required
                     >
                       <option value="">Select Skill</option>
                       {skills.map((skillItem) => (
@@ -274,6 +276,7 @@ const AddJobPage: React.FC = () => {
                       name="proficiency"
                       value={skill[1]}
                       onChange={(event) => handleSkillChange(event, index)}
+                      required
                     >
                       <option value={1}>Basic</option>
                       <option value={2}>Intermediate</option>

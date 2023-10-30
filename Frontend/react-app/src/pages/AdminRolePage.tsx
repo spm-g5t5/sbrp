@@ -127,6 +127,7 @@ const AdminRolePage = () => {
         console.error(error);
         console.log(error);
       });
+      console.log(searchData)
   };
   return (
     <div>
