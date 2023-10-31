@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import {Row, Col} from "react-bootstrap";
 import Filter from "../components/FilterRole";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import { FaRegSadCry } from "react-icons/fa";
+
 
 interface Role {
   role_id: number;
@@ -43,6 +45,7 @@ const StaffRoleListingPage = () => {
   const [staffMatchSkill, setStaffMatchSkill] = useState<[]>([]);
   const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
   const [roleListingSkill, setRoleListingSkill] = useState<[]>([]);
+  const [isArrayEmpty, setIsArrayEmpty] = useState(false);
 
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
@@ -80,7 +83,14 @@ const StaffRoleListingPage = () => {
     axios
       .get("http://127.0.0.1:5000/API/v1/viewRoles")
       .then((response) => {
-        setData(response.data);
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+          console.log(response.data)
+          
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true)
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -124,9 +134,14 @@ const StaffRoleListingPage = () => {
       "jobtype":  allFilters["jobtype"]
     })
     .then((response) => {
+      if (Array.isArray(response.data)) {
         setData(response.data);
-        console.log(response.data);
+        console.log(response.data)
         
+      } else {
+        console.log("Response data is not an array.");
+        setIsArrayEmpty(true)
+      }
 
     })
     .catch((error) => {
@@ -162,11 +177,24 @@ const StaffRoleListingPage = () => {
 
 }
 
+function onHandleClearFilter() {
+  window.location.reload();
+}
 
   return (
     <div>
       <Header accessRights={accessRights} />
       <SearchBar />
+      {isArrayEmpty ? ( // Check if the data array is empty
+      <div>
+        <button className="view-applicants-button" onClick={() =>onHandleClearFilter()}>Clear filter</button>
+      <span className="errormsg">
+        <FaRegSadCry />
+        No Applicants
+        <FaRegSadCry />
+      </span>
+    </div> // Display "No applicants" if the array is empty
+    ) : (
       <Row>
       <Col md='8'>
         
@@ -208,6 +236,8 @@ const StaffRoleListingPage = () => {
           <Filter sendDataToRoleListing={handleDataFromFilter}></Filter>
           </Col>
         </Row>
+    )}
+
 
 
         {showDetailModal && (

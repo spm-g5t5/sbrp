@@ -108,10 +108,10 @@ const AdminApplicantsPage = () => {
         "skills": filteredSkill
       })
       .then((response) => {
-        if (Array.isArray(response.data)) {
+        if (Array.isArray(response.data && response.data.length > 0)) {
           setData(response.data);
-          console.log(response.data);
-          
+          console.log(response.data)
+
         } else {
           console.log("Response data is not an array.");
           setIsArrayEmpty(true)
@@ -122,21 +122,29 @@ const AdminApplicantsPage = () => {
       });
     }
 
+    function onHandleClearFilter() {
+      window.location.reload();
+    }
+
   return (
     <div>
       <Header accessRights={accessRights} />
-      <Row>
-        <Col xl="8">
+      
           {isArrayEmpty ? ( // Check if the data array is empty
             <div>
-              <span className="errormsg">
-                <FaRegSadCry />
-                No Applicants
-                <FaRegSadCry />
-              </span>
-            </div> // Display "No applicants" if the array is empty
+            <button className="view-applicants-button" onClick={() => onHandleClearFilter()}>
+              Clear filter
+            </button>
+            <span className="errormsg">
+              <FaRegSadCry />
+              No Applicants
+              <FaRegSadCry />
+            </span>
+          </div>
           ) : (
-            data.map((item) => (
+        <Row>
+        <Col xl="8">
+            {data.map((item) => (
               <Card
                 style={{ margin: "30px" }}
                 key={item.application_id.toString()}
@@ -167,13 +175,15 @@ const AdminApplicantsPage = () => {
                   </CardText>
                 </CardBody>
               </Card>
-            )))}
-        </Col>
+            ))}
+            </Col>
         <Col md='4'>
           <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
           <FilterApplicants sendDataToApplicant={handleDataFromFilter}></FilterApplicants>
         </Col>
        </Row>
+            )}
+
        
 
 
