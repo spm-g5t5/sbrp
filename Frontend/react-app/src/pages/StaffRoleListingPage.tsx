@@ -46,6 +46,7 @@ const StaffRoleListingPage = () => {
   const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
   const [roleListingSkill, setRoleListingSkill] = useState<[]>([]);
   const [isArrayEmpty, setIsArrayEmpty] = useState(false);
+  const [isApplied, setIsApplied] = useState(false);
 
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
@@ -99,8 +100,12 @@ const StaffRoleListingPage = () => {
 
 
 
-  const handleApplication = () => {
-    navigate('/StaffApplicationPage')
+  const handleApplication = (item: any) => {
+    setIsApplied(true);
+    axios.post('http://127.0.0.1:5000/API/v1/createApplication',{
+      "staff_id": staffId,
+      "role_id": item.role_id
+    })
   }
 
   // to check if object is empty
@@ -215,12 +220,19 @@ function onHandleClearFilter() {
                 >
                   More details
                 </button>
-                <button
+                {isApplied ? (
+                 <button className="remove-job-button">
+                 Applied
+               </button>
+                ):(
+                  <button
                   className="view-applicants-button"
-                  onClick={() => handleApplication()}
+                  onClick={() => handleApplication(item)}
                 >
                   Apply
                 </button>
+                )}
+
                 <button
                   className="view-applicants-button"
                   onClick={() => onHandleSkills(item)}
