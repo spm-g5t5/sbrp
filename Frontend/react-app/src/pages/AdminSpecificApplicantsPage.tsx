@@ -8,6 +8,7 @@ import Badge from 'react-bootstrap/Badge';
 import { CardBody, CardHeader, CardSubtitle, CardText, ProgressBar } from 'react-bootstrap';
 import { FaRegSadCry } from "react-icons/fa";
 import { Row, Col } from "react-bootstrap";
+import FilterApplicants from "../components/FilterApplicants";
 
 interface Applicant {
   application_id: number;
@@ -55,6 +56,7 @@ const AdminSpecificApplicantsPage = () => {
     const [isArrayEmpty, setIsArrayEmpty] = useState(false);
     const [staffMatchSkill, setStaffMatchSkill] = useState<[]>([]);
     const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
+    const [filteredSkill, setFilteredSkill] = useState<[]>([]);
   
   useEffect(() => {
     // Check access rights here
@@ -84,6 +86,30 @@ const AdminSpecificApplicantsPage = () => {
       });
   }, []);
 
+  const handleDataFromFilter = (data: any) => {
+    const skillArray = data.map((obj:{ id: number; value: string }) => obj.value);
+    setFilteredSkill(skillArray);
+  
+  }
+  
+  function onHandleSubmitFilterButton() {
+    axios.post(`http://127.0.0.1:5000/API/v1/viewApplicants/role/${roleId}`,{
+      "skills": filteredSkill
+    })
+    .then((response) => {
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        setData(response.data);
+        console.log(response.data)
+
+      } else {
+        console.log("Response data is not an array.");
+        setIsArrayEmpty(true)
+      }
+    })
+    .catch((error) => {
+        console.error('Error fetching data:', error);
+    });
+  }
 
   function onHandleSkills(item: Applicant) {
     setCurrentItem(item);
@@ -155,7 +181,10 @@ function onHandleClearFilter() {
         </Card>
       ))}
       </Col>
-  <Col xl={4}>Filter here</Col>
+      <Col md='4'>
+        <Button onClick={onHandleSubmitFilterButton} style={{ margin: '30px' }} variant="primary">Filter</Button>
+        <FilterApplicants sendDataToApplicant={handleDataFromFilter}></FilterApplicants>
+      </Col>
 </Row>
     )}
   

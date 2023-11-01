@@ -60,9 +60,18 @@ def viewApplicants():
         return jsonify({"error": str(e)}), 500
 
 #get applications for a specfic role
-@apply_routes.route('/API/v1/viewApplicants/role/<int:id>')
+@apply_routes.route('/API/v1/viewApplicants/role/<int:id>', methods=['GET', 'POST'])
 def getApplicantByRoleId(id):
     try:
+        inputSkillsLst = []
+
+        if request.method == "POST":
+            resp = request.get_json()
+
+            if "skills" in resp:
+                if resp['skills'] != []:
+                    inputSkillsLst = resp['skills']
+
         processed_applications = []
         applications = Apply.query.filter_by(applied_role_id=id).all()
         if not applications:
@@ -87,7 +96,15 @@ def getApplicantByRoleId(id):
             staff_skill = StaffSkill.query.filter_by(staff_id=applicant.json()["applicant_staff_id"]).all()
             temp_application['staff_skill'] = [skill.json() for skill in staff_skill]
 
-            processed_applications += [temp_application]
+            for staff_skill in temp_application['staff_skill']:
+                for skill in inputSkillsLst:
+                    if staff_skill['skill_name'] == skill:
+                        skill_match_lst.append(staff_skill['skill_name'])
+
+            if len(inputSkillsLst) == len(skill_match_lst):
+                temp_application['skill_matched'] = skill_match_lst
+                temp_application['skill_matched_count'] = len(skill_match_lst)
+                processed_applications += [temp_application]       
 
         # Return a JSON response with the list of applicants for the specified role
         return jsonify(processed_applications), 200
