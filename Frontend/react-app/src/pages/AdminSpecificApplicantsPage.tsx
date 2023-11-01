@@ -118,7 +118,7 @@ function onHandleClearFilter() {
            </button>
            <span className="errormsg">
              <FaRegSadCry />
-             No Applicants
+              No results found
              <FaRegSadCry />
            </span>
          </div>
