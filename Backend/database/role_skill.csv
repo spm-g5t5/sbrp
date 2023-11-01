@@ -4,15 +4,15 @@ Consultancy Director,Account Management
 Consultant,Account Management
 Sales Director,Account Management
 Solutioning Director,Account Management
-Finance  Executive,Accounting and Tax Systems
+Finance Executive,Accounting and Tax Systems
 Finance Director,Accounting and Tax Systems
 Finance Manager,Accounting and Tax Systems
-Finance  Executive,Accounting Standards
+Finance Executive,Accounting Standards
 Finance Manager,Accounting Standards
 Developer,Applications Development
 Developer,Applications Integration
 Developer,Applications Support and Enhancement
-Finance  Executive,Audit Compliance
+Finance Executive,Audit Compliance
 Finance Director,Audit Compliance
 Finance Manager,Audit Compliance
 Finance Manager,Audit Frameworks
@@ -52,7 +52,7 @@ Admin Executive,Collaboration
 Call Centre,Collaboration
 Consultant,Collaboration
 Developer,Collaboration
-Finance  Executive,Collaboration
+Finance Executive,Collaboration
 Finance Manager,Collaboration
 HR Executive,Collaboration
 IT Analyst,Collaboration
@@ -70,7 +70,7 @@ Consultancy Director,Communication
 Consultant,Communication
 Developer,Communication
 Engineering Director,Communication
-Finance  Executive,Communication
+Finance Executive,Communication
 Finance Director,Communication
 Finance Manager,Communication
 HR Director,Communication
@@ -94,7 +94,7 @@ Sales Manager,Customer Relationship Management
 Account Manager,Data Analytics
 Consultancy Director,Data Analytics
 Consultant,Data Analytics
-Finance  Executive,Data Analytics
+Finance Executive,Data Analytics
 Finance Director,Data Analytics
 Finance Manager,Data Analytics
 Sales Director,Data Analytics
@@ -111,17 +111,17 @@ Finance Director,Finance Business Partnering
 Finance Manager,Finance Business Partnering
 HR Director,Financial Acumen
 IT Director,Financial Acumen
-Finance  Executive,Financial Closing
-Finance  Executive,Financial Management
+Finance Executive,Financial Closing
+Finance Executive,Financial Management
 Finance Director,Financial Management
 Finance Manager,Financial Management
 Finance Director,Financial Planning
 Finance Manager,Financial Planning
-Finance  Executive,Financial Reporting
+Finance Executive,Financial Reporting
 Finance Director,Financial Reporting
 Finance Manager,Financial Reporting
 Finance Manager,Financial Statements Analysis
-Finance  Executive,Financial Transactions
+Finance Executive,Financial Transactions
 HR Director,Human Resource Advisory
 IT Director,Human Resource Advisory
 HR Director,Human Resource Practices Implementation
@@ -159,7 +159,7 @@ Consultancy Director,Problem Solving
 Consultant,Problem Solving
 Developer,Problem Solving
 Engineering Director,Problem Solving
-Finance  Executive,Problem Solving
+Finance Executive,Problem Solving
 IT Analyst,Problem Solving
 Junior Engineer,Problem Solving
 L&D Executuve,Problem Solving
@@ -175,13 +175,13 @@ Consultant,Product Management
 Developer,Product Management
 Sales Director,Product Management
 Solutioning Director,Product Management
-Finance  Executive,Professional and Business Ethics
+Finance Executive,Professional and Business Ethics
 Finance Director,Professional and Business Ethics
 Finance Manager,Professional and Business Ethics
 Consultancy Director,Project Management
 Consultant,Project Management
 Developer,Project Management
-Finance  Executive,Project Management
+Finance Executive,Project Management
 Finance Manager,Project Management
 HR Director,Project Management
 IT Analyst,Project Management
@@ -199,7 +199,7 @@ Consultancy Director,Sales Strategy
 Sales Director,Sales Strategy
 Solutioning Director,Sales Strategy
 Support Engineer,Security Administration
-Finance  Executive,Sense Making
+Finance Executive,Sense Making
 Junior Engineer,Sense Making
 IT Analyst,Service Level Management
 Support Engineer,Service Level Management
@@ -234,8 +234,8 @@ Solutioning Director,Strategy Planning
 Developer,System Integration
 Support Engineer,System Integration
 HR Director,Talent Management
-Finance  Executive,Tax Computation
-Finance  Executive,Tax Implications
+Finance Executive,Tax Computation
+Finance Executive,Tax Implications
 Finance Director,Tax Implications
 Finance Manager,Tax Implications
 Call Centre,Technology Application
