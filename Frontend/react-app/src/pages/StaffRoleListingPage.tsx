@@ -190,10 +190,10 @@ function onHandleClearFilter() {
         <button className="view-applicants-button" onClick={() =>onHandleClearFilter()}>Clear filter</button>
       <span className="errormsg">
         <FaRegSadCry />
-        No Applicants
+          No results found
         <FaRegSadCry />
       </span>
-    </div> // Display "No applicants" if the array is empty
+    </div>
     ) : (
       <Row>
       <Col md='8'>
