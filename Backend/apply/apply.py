@@ -62,6 +62,7 @@ def viewApplicants():
 #get applications for a specfic role
 @apply_routes.route('/API/v1/viewApplicants/role/<int:id>', methods=['GET', 'POST'])
 def getApplicantByRoleId(id):
+    
     try:
         inputSkillsLst = []
 
@@ -74,11 +75,13 @@ def getApplicantByRoleId(id):
 
         processed_applications = []
         applications = Apply.query.filter_by(applied_role_id=id).all()
+
         if not applications:
             # If there are no applicants for the specified role, return a 200 Not Found status
             return jsonify({"error": "No applicants found for this role"}), 200
         
         for applicant in applications:
+            skill_match_lst = []
             temp_application = applicant.json()  # Call json() on the individual applicant
             temp_application['staff'] = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{applicant.json()["applicant_staff_id"]}').json()
             
@@ -105,6 +108,8 @@ def getApplicantByRoleId(id):
                 temp_application['skill_matched'] = skill_match_lst
                 temp_application['skill_matched_count'] = len(skill_match_lst)
                 processed_applications += [temp_application]       
+
+        
 
         # Return a JSON response with the list of applicants for the specified role
         return jsonify(processed_applications), 200
