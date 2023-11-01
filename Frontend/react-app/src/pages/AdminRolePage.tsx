@@ -4,6 +4,7 @@ import axios from "axios";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import RoleSkills from "../components/RoleSkills";
+import FilterRole from "../components/FilterRole";
 import {
   Button,
   CardHeader,
@@ -54,6 +55,8 @@ const AdminRolePage = () => {
   );
   const [Applications, setApplications] = useState<{ [key: string]: any }>({});
   const [showApplicationModal, setApplicationShowModal] = useState(false);
+  const [isArrayEmpty, setIsArrayEmpty] = useState(false);
+  const [allFilters, setAllFilters] = useState<{ [key: string]: any }>({});
 
   const handleDetail = (item: { role_id: number }) => {
     const roleId = item.role_id.toString(); // Convert number to string
@@ -67,8 +70,14 @@ const AdminRolePage = () => {
     axios
       .get("http://127.0.0.1:5000/API/v1/viewRoles")
       .then((response) => {
-        setData(response.data);
-        console.log(response.data);
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+          console.log(response.data)
+
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true)
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -129,13 +138,75 @@ const AdminRolePage = () => {
       });
       console.log(searchData)
   };
+
+    // to check if object is empty
+    function isObjectEmpty(obj: any) {
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          return false; // Object has at least one own property
+        }
+      }
+      return true; // Object is empty (has no own properties)
+    }
+
+    
+  const handleDataFromFilter = (data: any) => {
+    if (isObjectEmpty(data)){
+      console.log("empty")
+    }else{
+      setAllFilters((prev) => ({
+        ...prev,
+        ...data,
+      }));
+    }
+
+  }
+
+  function onHandleSubmitFilterButton() {
+    axios.post('http://127.0.0.1:5000/API/v1/searchRole',{
+      "skills": allFilters["skills"],
+      "department": allFilters["department"],
+      "jobtype":  allFilters["jobtype"]
+    })
+    .then((response) => {
+      if (Array.isArray(response.data)) {
+        setData(response.data);
+        console.log(response.data)
+        
+      } else {
+        console.log("Response data is not an array.");
+        setIsArrayEmpty(true)
+      }
+
+    })
+    .catch((error) => {
+        console.error('Error fetching data:', error);
+    });
+  }
+
+  function onHandleClearFilter() {
+    window.location.reload();
+  }
+
   return (
     <div>
       <Header accessRights={accessRights} />
-      <Row>
+      {isArrayEmpty ? (
+        <div>
+          <button className="view-applicants-button" onClick={() =>onHandleClearFilter()}>Clear filter</button>
+          <span className="errormsg">
+            <FaRegSadCry />
+              No results found
+            <FaRegSadCry />
+          </span>
+        </div>
+      ) : (
+        <Row>
+
         <Col xs={12} xl={11}>
           <SearchBar onSearch={handleSearch} />
         </Col>
+       
         <Col xs={12} xl={1}>
           <button
             className="add-job-button"
@@ -146,7 +217,7 @@ const AdminRolePage = () => {
             </span>
           </button>
         </Col>
-      </Row>
+
       <Row>
         <Col xl={8}>
           {data.length > 0 ? (
@@ -261,8 +332,14 @@ const AdminRolePage = () => {
             </div>
           )}
         </Col>
-        <Col xl={4}>Put Filter here</Col>
+        <Col md='4'>
+        <button className="view-applicants-button"  onClick={onHandleSubmitFilterButton}> Filter</button>
+        <FilterRole sendDataToRoleListing={handleDataFromFilter}></FilterRole>
+        </Col>
       </Row>
+      </Row>
+      )}
+      
 
       {/* {showApplicationModal && (
         <Modal

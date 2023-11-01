@@ -13,7 +13,7 @@ import {
 import Card from "react-bootstrap/Card";
 import { useNavigate } from "react-router-dom";
 import {Row, Col} from "react-bootstrap";
-import Filter from "../components/FilterRole";
+import FilterRole from "../components/FilterRole";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { FaRegSadCry } from "react-icons/fa";
 
@@ -233,7 +233,7 @@ function onHandleClearFilter() {
           </Col>  
           <Col md='4'>
           <button className="view-applicants-button"  onClick={onHandleSubmitFilterButton}> Filter</button>
-          <Filter sendDataToRoleListing={handleDataFromFilter}></Filter>
+          <FilterRole sendDataToRoleListing={handleDataFromFilter}></FilterRole>
           </Col>
         </Row>
     )}
@@ -273,7 +273,7 @@ function onHandleClearFilter() {
             <Modal.Body>
 
               <p>
-                  Role's needed skills: {roleListingSkill.map((RoleSkill)=>(
+                  Role's needed skills: {roleListingSkill.map((RoleSkill: any)=>(
                       <Badge bg="primary">{RoleSkill.skill_name}</Badge>
                   ))}
               </p>
