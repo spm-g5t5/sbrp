@@ -108,7 +108,7 @@ const AdminApplicantsPage = () => {
         "skills": filteredSkill
       })
       .then((response) => {
-        if (Array.isArray(response.data && response.data.length > 0)) {
+        if (Array.isArray(response.data) && response.data.length > 0) {
           setData(response.data);
           console.log(response.data)
 
@@ -137,7 +137,7 @@ const AdminApplicantsPage = () => {
             </button>
             <span className="errormsg">
               <FaRegSadCry />
-              No Applicants
+              No results found
               <FaRegSadCry />
             </span>
           </div>
