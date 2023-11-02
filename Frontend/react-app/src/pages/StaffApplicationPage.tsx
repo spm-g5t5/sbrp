@@ -1,9 +1,15 @@
 import React from 'react';
+import Header from '../components/Header';
 
 const StaffApplicationPage = () => {
+  const accessRights = parseInt(
+    localStorage.getItem("AccessRights") || "0",
+    10)
+
   return (
     <div>
-      This is the staff application page
+      <Header accessRights={accessRights} />
+      
     </div>
   );
 }
