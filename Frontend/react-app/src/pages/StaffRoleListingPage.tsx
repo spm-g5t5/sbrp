@@ -46,7 +46,8 @@ const StaffRoleListingPage = () => {
   const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
   const [roleListingSkill, setRoleListingSkill] = useState<[]>([]);
   const [isArrayEmpty, setIsArrayEmpty] = useState(false);
-  const [isApplied, setIsApplied] = useState(false);
+  const [staffApplication, setStaffApplication] = useState(new Set());
+
 
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
@@ -80,33 +81,56 @@ const StaffRoleListingPage = () => {
 
   const currentDate = new Date();
 
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:5000/API/v1/viewRoles")
-      .then((response) => {
-        if (Array.isArray(response.data)) {
-          setData(response.data);
-          console.log(response.data)
-          
-        } else {
-          console.log("Response data is not an array.");
-          setIsArrayEmpty(true)
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+
+    useEffect(() => {
+        axios
+        .get("http://127.0.0.1:5000/API/v1/viewRoles")
+        .then((response) => {
+          if (Array.isArray(response.data)) {
+            setData(response.data);
+            
+          } else {
+            console.log("Response data is not an array.");
+            setIsArrayEmpty(true)
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+
+    },[]);
 
 
+    useEffect(() => {
+      axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
+            "staff_id": staffId
+          })
+          .then((response) => {
+            setStaffApplication(new Set(response.data));
+            console.log(response.data);
+          })
+        },[])
+        
 
-  const handleApplication = (item: any) => {
-    setIsApplied(true);
-    axios.post('http://127.0.0.1:5000/API/v1/createApplication',{
-      "staff_id": staffId,
-      "role_id": item.role_id
-    })
-  }
+    const handleApplication = (item: any) => {
+      axios
+        .post('http://127.0.0.1:5000/API/v1/createApplication', {
+          "staff_id": staffId,
+          "role_id": item.role_id
+        })
+        .then(() => {
+          // Chain the second Axios POST request here
+          return axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
+            "staff_id": staffId
+          });
+        })
+        .then((response) => {
+          setStaffApplication(new Set(response.data));
+          console.log(response.data);
+        })
+    }
+    
+
 
   // to check if object is empty
   function isObjectEmpty(obj: any) {
@@ -220,18 +244,19 @@ function onHandleClearFilter() {
                 >
                   More details
                 </button>
-                {isApplied ? (
-                 <button className="remove-job-button">
-                 Applied
-               </button>
-                ):(
+                {staffApplication.has(item.role_id) ? (
+                  <button className="remove-job-button">
+                    Applied
+                  </button>
+                ) : (
                   <button
-                  className="view-applicants-button"
-                  onClick={() => handleApplication(item)}
-                >
-                  Apply
-                </button>
+                    className="view-applicants-button"
+                    onClick={() => handleApplication(item)}
+                  >
+                    Apply
+                  </button>
                 )}
+
 
                 <button
                   className="view-applicants-button"

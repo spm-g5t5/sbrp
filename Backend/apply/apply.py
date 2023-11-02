@@ -174,3 +174,21 @@ def createApplication():
     except Exception as e:
         # Handle other exceptions (e.g., database errors) with a 500 Internal Server Error
         return jsonify({"error": str(e)}), 500
+
+
+@apply_routes.route('/API/v1/getStaffApplication', methods=['POST'])
+def getStaffApplication():
+    try:
+        resp = request.get_json()
+        inputStaffId = resp['staff_id']
+
+        results = Apply.query.filter_by(applicant_staff_id=inputStaffId).with_entities(Apply.applied_role_id).all()
+        flattened_results = [item[0] for item in results]
+        print(flattened_results)
+        return jsonify(flattened_results), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+    
