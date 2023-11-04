@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { Container } from 'react-bootstrap';
-import axios from 'axios';
-import Badge from 'react-bootstrap/Badge';
-import Header from '../components/Header';
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { Container } from "react-bootstrap";
+import axios from "axios";
+import Badge from "react-bootstrap/Badge";
+import Header from "../components/Header";
+import { FaRegCheckCircle } from "react-icons/fa";
+import { Row, Col } from "react-bootstrap";
 
 interface Item {
   role_id: number;
@@ -22,22 +24,33 @@ const RoleSkills: React.FC<MyComponentProps> = ({ item }) => {
   const [skills, setSkills] = useState<{ [key: string]: any }>({});
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/API/v1/viewRoles/skill/' + item.role_id)
+    axios
+      .get("http://127.0.0.1:5000/API/v1/viewRoles/skill/" + item.role_id)
       .then((response) => {
         setSkills(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       });
   }, []);
 
+  const badgeStyle = {
+    margin: "5px", // Adjust the margin value as needed
+    padding: "10px",
+    color: '#266C73'
+  };
+
   return (
     <div>
-      {Object.keys(skills).map((key: string) => (
-        <Badge bg="success" key={key}>
-          {skills[key].skill_name}
-        </Badge>
-      ))}
+      <Row style={{ justifyContent: 'flex-start' }}>
+        {Object.keys(skills).map((key: string) => (
+          <Col xl={3}>
+          <div key={key} style={badgeStyle}>
+          <FaRegCheckCircle /> {skills[key].skill_name}
+          </div>
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 };

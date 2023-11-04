@@ -1,2 +1,5 @@
-Backend/.env
 **/__pycache__/
+*.env*
+*__pycache__*
+*.pyc*
+*.DS_Store*

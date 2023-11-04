@@ -1,0 +1,556 @@
+Staff_ID,Role_Name
+130001,Chairman
+130002,CEO
+140001,Sales Director
+140002,Account Manager
+140003,Account Manager
+140004,Account Manager
+140008,Sales Manager
+140015,Account Manager
+140025,Account Manager
+140036,Account Manager
+140078,Account Manager
+140102,Account Manager
+140103,Sales Manager
+140108,Account Manager
+140115,Account Manager
+140525,Account Manager
+140736,Account Manager
+140878,Account Manager
+140879,Sales Manager
+140880,Account Manager
+140881,Account Manager
+140882,Account Manager
+140883,Account Manager
+140886,Account Manager
+140887,Account Manager
+140888,Account Manager
+140889,Account Manager
+140890,Account Manager
+140891,Account Manager
+140892,Account Manager
+140893,Account Manager
+140894,Sales Manager
+140895,Account Manager
+140898,Account Manager
+140900,Account Manager
+140901,Account Manager
+140903,Account Manager
+140904,Account Manager
+140905,Account Manager
+140908,Account Manager
+140909,Account Manager
+140910,Account Manager
+140911,Account Manager
+140912,Account Manager
+140917,Account Manager
+140918,Account Manager
+140919,Account Manager
+140923,Account Manager
+140924,Account Manager
+140925,Account Manager
+140926,Account Manager
+140927,Account Manager
+140928,Account Manager
+140929,Account Manager
+140933,Account Manager
+140934,Account Manager
+140935,Account Manager
+140937,Account Manager
+140938,Account Manager
+140940,Account Manager
+140941,Account Manager
+140942,Account Manager
+140944,Sales Manager
+140945,Account Manager
+140947,Account Manager
+140948,Account Manager
+150065,Senior Engineer
+150075,Senior Engineer
+150076,Senior Engineer
+150085,Senior Engineer
+150095,Senior Engineer
+150096,Senior Engineer
+150115,Senior Engineer
+150118,Senior Engineer
+150125,Senior Engineer
+150126,Senior Engineer
+150138,Senior Engineer
+150142,Senior Engineer
+150143,Senior Engineer
+150148,Senior Engineer
+150155,Senior Engineer
+150162,Senior Engineer
+150163,Senior Engineer
+150165,Senior Engineer
+150166,Senior Engineer
+150168,Senior Engineer
+150175,Senior Engineer
+150192,Senior Engineer
+150193,Senior Engineer
+150198,Senior Engineer
+150205,Senior Engineer
+150208,Senior Engineer
+150215,Senior Engineer
+150216,Senior Engineer
+150232,Junior Engineer
+150233,Junior Engineer
+150238,Junior Engineer
+150245,Junior Engineer
+150258,Junior Engineer
+150265,Junior Engineer
+150275,Junior Engineer
+150276,Junior Engineer
+150282,Junior Engineer
+150283,Junior Engineer
+150288,Junior Engineer
+150295,Junior Engineer
+150318,Junior Engineer
+150342,Junior Engineer
+150343,Junior Engineer
+150345,Junior Engineer
+150348,Junior Engineer
+150355,Junior Engineer
+150356,Junior Engineer
+150398,Junior Engineer
+150422,Junior Engineer
+150423,Junior Engineer
+150428,Junior Engineer
+150435,Junior Engineer
+150445,Junior Engineer
+150446,Junior Engineer
+150488,Junior Engineer
+150512,Junior Engineer
+150513,Junior Engineer
+150518,Junior Engineer
+150525,Junior Engineer
+150555,Junior Engineer
+150565,Junior Engineer
+150566,Junior Engineer
+150585,Junior Engineer
+150608,Junior Engineer
+150615,Junior Engineer
+150632,Junior Engineer
+150633,Junior Engineer
+150638,Junior Engineer
+150645,Junior Engineer
+150655,Junior Engineer
+150695,Junior Engineer
+150705,Junior Engineer
+150765,Junior Engineer
+150776,Junior Engineer
+150796,Junior Engineer
+150826,Junior Engineer
+150845,Junior Engineer
+150866,Junior Engineer
+150916,Junior Engineer
+150918,Junior Engineer
+150935,Junior Engineer
+150938,Junior Engineer
+150968,Junior Engineer
+150976,Junior Engineer
+151008,Junior Engineer
+151055,Junior Engineer
+151056,Junior Engineer
+151058,Junior Engineer
+151118,Junior Engineer
+151146,Junior Engineer
+151198,Junior Engineer
+151266,Junior Engineer
+151288,Junior Engineer
+151407,Junior Engineer
+151408,Engineering Director
+151410,Junior Engineer
+151411,Junior Engineer
+151412,Junior Engineer
+151413,Junior Engineer
+151414,Junior Engineer
+151415,Junior Engineer
+151416,Junior Engineer
+151417,Junior Engineer
+151418,Junior Engineer
+151419,Junior Engineer
+151420,Junior Engineer
+151425,Junior Engineer
+151426,Junior Engineer
+151427,Junior Engineer
+151428,Junior Engineer
+151430,Junior Engineer
+151431,Junior Engineer
+151432,Junior Engineer
+151433,Junior Engineer
+151435,Junior Engineer
+151436,Junior Engineer
+151438,Junior Engineer
+151439,Junior Engineer
+151440,Junior Engineer
+151441,Junior Engineer
+151443,Junior Engineer
+151444,Junior Engineer
+151446,Junior Engineer
+151447,Junior Engineer
+151448,Junior Engineer
+151450,Junior Engineer
+151451,Junior Engineer
+151452,Junior Engineer
+151456,Junior Engineer
+151457,Junior Engineer
+151458,Junior Engineer
+151459,Junior Engineer
+151464,Junior Engineer
+151465,Junior Engineer
+151466,Junior Engineer
+151467,Junior Engineer
+151468,Junior Engineer
+151469,Junior Engineer
+151470,Junior Engineer
+151471,Junior Engineer
+151472,Junior Engineer
+151476,Junior Engineer
+151477,Junior Engineer
+151479,Junior Engineer
+151480,Junior Engineer
+151481,Junior Engineer
+151482,Junior Engineer
+151483,Junior Engineer
+151484,Junior Engineer
+151485,Junior Engineer
+151487,Junior Engineer
+151488,Junior Engineer
+151489,Junior Engineer
+151491,Junior Engineer
+151492,Junior Engineer
+151493,Junior Engineer
+151494,Junior Engineer
+151495,Junior Engineer
+151496,Junior Engineer
+151498,Junior Engineer
+151499,Junior Engineer
+151500,Junior Engineer
+151502,Junior Engineer
+151503,Junior Engineer
+151505,Junior Engineer
+151506,Junior Engineer
+151507,Junior Engineer
+151508,Junior Engineer
+151509,Junior Engineer
+151510,Junior Engineer
+151512,Junior Engineer
+151513,Call Centre
+151514,Call Centre
+151515,Call Centre
+151517,Call Centre
+151518,Call Centre
+151519,Call Centre
+151520,Call Centre
+151521,Call Centre
+151523,Call Centre
+151524,Call Centre
+151525,Call Centre
+151526,Call Centre
+151527,Call Centre
+151528,Call Centre
+151531,Call Centre
+151533,Call Centre
+151534,Call Centre
+151535,Call Centre
+151536,Call Centre
+151537,Call Centre
+151539,Call Centre
+151540,Call Centre
+151541,Call Centre
+151543,Call Centre
+151544,Call Centre
+151545,Call Centre
+151546,Call Centre
+151547,Call Centre
+151548,Call Centre
+151549,Call Centre
+151550,Call Centre
+151556,Call Centre
+151558,Call Centre
+151559,Call Centre
+151560,Call Centre
+151561,Call Centre
+151562,Call Centre
+151563,Call Centre
+151564,Call Centre
+151567,Call Centre
+151568,Call Centre
+151570,Call Centre
+151571,Call Centre
+151573,Call Centre
+151574,Call Centre
+151575,Call Centre
+151576,Call Centre
+151578,Call Centre
+151579,Call Centre
+151580,Ops Planning Exec
+151581,Ops Planning Exec
+151582,Ops Planning Exec
+151583,Ops Planning Exec
+151584,Ops Planning Exec
+151585,Ops Planning Exec
+151589,Ops Planning Exec
+151590,Ops Planning Exec
+151591,Ops Planning Exec
+151593,Ops Planning Exec
+151595,Ops Planning Exec
+151596,Ops Planning Exec
+151597,Ops Planning Exec
+151598,Ops Planning Exec
+151600,Ops Planning Exec
+151601,Ops Planning Exec
+151602,Ops Planning Exec
+151603,Ops Planning Exec
+151605,Ops Planning Exec
+151606,Ops Planning Exec
+151607,Ops Planning Exec
+151608,Ops Planning Exec
+151609,Ops Planning Exec
+151610,Ops Planning Exec
+151611,Ops Planning Exec
+151612,Ops Planning Exec
+151613,Ops Planning Exec
+160008,HR Director
+160065,HR Executive
+160075,HR Executive
+160076,HR Executive
+160118,HR Executive
+160135,HR Executive
+160142,HR Executive
+160143,HR Executive
+160145,HR Executive
+160146,HR Executive
+160148,HR Executive
+160155,HR Executive
+160188,HR Executive
+160212,HR Executive
+160213,HR Executive
+160218,HR Executive
+160225,HR Executive
+160258,HR Executive
+160282,HR Executive
+160283,HR Executive
+160284,HR Executive
+160286,HR Executive
+160287,L&D Executive
+160288,L&D Executive
+160289,L&D Executive
+160290,L&D Executive
+160291,L&D Executive
+160293,L&D Executive
+160294,L&D Executive
+160295,L&D Executive
+160296,L&D Executive
+160297,L&D Executive
+160298,L&D Executive
+160299,L&D Executive
+160300,L&D Executive
+160301,L&D Executive
+160302,L&D Executive
+160303,L&D Executive
+160304,L&D Executive
+160305,L&D Executive
+160306,L&D Executive
+160307,L&D Executive
+160308,L&D Executive
+160313,L&D Executive
+160314,L&D Executive
+160315,L&D Executive
+160316,L&D Executive
+160317,L&D Executive
+160318,Admin Executive
+160323,Admin Executive
+160324,Admin Executive
+160325,Admin Executive
+160326,Admin Executive
+160328,Admin Executive
+160329,Admin Executive
+160330,Admin Executive
+160331,Admin Executive
+160332,Admin Executive
+160333,Admin Executive
+160334,Admin Executive
+160335,Admin Executive
+160336,Admin Executive
+160337,Admin Executive
+160338,Admin Executive
+160339,Admin Executive
+170166,Finance Director
+170208,Finance Executive
+170215,Finance Executive
+170216,Finance Executive
+170232,Finance Executive
+170233,Finance Executive
+170238,Finance Executive
+170245,Finance Executive
+170655,Finance Executive
+170866,Finance Executive
+171008,Finance Executive
+171009,Finance Manager
+171010,Finance Executive
+171011,Finance Executive
+171012,Finance Executive
+171013,Finance Executive
+171014,Finance Manager
+171015,Finance Executive
+171016,Finance Executive
+171017,Finance Executive
+171018,Finance Manager
+171022,Finance Executive
+171023,Finance Executive
+171024,Finance Executive
+171026,Finance Executive
+171027,Finance Executive
+171029,Finance Manager
+171030,Finance Executive
+171031,Finance Executive
+171032,Finance Executive
+171033,Finance Executive
+171034,Finance Executive
+171035,Finance Executive
+171036,Finance Executive
+171038,Finance Executive
+171039,Finance Executive
+171041,Finance Executive
+171042,Finance Executive
+171043,Finance Manager
+171044,Finance Executive
+171045,Finance Executive
+171046,Finance Executive
+171047,Finance Executive
+171048,Finance Executive
+180001,Consultancy Director
+180002,Consultant
+180003,Consultant
+180004,Consultant
+180005,Consultant
+180006,Consultant
+180010,Consultant
+180011,Consultant
+180012,Consultant
+180013,Consultant
+180014,Consultant
+180015,Consultant
+180019,Consultant
+180020,Consultant
+180021,Consultant
+180022,Consultant
+180023,Consultant
+180025,Consultant
+180026,Consultant
+180027,Consultant
+180029,Consultant
+180030,Consultant
+180032,Consultant
+180033,Consultant
+180034,Consultant
+180036,Consultant
+180037,Consultant
+180038,Consultant
+190001,Solutioning Director
+190003,Developer
+190004,Developer
+190005,Developer
+190006,Developer
+190008,Developer
+190009,Developer
+190010,Developer
+190014,Developer
+190015,Developer
+190016,Developer
+190017,Developer
+190018,Developer
+190019,Developer
+190021,Developer
+190022,Developer
+190024,Developer
+190025,Developer
+190026,Developer
+190027,Developer
+190028,Developer
+190029,Developer
+190030,Developer
+190031,Developer
+190032,Developer
+190033,Developer
+190035,Developer
+190036,Developer
+190037,Developer
+190038,Developer
+190040,Developer
+190041,Developer
+190042,Developer
+190043,Developer
+190044,Developer
+190045,Developer
+190046,Developer
+190047,Developer
+190048,Developer
+190049,Developer
+190050,Developer
+190051,Developer
+190052,Developer
+190054,Developer
+190055,Developer
+190056,Developer
+190057,Developer
+190058,Developer
+190059,Support Engineer
+190064,Support Engineer
+190065,Support Engineer
+190066,Support Engineer
+190067,Support Engineer
+190068,Support Engineer
+190069,Support Engineer
+190070,Support Engineer
+190074,Support Engineer
+190075,Support Engineer
+190076,Support Engineer
+190077,Support Engineer
+190078,Support Engineer
+190079,Support Engineer
+190080,Support Engineer
+190082,Support Engineer
+190086,Support Engineer
+190087,Support Engineer
+190088,Support Engineer
+190089,Support Engineer
+190091,Support Engineer
+190092,Support Engineer
+190093,Support Engineer
+190094,Support Engineer
+190095,Support Engineer
+190096,Support Engineer
+190097,Support Engineer
+190098,Support Engineer
+210001,IT Director
+210017,IT Analyst
+210018,IT Analyst
+210019,IT Analyst
+210020,IT Analyst
+210021,IT Analyst
+210022,IT Analyst
+210023,IT Analyst
+210024,IT Analyst
+210025,IT Analyst
+210026,IT Analyst
+210027,IT Analyst
+210028,IT Analyst
+210029,IT Analyst
+210030,IT Analyst
+210031,IT Analyst
+210032,IT Analyst
+210033,IT Analyst
+210034,IT Analyst
+210035,IT Analyst
+210036,IT Analyst
+210037,IT Analyst
+210038,IT Analyst
+210039,IT Analyst
+210040,IT Analyst
+210041,IT Analyst
+210042,IT Analyst
+210043,IT Analyst
+210044,IT Analyst

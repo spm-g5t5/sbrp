@@ -1,0 +1,97 @@
+.add-job-button {
+  margin: 30px 0 0 0;
+  text-align: left;
+  background-color: rgba(38, 108, 115, 0.50); /* Background color with 35% transparency */
+  border-radius: 20px;
+  color: black; /* Text color */
+  font-family: 'Inter', sans-serif; /* Custom font family */
+  padding: 10px 20px; /* Adjust padding as needed */
+  cursor: pointer;
+  border: none;
+}
+
+.add-job-button:hover  {
+  background-color: #266C73; /* Background color on hover */
+  color: white;
+}
+
+.update-job-button {
+  margin: 10px 5px ;
+  text-align: left;
+  background-color: #FFE37F; /* Background color with 35% transparency */
+  border-radius: 20px;
+  color: black; /* Text color */
+  font-family: 'Inter', sans-serif; /* Custom font family */
+  padding: 10px 20px; /* Adjust padding as needed */
+  cursor: pointer;
+  border: none;
+}
+
+.update-job-button:hover  {
+  background-color: #FFC803; /* Background color on hover */
+  color: white;
+}
+
+.remove-job-button {
+  margin: 10px 5px ;
+  text-align: left;
+  background-color: #fa8e8e; /* Background color with 35% transparency */
+  border-radius: 20px;
+  color: black; /* Text color */
+  font-family: 'Inter', sans-serif; /* Custom font family */
+  padding: 10px 20px; /* Adjust padding as needed */
+  cursor: pointer;
+  border: none;
+}
+
+.unhide-job-button {
+  margin: 10px 5px ;
+  text-align: left;
+  background-color: #6ff77c; /* Background color with 35% transparency */
+  border-radius: 20px;
+  color: black; /* Text color */
+  font-family: 'Inter', sans-serif; /* Custom font family */
+  padding: 10px 20px; /* Adjust padding as needed */
+  cursor: pointer;
+  border: none;
+}
+
+.remove-job-button:hover  {
+  background-color: #CB3C3C; /* Background color on hover */
+  color: white;
+}
+
+.view-applicants-button {
+  text-align: left;
+  background-color: rgba(38, 108, 115, 0.50); /* Background color with 35% transparency */
+  border-radius: 20px;
+  color: black; /* Text color */
+  font-family: 'Inter', sans-serif; /* Custom font family */
+  padding: 10px 20px; /* Adjust padding as needed */
+  cursor: pointer;
+  border: none;
+}
+
+
+.view-applicants-button:hover  {
+  background-color: #266C73; /* Background color on hover */
+  color: white;
+}
+
+.clickable-card {
+
+  transition: box-shadow 0.3s; /* Add a smooth transition for the hover effect */
+
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Adjust the values as needed */
+  }
+}
+
+.errormsg{
+  color: #cfd0d0;
+  display: flex;
+  justify-content: center;
+  height: 100vh; 
+}

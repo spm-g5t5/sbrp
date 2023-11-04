@@ -4,8 +4,8 @@ import pandas as pd
 import sqlalchemy
 
 # Define a method to create a database connection
-def getDatabaseConnection(ipaddress, usr, passwd, charset, curtype, db=None):
-    sqlCon  = pymysql.connect(host=ipaddress, user=usr, password=passwd, database=db, charset=charset, cursorclass=curtype);
+def getDatabaseConnection(ipaddress, usr, passwd, charset, curtype, db=None, port=3306):
+    sqlCon  = pymysql.connect(host=ipaddress, user=usr, password=passwd, database=db, charset=charset, cursorclass=curtype, port=port)
     return sqlCon
 
 # Define a method to create MySQL users
@@ -23,10 +23,11 @@ def createUser(cursor, userName, password,
 ipaddress   = ROOT_DB_HOST
 usr         = ROOT_DB_USER
 passwd      = ROOT_DB_PASSWORD
+port        = int(ROOT_DB_PORT)
 charset     = "utf8mb4"     
 curtype    = pymysql.cursors.DictCursor    
 
-mySQLConnection = getDatabaseConnection(ipaddress, usr, passwd, charset, curtype,None)
+mySQLConnection = getDatabaseConnection(ipaddress, usr, passwd, charset, curtype, port=port)
 mySQLCursor     = mySQLConnection.cursor()
 
 # Delete sbrp_schema if exist
@@ -57,7 +58,7 @@ mySQLCursor.execute(sqlDropUser)
 createUser(mySQLCursor, DB_USER, DB_PASSWORD)
 
 # Grant privileges
-sqlUpdatePermissions = f"GRANT SELECT, INSERT ON {DB_SCHEMA}.* TO '{DB_USER}'@'{DB_HOST}';"
+sqlUpdatePermissions = f"GRANT SELECT, INSERT, UPDATE ON {DB_SCHEMA}.* TO '{DB_USER}'@'{DB_HOST}';"
 mySQLCursor.execute(sqlUpdatePermissions)
 mySQLConnection.close()
 

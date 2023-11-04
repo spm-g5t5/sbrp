@@ -12,8 +12,9 @@ class Apply(db.Model):
     application_status = db.Column(db.String(20), nullable=False)
     date_applied = db.Column(db.DateTime, nullable=False)
     applied_role_id  = db.Column(db.Integer, nullable=False)
+    applied_role_ver = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, application_id, applicant_staff_id, applicant_existing_role, applicant_existing_dept, application_status, date_applied, applied_role_id):
+    def __init__(self, application_id, applicant_staff_id, applicant_existing_role, applicant_existing_dept, application_status, date_applied, applied_role_id, applied_role_ver):
         self.application_id = application_id
         self.applicant_staff_id = applicant_staff_id
         self.applicant_existing_role = applicant_existing_role
@@ -21,9 +22,10 @@ class Apply(db.Model):
         self.application_status = application_status
         self.date_applied = date_applied
         self.applied_role_id = applied_role_id
+        self.applied_role_ver = applied_role_ver
 
     def json(self):
-        return {"application_id": self.application_id, "applicant_staff_id": self.applicant_staff_id, "applicant_existing_role": self.applicant_existing_role, "applicant_existing_dept": self.applicant_existing_dept, "application_status": self.application_status, "date_applied": self.date_applied, "applied_role_id": self.applied_role_id}
+        return {"application_id": self.application_id, "applicant_staff_id": self.applicant_staff_id, "applicant_existing_role": self.applicant_existing_role, "applicant_existing_dept": self.applicant_existing_dept, "application_status": self.application_status, "date_applied": self.date_applied, "applied_role_id": self.applied_role_id, "applied_role_ver": self.applied_role_ver}
 class Staff(db.Model):
     __tablename__ = 'STAFF'
     staff_id = db.Column(db.Integer, primary_key=True)
@@ -137,3 +139,29 @@ class StaffSkill(db.Model):
 
     def json(self):
         return {"staff_id": self.staff_id, "skill_name": self.skill_name}
+
+class StaffRoleSkill(db.Model):
+    __tablename__ = 'staff_role_skill'
+    staff_id = db.Column(db.Integer, primary_key=True)
+    role_name = db.Column(db.String(20), primary_key=True)
+    skill_name = db.Column(db.String(50), primary_key=True)
+
+    def __init__(self, staff_id, role_name, skill_name):
+        self.staff_id = staff_id
+        self.role_name = role_name
+        self.skill_name = skill_name
+
+    def json(self):
+        return {"staff_id": self.staff_id, "role_name": self.role_name, "skill_name": self.skill_name}
+    
+class StaffRole(db.Model):
+    __tablename__ = 'staff_role'
+    staff_id = db.Column(db.Integer, primary_key=True)
+    role_name = db.Column(db.String(20), primary_key=True)
+
+    def __init__(self, staff_id, role_name):
+        self.staff_id = staff_id
+        self.role_name = role_name
+
+    def json(self):
+        return {"staff_id": self.staff_id, "role_name": self.role_name}
