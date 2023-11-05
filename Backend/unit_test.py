@@ -23,6 +23,8 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
         self.utA004json = {"department": ["HR"]}
         self.utA005json = {"department": ["Design Lab"]}
         self.utA006json = {"department": ["HR", "SOLUTIONING"]}
+        self.utA007json = {"skills": ["System Integration"]}
+        self.utA008json = {"skills": ["Computing"]}
 
         self.utA001RoleNameQuery = [
             Role(
@@ -194,6 +196,56 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             )
         ]
 
+        self.utA007SkillsQuery = [
+            RoleListingSkills(
+                role_id=6,
+                role_listing_ver=0,
+                skills="System Integration",
+                skills_proficiency=1
+            ),
+            RoleListingSkills(
+                role_id=22,
+                role_listing_ver=0,
+                skills="System Integration",
+                skills_proficiency=1
+            )
+        ]
+
+        self.utA007RoleNameQuery1 = [
+            Role(
+                active_status=True,
+                department="SOLUTIONING",
+                expiry_dt="Thu, 07 Dec 2023 23:59:59 GMT",
+                hiring_manager_id=171018,
+                job_description="The Developer leads important projects and possesses capability to make breakthroughs in design, development, testing, debugging and implementing software applications or specialised utility programs in support of end users' needs on platforms. He/She plans and coordinates regular updates and recommends improvements to existing applications. He identifies and resolves issues which have organisation wide and long-term impact. He identifies security risks, creates requirements to capture security issues, and performs initial threat modelling to ensure coding standards meets security requirements. He develops and maintains the software configuration management plan and oversees the building, verification and implementation of software releases. He provides guidance and technical support to the quality testing teams. He works in a team setting and is proficient in programming languages required by the organisation. He is familiar with software development tools and standards, as well as the relevant software platforms on which the solution is deployed on. The Developer is imaginative and creative in exploring a range of application designs and solutions. He is able to engage and support others in the team, readily put forth his ideas in a clear and compelling manner.",
+                job_type="FT",
+                original_creation_dt="Sat, 10 Jun 2023 16:55:00 GMT",
+                role_id=6,
+                role_listing_ver=0,
+                role_name="Support Engineer",
+                upd_dt="Sat, 10 Jun 2023 16:55:00 GMT",
+                upd_hiring_manager_id=171018
+            )
+        ]
+        self.utA007RoleNameQuery2 = [
+            Role(
+                active_status=True,
+                department="SOLUTIONING",
+                expiry_dt="Wed, 13 Dec 2023 23:59:59 GMT",
+                hiring_manager_id=140894,
+                job_description="The Support Engineer undertakes complex projects related to system provisioning, installations, configurations as well as monitoring and maintenance of systems. He/She applies highly developed specialist knowledge and skills in systems administration and works toward continuous optimisation of system performance. He implements system improvements and instructs other IT staff in the resolution of most complex issues. He is required to be on standby with on-call availability with varied shifts including nights, weekends and holidays to resolve systems related incidents. He works in a team setting and is proficient in Infrastructure systems and Network related tools and techniques required by the organisation. He is also familiar with the relevant platforms on which the database is deployed on. The Support Team is able to quickly and effectively solve issues as they arise. He is able to methodically identify the cause of the issue, evaluate it and develop a solution in collaboration with the team. He is able to communicate effectively and displays high service level standards.",
+                job_type="PT",
+                original_creation_dt="Wed, 15 Feb 2023 21:55:00 GMT",
+                role_id=22,
+                role_listing_ver=0,
+                role_name="Support Engineer",
+                upd_dt="Wed, 15 Feb 2023 21:55:00 GMT",
+                upd_hiring_manager_id=140894
+            )
+        ]
+
+        self.utA008SkillsQuery = []
+
         self.utA001HiringMgr140944 = Staff(
             country="Singapore",
             dept="Sales",
@@ -302,6 +354,24 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             staff_lname="Le"
         )
         self.utA006140894 = Staff(
+            country="Singapore",
+            dept="Sales",
+            email="Rahim.Khalid.1@allinone.com.sg",
+            staff_fname="Rahim",
+            staff_id=140894,
+            staff_lname="Khalid"
+        )
+
+        self.utA007171018 = Staff(
+            country="Singapore",
+            dept="Finance",
+            email="Phuong.Truong.3@allinone.com.sg",
+            staff_fname="Phuong",
+            staff_id=171018,
+            staff_lname="Truong"
+        )
+
+        self.utA007140894 = Staff(
             country="Singapore",
             dept="Sales",
             email="Rahim.Khalid.1@allinone.com.sg",
@@ -593,6 +663,79 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             }
         ]
 
+        self.utA007Exp = [
+            {
+                "active_status": True,
+                "department": "SOLUTIONING",
+                "expiry_dt": "Thu, 07 Dec 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Finance",
+                    "email": "Phuong.Truong.3@allinone.com.sg",
+                    "staff_fname": "Phuong",
+                    "staff_id": 171018,
+                    "staff_lname": "Truong"
+                },
+                "hiring_manager_id": 171018,
+                "job_description": "The Developer leads important projects and possesses capability to make breakthroughs in design, development, testing, debugging and implementing software applications or specialised utility programs in support of end users' needs on platforms. He/She plans and coordinates regular updates and recommends improvements to existing applications. He identifies and resolves issues which have organisation wide and long-term impact. He identifies security risks, creates requirements to capture security issues, and performs initial threat modelling to ensure coding standards meets security requirements. He develops and maintains the software configuration management plan and oversees the building, verification and implementation of software releases. He provides guidance and technical support to the quality testing teams. He works in a team setting and is proficient in programming languages required by the organisation. He is familiar with software development tools and standards, as well as the relevant software platforms on which the solution is deployed on. The Developer is imaginative and creative in exploring a range of application designs and solutions. He is able to engage and support others in the team, readily put forth his ideas in a clear and compelling manner.",
+                "job_type": "FT",
+                "original_creation_dt": "Sat, 10 Jun 2023 16:55:00 GMT",
+                "role_id": 6,
+                "role_listing_ver": 0,
+                "role_name": "Developer",
+                "skills_matched": [
+                    "System Integration"
+                ],
+                "skills_matched_count": 1,
+                "upd_dt": "Sat, 10 Jun 2023 16:55:00 GMT",
+                "upd_hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Finance",
+                    "email": "Phuong.Truong.3@allinone.com.sg",
+                    "staff_fname": "Phuong",
+                    "staff_id": 171018,
+                    "staff_lname": "Truong"
+                },
+                "upd_hiring_manager_id": 171018
+            },
+            {
+                "active_status": True,
+                "department": "SOLUTIONING",
+                "expiry_dt": "Wed, 13 Dec 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Sales",
+                    "email": "Rahim.Khalid.1@allinone.com.sg",
+                    "staff_fname": "Rahim",
+                    "staff_id": 140894,
+                    "staff_lname": "Khalid"
+                },
+                "hiring_manager_id": 140894,
+                "job_description": "The Support Engineer undertakes complex projects related to system provisioning, installations, configurations as well as monitoring and maintenance of systems. He/She applies highly developed specialist knowledge and skills in systems administration and works toward continuous optimisation of system performance. He implements system improvements and instructs other IT staff in the resolution of most complex issues. He is required to be on standby with on-call availability with varied shifts including nights, weekends and holidays to resolve systems related incidents. He works in a team setting and is proficient in Infrastructure systems and Network related tools and techniques required by the organisation. He is also familiar with the relevant platforms on which the database is deployed on. The Support Team is able to quickly and effectively solve issues as they arise. He is able to methodically identify the cause of the issue, evaluate it and develop a solution in collaboration with the team. He is able to communicate effectively and displays high service level standards.",
+                "job_type": "PT",
+                "original_creation_dt": "Wed, 15 Feb 2023 21:55:00 GMT",
+                "role_id": 22,
+                "role_listing_ver": 0,
+                "role_name": "Support Engineer",
+                "skills_matched": [
+                    "System Integration"
+                ],
+                "skills_matched_count": 1,
+                "upd_dt": "Wed, 15 Feb 2023 21:55:00 GMT",
+                "upd_hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Sales",
+                    "email": "Rahim.Khalid.1@allinone.com.sg",
+                    "staff_fname": "Rahim",
+                    "staff_id": 140894,
+                    "staff_lname": "Khalid"
+                },
+                "upd_hiring_manager_id": 140894
+            }
+        ]
+
+        self.utA008Exp = {"error": "No role found with search criteria"}
+
         self.utA001Exp = [
             {
                 "active_status": True,
@@ -777,6 +920,44 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA006json)
 
         self.assertEqual(res.json, self.utA006Exp)
+
+    @patch('sqlalchemy.engine.result.Result.all')
+    @patch('requests.get')
+    def test_UT_A_007(self, mock_requests_get, mock_query):
+        mock_subquery = Mock()
+        mock_subquery.c.role_id = Mock()
+        mock_subquery.c.max_ver = Mock()
+
+        # Mock the main query
+        # Configure the mock subquery
+        mock_query.side_effect = [
+            self.utA007SkillsQuery, self.utA007RoleNameQuery1, self.utA007RoleNameQuery2]
+        # Set the responses for the mock requests.get calls
+        mock_requests_get.side_effect = [
+            self.utA007171018, self.utA007171018,
+            self.utA007140894, self.utA007140894,
+        ]
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA007json)
+
+        self.assertEqual(res.json, self.utA007Exp)
+
+    @patch('sqlalchemy.engine.result.Result.all')
+    @patch('requests.get')
+    def test_UT_A_008(self, mock_requests_get, mock_query):
+        mock_subquery = Mock()
+        mock_subquery.c.role_id = Mock()
+        mock_subquery.c.max_ver = Mock()
+
+        # Mock the main query
+        # Configure the mock subquery
+        mock_query.side_effect = [
+            self.utA008SkillsQuery]
+
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA008json)
+
+        self.assertEqual(res.json, self.utA008Exp)
 
 
 if __name__ == "__main__":
