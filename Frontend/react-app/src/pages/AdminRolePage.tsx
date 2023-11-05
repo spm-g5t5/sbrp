@@ -20,12 +20,13 @@ import { Navigate, Outlet, useNavigate, Link } from "react-router-dom";
 import "../styles/AdminRolePage.css";
 import {
   FaPlus,
-  FaTimes,
   FaBuilding,
   FaBriefcase,
   FaPen,
   FaUser,
   FaRegSadCry,
+  FaEye, 
+  FaEyeSlash
 } from "react-icons/fa";
 
 const AdminRolePage = () => {
@@ -235,20 +236,20 @@ const AdminRolePage = () => {
                       <div>
                         <CardTitle>{item.role_name}</CardTitle>
                         {new Date(item.expiry_dt) < currentDate ? (
-                          <Badge pill bg="danger">
+                          <Badge pill bg="danger" className="badge-margin">
                             Expired
                           </Badge>
                         ) : (
-                          <Badge pill bg="success">
+                          <Badge pill bg="success" className="badge-margin">
                             Active
                           </Badge>
                         )}
                         {item.active_status ? (
-                        <Badge pill bg="success">
+                        <Badge pill bg="success" className="badge-margin">
                           Visible
                         </Badge>
                         ) : (                         
-                        <Badge pill bg="danger">
+                        <Badge pill bg="danger" className="badge-margin">
                            Hidden
                          </Badge>
                         )
@@ -274,7 +275,7 @@ const AdminRolePage = () => {
                           }}
                         >
                           <span>
-                            <FaTimes />
+                            <FaEyeSlash />
                           </span>
                         </button>
                       ) : (
@@ -286,7 +287,7 @@ const AdminRolePage = () => {
                           }}
                         >
                           <span>
-                            <FaPlus />
+                            <FaEye />
                           </span>
                         </button>
                       )

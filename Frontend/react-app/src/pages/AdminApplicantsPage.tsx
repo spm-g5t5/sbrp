@@ -12,8 +12,17 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { FaRegSadCry } from "react-icons/fa";
 import FilterApplicants from "../components/FilterApplicants";
+import {
+  FaBuilding,
+  FaBriefcase,
+  FaPen,
+  FaUser,
+  FaIdBadge,
+  FaRegSadCry,
+  FaEye, 
+  FaEyeSlash
+} from "react-icons/fa";
 
 interface Applicant {
   application_id: number;
@@ -164,14 +173,15 @@ const AdminApplicantsPage = () => {
                     </div>
                   </div>
                   <Card.Text>
-                    Name: {item.staff.staff_fname} {item.staff.staff_lname}
+                    <FaUser/> Name: {item.staff.staff_fname} {item.staff.staff_lname}
                   </Card.Text>
-                  <Card.Text>StaffID: {item.applicant_staff_id}</Card.Text>
+                  <Card.Text>
+                  <FaIdBadge/> StaffID: {item.applicant_staff_id}</Card.Text>
                   <CardText>
-                    Current department: {item.applicant_existing_dept}
+                  <FaBuilding/> Current department: {item.applicant_existing_dept}
                   </CardText>
                   <CardText>
-                    Current role: {item.applicant_existing_role}
+                  <FaBriefcase/> Current role: {item.applicant_existing_role}
                   </CardText>
                 </CardBody>
               </Card>
@@ -196,32 +206,25 @@ const AdminApplicantsPage = () => {
 
                 <p>
                   Role's needed skills: {currentItem!.role_skills.map((RoleSkill)=>(
-                      <Badge bg="primary">{RoleSkill.skill_name}</Badge>
+                      <Badge pill bg="primary" className="badge-margin">{RoleSkill.skill_name}</Badge>
                   ))}
                 </p>
                 <p>
                 Applicant's skills:
                 {staffMatchSkill.map((skill)=>(
-                    <Badge bg="success">{skill}</Badge>
+                    <Badge pill bg="success" className="badge-margin">{skill} </Badge>
                 ))}
                 {staffUnmatchSkill.map((skill)=>(
-                    <Badge bg="danger">{skill}</Badge>
+                    <Badge pill bg="warning" className="badge-margin">{skill}</Badge>
                 ))}
                 </p>
               <p>
              Applicant's skills Match Percentage: 
-             <ProgressBar now={roleSkillMatch} label={`${roleSkillMatch}%`} />
+             <ProgressBar now={roleSkillMatch} label={`${roleSkillMatch}%`} className="custom-progress-bar"/>
              </p>
                 
               </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  style={{ backgroundColor: "#266C73" }}
-                  onClick={handleDetailCloseModal}
-                >
-                  Close
-                </Button>
-              </Modal.Footer>
+              
             </Modal>
           
       )}

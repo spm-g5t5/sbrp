@@ -194,6 +194,7 @@ const StaffRoleListingPage = () => {
         "staff_id": staffId,
         "role_id": item.role_id
     })
+    
     .then((response) => {
      setRoleSkillMatch(response.data.skill_match_pct);
      setStaffMatchSkill(response.data.skill_match);

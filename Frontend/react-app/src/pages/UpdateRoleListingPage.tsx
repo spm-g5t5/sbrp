@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
+import { BsX } from "react-icons/bs";
 
 const UpdateRoleListingPage = () => {
   const accessRights = parseInt(
@@ -36,6 +37,10 @@ const UpdateRoleListingPage = () => {
     orig_role_listing: {},
     active_status: 1,
   });
+
+  const [errorDate, setErrorDate] = useState("");
+
+  const [error, setError] = useState("");
 
   const [expiry_date, setExpiryDate] = useState("");
 
@@ -117,6 +122,7 @@ const UpdateRoleListingPage = () => {
       ...prevData,
       [name]: value,
     }));
+    setError("");
   };
 
   const handleInputChangeDate = (
@@ -125,8 +131,19 @@ const UpdateRoleListingPage = () => {
     >
   ) => {
     const { name, value } = event.target;
+    const isDateInPast = (inputDate: Date): boolean => {
+      const currentDate = new Date();
+      return inputDate <= currentDate;
+    };
 
-    setExpiryDate(value); // Update the expiry_date state with the input date
+    const inputDate = new Date(value);
+    if (isDateInPast(inputDate)) {
+      setErrorDate("Please choose a present date for your expiry date.");
+      setExpiryDate(value);
+    } else {
+      setExpiryDate(value);
+      setErrorDate("");
+    }
   };
 
   const handleInputChangeTime = (
@@ -149,10 +166,12 @@ const UpdateRoleListingPage = () => {
       const updatedSkills = prevData.role_listing_skills.map((skill, i) => {
         if (i === index) {
           if (name === "skillName") {
-            // Update skillName at role_listing_skills[index][0]
+            // Check if the selected skill is not already in the selectedSkills array
+            if (!selectedSkills.includes(value)) {
+              setSelectedSkills([...selectedSkills, value]);
+            }
             return [value, skill[1]];
           } else if (name === "proficiency") {
-            // Update proficiency at role_listing_skills[index][1]
             return [skill[0], parseInt(value, 10)];
           }
         }
@@ -166,6 +185,28 @@ const UpdateRoleListingPage = () => {
     });
   };
 
+  const handleRemoveSkill = (index: number) => {
+    setFormData((prevData) => {
+      const updatedSkills = prevData.role_listing_skills.filter(
+        (_, i) => i !== index
+      );
+
+      return {
+        ...prevData,
+        role_listing_skills: updatedSkills,
+      };
+    });
+
+    setSelectedSkills((prevSelectedSkills) => {
+      const skillToRemove = prevSelectedSkills[index];
+      const updatedSelectedSkills = prevSelectedSkills.filter(
+        (_, i) => i !== index
+      );
+
+      return updatedSelectedSkills;
+    });
+  };
+
   const addSkill = () => {
     setFormData((prevData) => ({
       ...prevData,
@@ -174,6 +215,7 @@ const UpdateRoleListingPage = () => {
   };
 
   const [skills, setSkills] = useState<string[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
 
   useEffect(() => {
     axios
@@ -190,38 +232,84 @@ const UpdateRoleListingPage = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // Combine date and time and format it
-    const combinedDateTime = `${expiry_date} ${expiry_time}`;
-    const combinedDateTimeAsDate = new Date(combinedDateTime);
-    combinedDateTimeAsDate.setSeconds(59); // Set seconds to 59
-    combinedDateTimeAsDate.setUTCHours(combinedDateTimeAsDate.getUTCHours()+8);
-    const formattedExpiry_dt = combinedDateTimeAsDate.toUTCString();
+    const errors = [];
+    if (formData.role_name === "" || formData.role_name.trim().length === 0) {
+      errors.push("Role Name");
+    }
 
+    if (formData.department === "" || formData.department.trim().length === 0) {
+      errors.push("Job Department");
+    }
 
-    const updatedFormData = {
-      ...formData,
-      expiry_dt: formattedExpiry_dt,
-    };
+    if (formData.job_type === "") {
+      errors.push("Job Type");
+    }
 
-    setFormData((prevData) => ({
-      ...prevData,
-      expiry_dt: formattedExpiry_dt,
-    }));
+    if (
+      formData.job_description === "" ||
+      formData.job_description.trim().length === 0
+    ) {
+      errors.push("Job Description");
+    }
 
+    if (expiry_date === "") {
+      errors.push("Job Expiry Date");
+    }
 
-    console.log(updatedFormData);
+    if (expiry_time === "") {
+      errors.push("Job Expiry Time");
+    }
 
-    axios
-      .post("http://127.0.0.1:5000/API/v1/updateRole", updatedFormData)
-      .then((response) => {
-        // Handle the response from the server here
-        console.log(updatedFormData);
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("Error logging in:", error);
-      });
-    navigate("/AdminRolePage");
+    // Check for empty skills
+    const hasEmptySkills = formData.role_listing_skills.some(
+      (skill) => skill[0] === "" || skill[0] === "Select Skill"
+    );
+    if (hasEmptySkills) {
+      errors.push("Skills");
+    }
+    if (errors.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${errors.join(
+        ", "
+      )}.`;
+      setError(errorMessage);
+    } else if (errorDate.length > 0) {
+      setError("");
+    } else {
+      setError("");
+
+      // Combine date and time and format it
+      const combinedDateTime = `${expiry_date} ${expiry_time}`;
+      const combinedDateTimeAsDate = new Date(combinedDateTime);
+      combinedDateTimeAsDate.setSeconds(59); // Set seconds to 59
+      combinedDateTimeAsDate.setUTCHours(
+        combinedDateTimeAsDate.getUTCHours() + 8
+      );
+      const formattedExpiry_dt = combinedDateTimeAsDate.toUTCString();
+
+      const updatedFormData = {
+        ...formData,
+        expiry_dt: formattedExpiry_dt,
+      };
+
+      setFormData((prevData) => ({
+        ...prevData,
+        expiry_dt: formattedExpiry_dt,
+      }));
+
+      console.log(updatedFormData)
+
+      axios
+        .post("http://127.0.0.1:5000/API/v1/updateRole", updatedFormData)
+        .then((response) => {
+          // Handle the response from the server here
+          console.log(updatedFormData);
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("Error logging in:", error);
+        });
+      navigate("/AdminRolePage");
+    }
   };
 
   return (
@@ -239,7 +327,6 @@ const UpdateRoleListingPage = () => {
               value={formData.role_name}
               placeholder="Enter Role Name"
               onChange={handleInputChange}
-              required
             />
           </div>
 
@@ -252,7 +339,6 @@ const UpdateRoleListingPage = () => {
               value={formData.department}
               placeholder="Enter Job Department"
               onChange={handleInputChange}
-              required
             />
           </div>
 
@@ -264,6 +350,9 @@ const UpdateRoleListingPage = () => {
               value={formData.job_type}
               onChange={handleInputChange}
             >
+              <option value="" disabled>
+                Select Job Type
+              </option>
               <option value="FT">FT</option>
               <option value="PT">PT</option>
             </select>
@@ -276,7 +365,6 @@ const UpdateRoleListingPage = () => {
               name="job_description"
               value={formData.job_description}
               onChange={handleInputChange}
-              required
             />
           </div>
           <div className="form-group">
@@ -287,7 +375,6 @@ const UpdateRoleListingPage = () => {
               name="expiry_date"
               value={expiry_date}
               onChange={handleInputChangeDate}
-              required
             />
           </div>
           <div className="form-group">
@@ -298,7 +385,6 @@ const UpdateRoleListingPage = () => {
               name="expiry_time"
               value={expiry_time}
               onChange={handleInputChangeTime}
-              required
             />
           </div>
 
@@ -314,7 +400,7 @@ const UpdateRoleListingPage = () => {
                       value={skill[0]}
                       onChange={(event) => handleSkillChange(event, index)}
                     >
-                      <option value="">Select Skill</option>
+                      <option value="" disabled>Select Skill</option>
                       {skills.map((skillItem) => (
                         <option key={skillItem} value={skillItem}>
                           {skillItem}
@@ -335,6 +421,13 @@ const UpdateRoleListingPage = () => {
                       <option value={3}>Advanced</option>
                     </select>
                   </div>
+                  <button
+                    className="remove-skill-button"
+                    onClick={() => handleRemoveSkill(index)}
+                    type="button"
+                  >
+                    <BsX /> 
+                  </button>
                 </div>
               ))}
             </div>
@@ -342,6 +435,13 @@ const UpdateRoleListingPage = () => {
               Add Skill
             </button>
           </div>
+          {(error || errorDate) && (
+            <div className="alert-input" role="alert">
+              <span dangerouslySetInnerHTML={{ __html: errorDate }} />
+              <br />
+              {error}
+            </div>
+          )}
 
           <div className="submit-container">
             <button className="submitaddrole" type="submit">

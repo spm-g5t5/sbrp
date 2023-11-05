@@ -95,3 +95,23 @@
   justify-content: center;
   height: 100vh; 
 }
+
+.badge-margin {
+  margin-right: 5px;
+}
+
+.unhide-job-button{
+  text-align: left;
+  background-color: rgba(38, 108, 115, 0.50); /* Background color with 35% transparency */
+  border-radius: 20px;
+  color: black; /* Text color */
+  font-family: 'Inter', sans-serif; /* Custom font family */
+  padding: 10px 20px; /* Adjust padding as needed */
+  cursor: pointer;
+  border: none;
+}
+
+.unhide-job-button:hover{
+  background-color: #266C73; /* Background color on hover */
+  color: white;
+}
