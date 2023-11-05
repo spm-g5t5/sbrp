@@ -19,6 +19,7 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
         self.json_blank = {}
 
         self.utA002json = {"search": "Engineer"}
+        self.utA003json = {"search": "Geographer"}
 
         self.utA001RoleNameQuery = [
             Role(
@@ -109,6 +110,44 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
                 upd_hiring_manager_id=140894
             )
         ]
+
+        self.utA003RoleNameQuery = []
+
+        self.utA001HiringMgr140944 = Staff(
+            country="Singapore",
+            dept="Sales",
+            email="Yee.Lim.1@allinone.com.sg",
+            staff_fname="Yee",
+            staff_id=140944,
+            staff_lname="Lim"
+        )
+
+        self.utA001UpdMgr140944 = Staff(
+            country="Singapore",
+            dept="Sales",
+            email="Yee.Lim.1@allinone.com.sg",
+            staff_fname="Yee",
+            staff_id=140944,
+            staff_lname="Lim"
+        )
+
+        self.utA001HiringMgr160318 = Staff(
+            country="Singapore",
+            dept="HR",
+            email="Narong.Chua.2@allinone.com.sg",
+            staff_fname="Narong",
+            staff_id=160318,
+            staff_lname="Chua"
+        )
+
+        self.utA001UpdMgr160318 = Staff(
+            country="Singapore",
+            dept="HR",
+            email="Narong.Chua.2@allinone.com.sg",
+            staff_fname="Narong",
+            staff_id=160318,
+            staff_lname="Chua"
+        )
 
         self.utA002140001 = Staff(
             country="Singapore",
@@ -268,41 +307,8 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
                 "upd_hiring_manager_id": 140894
             }
         ]
-        self.utA001HiringMgr140944 = Staff(
-            country="Singapore",
-            dept="Sales",
-            email="Yee.Lim.1@allinone.com.sg",
-            staff_fname="Yee",
-            staff_id=140944,
-            staff_lname="Lim"
-        )
 
-        self.utA001UpdMgr140944 = Staff(
-            country="Singapore",
-            dept="Sales",
-            email="Yee.Lim.1@allinone.com.sg",
-            staff_fname="Yee",
-            staff_id=140944,
-            staff_lname="Lim"
-        )
-
-        self.utA001HiringMgr160318 = Staff(
-            country="Singapore",
-            dept="HR",
-            email="Narong.Chua.2@allinone.com.sg",
-            staff_fname="Narong",
-            staff_id=160318,
-            staff_lname="Chua"
-        )
-
-        self.utA001UpdMgr160318 = Staff(
-            country="Singapore",
-            dept="HR",
-            email="Narong.Chua.2@allinone.com.sg",
-            staff_fname="Narong",
-            staff_id=160318,
-            staff_lname="Chua"
-        )
+        self.utA003Exp = {"error": "No role found with search criteria"}
 
         self.utA001Exp = [
             {
@@ -413,6 +419,22 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA002json)
 
         self.assertEqual(res.json, self.utA002Exp)
+
+    @patch('app.db.session.query')
+    @patch('requests.get')
+    def test_UT_A_003(self, mock_requests_get, mock_query):
+        mock_subquery = Mock()
+        mock_subquery.c.role_id = Mock()
+        mock_subquery.c.max_ver = Mock()
+
+        # Mock the main query
+        # Configure the mock subquery
+        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA003RoleNameQuery
+
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA003json)
+
+        self.assertEqual(res.json, self.utA003Exp)
 
 
 if __name__ == "__main__":
