@@ -20,6 +20,8 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
         self.utA002json = {"search": "Engineer"}
         self.utA003json = {"search": "Geographer"}
+        self.utA004json = {"department": ["HR"]}
+        self.utA005json = {"department": ["Design Lab"]}
 
         self.utA001RoleNameQuery = [
             Role(
@@ -113,6 +115,39 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
         self.utA003RoleNameQuery = []
 
+        self.utA004RoleNameQuery = [
+            Role(
+                active_status=True,
+                department="HR",
+                expiry_dt="Fri, 17 Nov 2023 23:59:59 GMT",
+                hiring_manager_id=160318,
+                job_description="Admin Executive will act as the point of contact for all employees, providing administrative support and managing their queries. Main duties include managing office stock, preparing regular reports (e.g. expenses and office budgets) and organizing company records. If you have previous experience as an Office Administrator or similar administrative role, wed like to meet you. ",
+                job_type="FT",
+                original_creation_dt="Wed, 02 Aug 2023 14:45:00 GMT",
+                role_id=2,
+                role_listing_ver=0,
+                role_name="Admin Executive",
+                upd_dt="Wed, 02 Aug 2023 14:45:00 GMT",
+                upd_hiring_manager_id=160318
+            ),
+            Role(
+                active_status=True,
+                department="HR",
+                expiry_dt="Fri, 15 Dec 2023 23:59:59 GMT",
+                hiring_manager_id=190059,
+                job_description="TheHR Director is responsible for establishing the overall talent management strategies and frameworks to identify, prepare and position the right talent to drive organisational success. He/She formulates career development frameworks and programmes to provide fulfilling career opportunities to employees in the organisation. He liaises with senior business stakeholders to formulate robust succession plans for business-critical roles in the organisation, ensuring future viability and alignment with business plans and direction. He is responsible for establishing retirement and exit policies and guidelines, and evaluating the business impact of redundancy, retirement and exit decisions. He also guides and advises senior business leaders in the management and communication of sensitive talent decisions. As a department head, he is responsible for setting the direction and articulating goals and objectives for the team, and driving the integration of Skills Frameworks across the organisation's talent management plans.\r\n\r\nThe HR Director is a forward-thinking and influential leader who is able to integrate knowledge across diverse domains to make robust decisions and address multi-faceted issues effectively. He has the desire to motivate employees and develop talent capabilities both within the team and across the organisation, and demonstrates sensitivity and diplomacy when interacting with stakeholders at various levels.",
+                job_type="FT",
+                original_creation_dt="Wed, 28 Jun 2023 19:40:00 GMT",
+                role_id=11,
+                role_listing_ver=0,
+                role_name="HR Director",
+                upd_dt="Wed, 28 Jun 2023 19:40:00 GMT",
+                upd_hiring_manager_id=190059
+            )
+        ]
+
+        self.utA005RoleNameQuery = []
+
         self.utA001HiringMgr140944 = Staff(
             country="Singapore",
             dept="Sales",
@@ -183,6 +218,24 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             staff_fname="Rahim",
             staff_id=140894,
             staff_lname="Khalid"
+        )
+
+        self.utA004160318 = Staff(
+            country="Singapore",
+            dept="HR",
+            email="Narong.Chua.2@allinone.com.sg",
+            staff_fname="Narong",
+            staff_id=160318,
+            staff_lname="Chua"
+        )
+
+        self.utA004190059 = Staff(
+            country="Singapore",
+            dept="Solutioning",
+            email="Phuc.Le@allinone.com.sg",
+            staff_fname="Phuc",
+            staff_id=190059,
+            staff_lname="Le"
         )
 
         self.utA002Exp = [
@@ -310,6 +363,71 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
         self.utA003Exp = {"error": "No role found with search criteria"}
 
+        self.utA004Exp = [
+            {
+                "active_status": True,
+                "department": "HR",
+                "expiry_dt": "Fri, 17 Nov 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "HR",
+                    "email": "Narong.Chua.2@allinone.com.sg",
+                    "staff_fname": "Narong",
+                    "staff_id": 160318,
+                    "staff_lname": "Chua"
+                },
+                "hiring_manager_id": 160318,
+                "job_description": "Admin Executive will act as the point of contact for all employees, providing administrative support and managing their queries. Main duties include managing office stock, preparing regular reports (e.g. expenses and office budgets) and organizing company records. If you have previous experience as an Office Administrator or similar administrative role, wed like to meet you. ",
+                "job_type": "FT",
+                "original_creation_dt": "Wed, 02 Aug 2023 14:45:00 GMT",
+                "role_id": 2,
+                "role_listing_ver": 0,
+                "role_name": "Admin Executive",
+                "upd_dt": "Wed, 02 Aug 2023 14:45:00 GMT",
+                "upd_hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "HR",
+                    "email": "Narong.Chua.2@allinone.com.sg",
+                    "staff_fname": "Narong",
+                    "staff_id": 160318,
+                    "staff_lname": "Chua"
+                },
+                "upd_hiring_manager_id": 160318
+            },
+            {
+                "active_status": True,
+                "department": "HR",
+                "expiry_dt": "Fri, 15 Dec 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Solutioning",
+                    "email": "Phuc.Le@allinone.com.sg",
+                    "staff_fname": "Phuc",
+                    "staff_id": 190059,
+                    "staff_lname": "Le"
+                },
+                "hiring_manager_id": 190059,
+                "job_description": "TheHR Director is responsible for establishing the overall talent management strategies and frameworks to identify, prepare and position the right talent to drive organisational success. He/She formulates career development frameworks and programmes to provide fulfilling career opportunities to employees in the organisation. He liaises with senior business stakeholders to formulate robust succession plans for business-critical roles in the organisation, ensuring future viability and alignment with business plans and direction. He is responsible for establishing retirement and exit policies and guidelines, and evaluating the business impact of redundancy, retirement and exit decisions. He also guides and advises senior business leaders in the management and communication of sensitive talent decisions. As a department head, he is responsible for setting the direction and articulating goals and objectives for the team, and driving the integration of Skills Frameworks across the organisation's talent management plans.\r\n\r\nThe HR Director is a forward-thinking and influential leader who is able to integrate knowledge across diverse domains to make robust decisions and address multi-faceted issues effectively. He has the desire to motivate employees and develop talent capabilities both within the team and across the organisation, and demonstrates sensitivity and diplomacy when interacting with stakeholders at various levels.",
+                "job_type": "FT",
+                "original_creation_dt": "Wed, 28 Jun 2023 19:40:00 GMT",
+                "role_id": 11,
+                "role_listing_ver": 0,
+                "role_name": "HR Director",
+                "upd_dt": "Wed, 28 Jun 2023 19:40:00 GMT",
+                "upd_hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Solutioning",
+                    "email": "Phuc.Le@allinone.com.sg",
+                    "staff_fname": "Phuc",
+                    "staff_id": 190059,
+                    "staff_lname": "Le"
+                },
+                "upd_hiring_manager_id": 190059
+            }
+        ]
+
+        self.utA005Exp = {"error": "No role found with search criteria"}
+
         self.utA001Exp = [
             {
                 "active_status": True,
@@ -435,6 +553,43 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA003json)
 
         self.assertEqual(res.json, self.utA003Exp)
+
+    @patch('app.db.session.query')
+    @patch('requests.get')
+    def test_UT_A_004(self, mock_requests_get, mock_query):
+        mock_subquery = Mock()
+        mock_subquery.c.role_id = Mock()
+        mock_subquery.c.max_ver = Mock()
+
+        # Mock the main query
+        # Configure the mock subquery
+        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA004RoleNameQuery
+
+        # Set the responses for the mock requests.get calls
+        mock_requests_get.side_effect = [
+            self.utA004160318, self.utA004160318,
+            self.utA004190059, self.utA004190059
+        ]
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA004json)
+
+        self.assertEqual(res.json, self.utA004Exp)
+
+    @patch('app.db.session.query')
+    @patch('requests.get')
+    def test_UT_A_005(self, mock_requests_get, mock_query):
+        mock_subquery = Mock()
+        mock_subquery.c.role_id = Mock()
+        mock_subquery.c.max_ver = Mock()
+
+        # Mock the main query
+        # Configure the mock subquery
+        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA005RoleNameQuery
+
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA005json)
+
+        self.assertEqual(res.json, self.utA005Exp)
 
 
 if __name__ == "__main__":
