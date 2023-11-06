@@ -15,7 +15,7 @@
 .styled-button {
   text-align: left;
   background-color: rgba(38, 108, 115, 0.50); /* Background color with 35% transparency */
-  border-radius: 10px;
+  border-radius: 20px;
   color: black; /* Text color */
   font-family: 'Inter', sans-serif; /* Custom font family */
   padding: 10px 20px; /* Adjust padding as needed */
@@ -53,6 +53,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height:100%
   }
   
   /* Styles for the company logo image */

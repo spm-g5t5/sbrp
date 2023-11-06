@@ -1,0 +1,95 @@
+.role-skill-card {
+    width: 70%;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 10px;
+}
+
+.form-group-skill-card{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width: 80%;
+    margin-bottom: 20px;
+    height: 400px
+}
+.label-skill{
+    flex: 1;
+    text-align: right;
+    padding-right: 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #266C73;
+    padding-top: 15px;
+}
+
+.form-group-job-description {
+    width: 80%;
+    margin-bottom: 20px;
+    padding-left: 14%
+  }
+
+.view-description{
+    width: 100%;
+
+}
+
+.label-description {
+    flex: 1;
+    text-align: right;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #266C73;
+  }
+
+.container-view-role {
+    margin-top: 10px;
+}
+
+.role-h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 30px;
+}
+
+  
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 20px;
+    
+  }
+  
+  .label {
+    flex: 1;
+    text-align: right;
+    padding-right: 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #266C73;
+  }
+  
+  .view_role {
+    width: 70%;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 5px 0 0 20px;
+    border: none;
+    
+  }
+
+  
+
+
+  
+  
+  
+  
+  
+

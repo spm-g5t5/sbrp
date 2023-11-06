@@ -2,6 +2,7 @@ import { Form, FormControl, Button, Row, Col } from 'react-bootstrap';
 import '../styles/SearchBar.css';
 import { useState } from 'react';
 import { BsSearch, BsX } from "react-icons/bs";
+import React from 'react';
 
 interface SearchBarProps {
   onSearch: (searchText: string) => void;
@@ -23,11 +24,12 @@ function SearchBar({ onSearch }: SearchBarProps) {
 
   return (
     <Row>
-      <Col xs={12} md={6}>
-        <Form className='searchbar' onSubmit={handleSearch}>
+      <Col>
+      <Form className='searchbar' onSubmit={handleSearch}>
           <div className="search-input">
-            <FormControl
+            <input
               type="text"
+              className="search-input-text"
               placeholder="Search roles..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
@@ -38,15 +40,16 @@ function SearchBar({ onSearch }: SearchBarProps) {
               </span>
             )}
           </div>
-          <Button
-            style={{ backgroundColor: '#266C73' }}
+          <button
+            className='submit-search-button'
             type="submit"
           >
             <BsSearch />
-          </Button>
-        </Form>
+          </button>
+          </Form>
       </Col>
     </Row>
+        
   );
 }
 

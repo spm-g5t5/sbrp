@@ -96,13 +96,14 @@
     flex-direction: row;
     align-items: center;
     margin-bottom: 20px; /* Add some spacing between skill cards */
-    padding-left: 280px;
+    padding-left: 210px;
   }
   
   .skill-row {
+    padding-left: 40px;
     display: flex;
     align-items: center;
-    width: 300px;
+    width: 350px;
   }
   
   /* Adjust the width as needed */
@@ -114,8 +115,34 @@
     padding-right: 20px;
   }
   
-  
-  
+  .alert-input{
+    margin-bottom: 20px;
+    width: 70%;
+    height: auto;
+    border-radius: 10px;
+    background-color: #f8d7da;
+    border: solid #f5c7cc;
+    color: #6c2d33;
+    padding: 15px;
+    border: none;
+    margin-left: 200px;
+  }
+  .remove-skill-button{
+    width: 30px;
+    height: 30px;
+    background-color: #ffff;
+    color: #888888;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 10px;
+  }
+
+  .remove-skill-button:hover{
+    background-color: #fff;
+    border: solid #D9D9D9;
+  }
   
   
   
