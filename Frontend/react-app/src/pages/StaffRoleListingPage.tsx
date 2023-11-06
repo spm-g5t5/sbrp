@@ -8,14 +8,27 @@ import {
   Badge,
   CardBody,
   CardFooter,
-  CardTitle
+  CardTitle,
+  Container,
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
+import { BsFillXCircleFill } from "react-icons/bs";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import {
+  FaPlus,
+  FaBuilding,
+  FaBriefcase,
+  FaPen,
+  FaUser,
+  FaRegSadCry,
+  FaEye,
+  FaEyeSlash,
+  FaRegSadCry
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import {Row, Col} from "react-bootstrap";
 import FilterRole from "../components/FilterRole";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { FaRegSadCry } from "react-icons/fa";
 
 
 interface Role {
@@ -38,6 +51,23 @@ const StaffRoleListingPage = () => {
     localStorage.getItem("AccessRights") || "0",
     10
   );
+
+  const handleSearch = (searchText: string) => {
+    const searchData = {
+      search: searchText,
+    };
+    axios
+      .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
+      .then((response) => {
+        setData(response.data);
+
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log(error);
+      });
+    console.log(searchData)
+      
   const [showDetailModal, setDetailShowModal] = useState(false);
   const [allFilters, setAllFilters] = useState<{ [key: string]: any }>({});
   const [showSkillModal, setSkillShowModal] = useState(false);
@@ -47,7 +77,6 @@ const StaffRoleListingPage = () => {
   const [roleListingSkill, setRoleListingSkill] = useState<[]>([]);
   const [isArrayEmpty, setIsArrayEmpty] = useState(false);
   const [staffApplication, setStaffApplication] = useState(new Set());
-
 
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
@@ -79,7 +108,33 @@ const StaffRoleListingPage = () => {
     setDetailShowModal(true);
   };
 
-  const currentDate = new Date();
+  const handleDetail = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem("RoleId", roleId);
+    navigate("/ApplicantDetailsPage");
+  };
+
+  // const handleDetailCloseModal = () => setDetailShowModal(false);
+
+  // const handleDetailShowModal = (item: {
+  //   role_id: number;
+  //   role_name: string;
+  //   department: string;
+  //   job_description: string;
+  //   expiry_dt: Date;
+  //   job_type: string;
+  //   original_creation_dt: Date;
+  // }) => {
+  //   item.expiry_dt = new Date(item.expiry_dt);
+  //   item.original_creation_dt = new Date(item.original_creation_dt);
+  //   setCurrentItem(item);
+  //   setDetailShowModal(true);
+  // };
+
+  // const currentDate = new Date();
+
+
+
 
 
     useEffect(() => {
@@ -154,6 +209,7 @@ const StaffRoleListingPage = () => {
       }));
     }
 
+
   }
 
   function onHandleSubmitFilterButton() {
@@ -214,6 +270,7 @@ function onHandleClearFilter() {
   return (
     <div>
       <Header accessRights={accessRights} />
+
       <SearchBar />
       {isArrayEmpty ? ( // Check if the data array is empty
       <div>
@@ -234,10 +291,35 @@ function onHandleClearFilter() {
             <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
              
               <CardBody>
-              <CardTitle>{item.role_name}</CardTitle>
-                Department: {item.department}
-                <RoleSkills key={item.role_name.toString()} item={item} />
-              </CardBody>
+                    <div className="d-flex justify-content-between">
+                      <div>
+                        <CardTitle>{item.role_name}</CardTitle>
+                      </div>
+                    </div>
+                    <Card.Text>
+                      <FaBuilding /> Department: {item.department}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaBriefcase /> Job Type: {item.job_type}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaPen /> Apply By:{" "}
+                      {item.expiry_dt.toString().slice(5, 16)}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaUser /> Last updated by on {item.upd_dt.slice(5, 22)}
+                      {/* {item.upd_dt.slice(5, 22)} */}
+                    </Card.Text>
+                    <button
+                      className="view-applicants-button"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click
+                        handleViewApplications(item);
+                      }}
+                    >
+                      Apply
+                    </button>
+                  </CardBody>
               <CardFooter>
                 <button
                   className="view-applicants-button"
@@ -343,6 +425,7 @@ function onHandleClearFilter() {
       )}
       </div>
  
+
   );
 };
 
