@@ -159,7 +159,8 @@ def createApplication():
             return jsonify({"error": "Role does not exist"}), 200
         else:
             if roles[0]['active_status'] == True:
-                results = Apply.query.filter_by(applicant_staff_id = inputStaffId, applied_role_id = inputRoleId).all()
+                results = db.session.query(Apply).filter_by(applicant_staff_id = inputStaffId, applied_role_id = inputRoleId).all()
+
                 if len(results) == 0:
 
                     staff = requests.get(f'{request.url_root.rstrip("/")}/API/v1/staff/{inputStaffId}').json()

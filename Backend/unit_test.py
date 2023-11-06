@@ -595,7 +595,7 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
 
         ####################################################
-        # UNIT TEST - STAFF OBJECTS (PASSED VIA REQUESTS)
+        # UNIT TEST - OBJECTS (PASSED VIA REQUESTS)
         ####################################################
 
         self.utA001HiringMgr140944 = Staff(
@@ -849,7 +849,6 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             staff_id=140894,
             staff_lname="Khalid"
         )
-
 
         #########################
         # UNIT TEST - EXPECTED RESPONSES
@@ -1870,6 +1869,287 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
             "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA020json)
         
         self.assertEqual(res.json, self.utA020Exp)
+
+class UT_C_ApplyRole(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+
+        ####################################################
+        # UNIT TEST - POST JSON PASSED TO API
+        ####################################################
+        self.utC001json = {"staff_id": 999999, "role_id": 1}
+        self.utC002json = {"staff_id": 140001, "role_id": 100}
+        self.utC003json = {"staff_id": 999999, "role_id": 1}
+        self.utC004json = {"staff_id": 999998, "role_id": 1}
+        self.utC005json = {"staff_id": 999999, "role_id": 1}
+
+        ####################################################
+        # UNIT TEST - LISTS / OBJECTS TO PATCH SQLALCHEMY
+        ####################################################
+        self.utC001Apply = []
+
+        self.utC004Apply = []
+
+        self.utC005Apply = [
+            Apply(
+                application_id = 1,
+                applicant_staff_id = 999999,
+                applicant_existing_role = "Account Executive",
+                applicant_existing_dept = "Sales",
+                application_status = "PENDING",
+                date_applied = "Wed, 8 Nov 2023 23:59:59 GMT",
+                applied_role_id = 1,
+                applied_role_ver = 0
+            )
+        ]
+
+
+        ####################################################
+        # UNIT TEST - OBJECTS (PASSED VIA REQUESTS)
+        ####################################################
+
+        self.utC001Staff = {
+                "country": "Singapore",
+                "dept": "Sales",
+                "email": "Ben.Lim@allinone.com.sg",
+                "staff_fname": "Ben",
+                "staff_id": 999999,
+                "staff_lname": "Lim"
+            }
+        
+        
+        self.utC001StaffRole = {
+                "staff_id": 999999,
+                "role_name": "Account Executive"
+            }
+        
+
+        self.utC004Staff = {
+            "country": "Singapore",
+            "dept": "Sales",
+            "email": "Yee.Fei.1@allinone.com.sg",
+            "staff_fname": "Yee",
+            "staff_id": 999998,
+            "staff_lname": "Fei"
+        }
+        
+
+        self.utc004StaffRole = {
+            "staff_id": 999998,
+            "role_name": "Account Manager"
+        }
+
+        self.utC005Staff = {
+                "country": "Singapore",
+                "dept": "Sales",
+                "email": "Ben.Lim@allinone.com.sg",
+                "staff_fname": "Ben",
+                "staff_id": 999999,
+                "staff_lname": "Lim"
+            }
+        
+        
+        self.utC005StaffRole = {
+                "staff_id": 999999,
+                "role_name": "Account Executive"
+            }
+        
+
+        ####################################################
+        # UNIT TEST - OBJECTS (PASSED VIA REQUESTS)
+        ####################################################
+
+        self.utC001RoleRequest = [
+            {
+                "active_status": True,
+                "department": "SALES",
+                "expiry_dt": "Wed, 15 Nov 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Sales",
+                    "email": "Yee.Lim.1@allinone.com.sg",
+                    "staff_fname": "Yee",
+                    "staff_id": 140944,
+                    "staff_lname": "Lim"
+                },
+                "hiring_manager_id": 140944,
+                "job_description": "The Account Manager acts as a key point of contact between an organisation and its clients. He/She possesses thorough product knowledge and oversees product and/or service sales. He works with customers to identify their wants and prepares reports by collecting, analysing, and summarising sales information. He contacts existing customers to discuss and give recommendations on how specific products or services can meet their needs. He maintains customer relationships to strategically place new products and drive sales for long-term growth. He works in a fast-paced and dynamic environment, and travels frequently to clients' premises for meetings. He is familiar with client relationship management and sales tools. He is knowledgeable of the organisation's products and services, as well as trends, developments and challenges of the industry domain. The Sales Account Manager is a resourceful, people-focused and persistent individual, who takes rejection as a personal challenge to succeed when given opportunity. He appreciates the value of long lasting relationships and prioritises efforts to build trust with existing and potential customers. He exhibits good listening skills and is able to establish rapport with customers and team members alike easily.",
+                "job_type": "FT",
+                "original_creation_dt": "Wed, 15 Feb 2023 08:30:00 GMT",
+                "role_id": 1,
+                "role_listing_ver": 0,
+                "role_name": "Account Manager",
+                "upd_dt": "Mon, 06 Nov 2023 17:48:40 GMT",
+                "upd_hiring_manager_id": 140944
+            }
+        ]
+
+        self.utC002RoleRequest = {"error": "No roles found"}
+        
+        self.utC003RoleRequest = [
+            {
+                "active_status": False,
+                "department": "SALES",
+                "expiry_dt": "Wed, 15 Nov 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Sales",
+                    "email": "Yee.Lim.1@allinone.com.sg",
+                    "staff_fname": "Yee",
+                    "staff_id": 140944,
+                    "staff_lname": "Lim"
+                },
+                "hiring_manager_id": 140944,
+                "job_description": "The Account Manager acts as a key point of contact between an organisation and its clients. He/She possesses thorough product knowledge and oversees product and/or service sales. He works with customers to identify their wants and prepares reports by collecting, analysing, and summarising sales information. He contacts existing customers to discuss and give recommendations on how specific products or services can meet their needs. He maintains customer relationships to strategically place new products and drive sales for long-term growth. He works in a fast-paced and dynamic environment, and travels frequently to clients' premises for meetings. He is familiar with client relationship management and sales tools. He is knowledgeable of the organisation's products and services, as well as trends, developments and challenges of the industry domain. The Sales Account Manager is a resourceful, people-focused and persistent individual, who takes rejection as a personal challenge to succeed when given opportunity. He appreciates the value of long lasting relationships and prioritises efforts to build trust with existing and potential customers. He exhibits good listening skills and is able to establish rapport with customers and team members alike easily.",
+                "job_type": "FT",
+                "original_creation_dt": "Wed, 15 Feb 2023 08:30:00 GMT",
+                "role_id": 1,
+                "role_listing_ver": 1,
+                "role_name": "Account Manager",
+                "upd_dt": "Mon, 06 Nov 2023 17:48:40 GMT",
+                "upd_hiring_manager_id": 140944
+            }
+        ]
+
+        self.utC004RoleRequest = [
+            {
+                "active_status": True,
+                "department": "SALES",
+                "expiry_dt": "Wed, 15 Nov 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Sales",
+                    "email": "Yee.Lim.1@allinone.com.sg",
+                    "staff_fname": "Yee",
+                    "staff_id": 140944,
+                    "staff_lname": "Lim"
+                },
+                "hiring_manager_id": 140944,
+                "job_description": "The Account Manager acts as a key point of contact between an organisation and its clients. He/She possesses thorough product knowledge and oversees product and/or service sales. He works with customers to identify their wants and prepares reports by collecting, analysing, and summarising sales information. He contacts existing customers to discuss and give recommendations on how specific products or services can meet their needs. He maintains customer relationships to strategically place new products and drive sales for long-term growth. He works in a fast-paced and dynamic environment, and travels frequently to clients' premises for meetings. He is familiar with client relationship management and sales tools. He is knowledgeable of the organisation's products and services, as well as trends, developments and challenges of the industry domain. The Sales Account Manager is a resourceful, people-focused and persistent individual, who takes rejection as a personal challenge to succeed when given opportunity. He appreciates the value of long lasting relationships and prioritises efforts to build trust with existing and potential customers. He exhibits good listening skills and is able to establish rapport with customers and team members alike easily.",
+                "job_type": "FT",
+                "original_creation_dt": "Wed, 15 Feb 2023 08:30:00 GMT",
+                "role_id": 1,
+                "role_listing_ver": 0,
+                "role_name": "Account Manager",
+                "upd_dt": "Mon, 06 Nov 2023 17:48:40 GMT",
+                "upd_hiring_manager_id": 140944
+            }
+        ]
+
+        self.utC005RoleRequest = [
+            {
+                "active_status": True,
+                "department": "SALES",
+                "expiry_dt": "Wed, 15 Nov 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Sales",
+                    "email": "Yee.Lim.1@allinone.com.sg",
+                    "staff_fname": "Yee",
+                    "staff_id": 140944,
+                    "staff_lname": "Lim"
+                },
+                "hiring_manager_id": 140944,
+                "job_description": "The Account Manager acts as a key point of contact between an organisation and its clients. He/She possesses thorough product knowledge and oversees product and/or service sales. He works with customers to identify their wants and prepares reports by collecting, analysing, and summarising sales information. He contacts existing customers to discuss and give recommendations on how specific products or services can meet their needs. He maintains customer relationships to strategically place new products and drive sales for long-term growth. He works in a fast-paced and dynamic environment, and travels frequently to clients' premises for meetings. He is familiar with client relationship management and sales tools. He is knowledgeable of the organisation's products and services, as well as trends, developments and challenges of the industry domain. The Sales Account Manager is a resourceful, people-focused and persistent individual, who takes rejection as a personal challenge to succeed when given opportunity. He appreciates the value of long lasting relationships and prioritises efforts to build trust with existing and potential customers. He exhibits good listening skills and is able to establish rapport with customers and team members alike easily.",
+                "job_type": "FT",
+                "original_creation_dt": "Wed, 15 Feb 2023 08:30:00 GMT",
+                "role_id": 1,
+                "role_listing_ver": 0,
+                "role_name": "Account Manager",
+                "upd_dt": "Mon, 06 Nov 2023 17:48:40 GMT",
+                "upd_hiring_manager_id": 140944
+            }
+        ]
+
+        #########################
+        # UNIT TEST - EXPECTED RESPONSES
+        ####################################################
+
+        self.utC001ExpAppRole = "Account Executive"
+        self.utC001ExpAppDept = "Sales"
+        self.utC001ExpAppStaffID = 999999
+        self.utC001ExpAppStatus = "PENDING"
+        self.utC001ExpAppRID = 1
+        self.utC001ExpAppRVer = 0
+
+        self.utC002Exp = {"error": "Role does not exist"}
+
+        self.utC003Exp = {"error": "Role is not active"}
+
+        self.utC004Exp = {"error": "Applicant cannot apply for a role which is the same role and department as they currently are in now"}
+
+        self.utC005Exp = {"error": "Application already exists"}
+
+    @patch('app.db.session.query')
+    @patch('app.db.session.add')
+    @patch('app.db.session.commit')
+    @patch('requests.get')
+    def test_UT_C_001(self, mock_requests_get, db_commit, db_add, mock_query):
+
+        db_commit = Mock()
+        db_add = Mock()
+ 
+        mock_requests_get.return_value.json.side_effect = [self.utC001RoleRequest, self.utC001Staff, self.utC001StaffRole]
+        mock_query.return_value.filter_by.return_value.all.return_value = self.utC001Apply
+
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/createApplication", json=self.utC001json)
+
+        self.assertEqual(res.json[0]["applicant_existing_dept"], self.utC001ExpAppDept)
+        self.assertEqual(res.json[0]["applicant_existing_role"], self.utC001ExpAppRole)
+        self.assertEqual(res.json[0]["applicant_staff_id"], self.utC001ExpAppStaffID)
+        self.assertEqual(res.json[0]["application_status"], self.utC001ExpAppStatus)
+        self.assertEqual(res.json[0]["applied_role_id"], self.utC001ExpAppRID)
+        self.assertEqual(res.json[0]["applied_role_ver"], self.utC001ExpAppRVer)
+
+    @patch('app.db.session.query')
+    @patch('requests.get')
+    def test_UT_C_002(self, mock_requests_get, mock_query):
+        
+        mock_requests_get.return_value.json.side_effect = [self.utC002RoleRequest]
+
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/createApplication", json=self.utC002json)
+        
+        self.assertEqual(res.json, self.utC002Exp)
+
+
+    @patch('app.db.session.query')
+    @patch('requests.get')
+    def test_UT_C_003(self, mock_requests_get, mock_query):
+        
+        mock_requests_get.return_value.json.side_effect = [self.utC003RoleRequest]
+
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/createApplication", json=self.utC003json)
+        
+        self.assertEqual(res.json, self.utC003Exp)
+
+
+    @patch('app.db.session.query')
+    @patch('requests.get')
+    def test_UT_C_004(self, mock_requests_get, mock_query):
+        
+        mock_requests_get.return_value.json.side_effect = [self.utC004RoleRequest, self.utC004Staff, self.utc004StaffRole]
+        mock_query.return_value.filter_by.return_value.all.return_value = self.utC004Apply
+
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/createApplication", json=self.utC004json)
+        
+        self.assertEqual(res.json, self.utC004Exp)
+
+    @patch('app.db.session.query')
+    @patch('requests.get')
+    def test_UT_C_005(self, mock_requests_get, mock_query):
+        
+        mock_requests_get.return_value.json.side_effect = [self.utC005RoleRequest]
+        mock_query.return_value.filter_by.return_value.all.return_value = self.utC005Apply
+
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/createApplication", json=self.utC005json)
+        
+        self.assertEqual(res.json, self.utC005Exp)
+
 
 if __name__ == "__main__":
     unittest.main()
