@@ -23,10 +23,26 @@ import {
   Badge,
   CardBody,
   CardFooter,
+  CardTitle,
+  Container,
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { BsFillXCircleFill } from "react-icons/bs";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import {
+  FaPlus,
+  FaBuilding,
+  FaBriefcase,
+  FaPen,
+  FaUser,
+  FaRegSadCry,
+  FaEye,
+  FaEyeSlash
+} from "react-icons/fa";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+
 
 const StaffRoleListingPage = () => {
   const [data, setData] = useState<
@@ -48,39 +64,65 @@ const StaffRoleListingPage = () => {
     localStorage.getItem("AccessRights") || "0",
     10
   );
-  const [Applications, setApplications] = useState<{ [key: string]: any }>({});
-  const [showApplicationModal, setApplicationShowModal] = useState(false);
-  const [showDetailModal, setDetailShowModal] = useState(false);
+  // const [Applications, setApplications] = useState<{ [key: string]: any }>({});
+  // const [showApplicationModal, setApplicationShowModal] = useState(false);
+  // const [showDetailModal, setDetailShowModal] = useState(false);
 
-  const [currentItem, setCurrentItem] = useState<{
-    role_id: number;
-    role_name: string;
-    department: string;
-    job_description: string;
-    expiry_dt: Date;
-    job_type: string;
-    original_creation_dt: Date;
-    // Add other properties as needed
-  } | null>(null);
+  // const [currentItem, setCurrentItem] = useState<{
+  //   role_id: number;
+  //   role_name: string;
+  //   department: string;
+  //   job_description: string;
+  //   expiry_dt: Date;
+  //   job_type: string;
+  //   original_creation_dt: Date;
+  //   upd_dt: string;
+  //   // Add other properties as needed
+  // } | null>(null);
 
-  const handleDetailCloseModal = () => setDetailShowModal(false);
+  const handleSearch = (searchText: string) => {
+    const searchData = {
+      search: searchText,
+    };
+    axios
+      .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
+      .then((response) => {
+        setData(response.data);
 
-  const handleDetailShowModal = (item: {
-    role_id: number;
-    role_name: string;
-    department: string;
-    job_description: string;
-    expiry_dt: Date;
-    job_type: string;
-    original_creation_dt: Date;
-  }) => {
-    item.expiry_dt = new Date(item.expiry_dt);
-    item.original_creation_dt = new Date(item.original_creation_dt);
-    setCurrentItem(item);
-    setDetailShowModal(true);
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log(error);
+      });
+    console.log(searchData)
   };
 
-  const currentDate = new Date();
+  const handleDetail = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem("RoleId", roleId);
+    navigate("/ApplicantDetailsPage");
+  };
+
+  // const handleDetailCloseModal = () => setDetailShowModal(false);
+
+  // const handleDetailShowModal = (item: {
+  //   role_id: number;
+  //   role_name: string;
+  //   department: string;
+  //   job_description: string;
+  //   expiry_dt: Date;
+  //   job_type: string;
+  //   original_creation_dt: Date;
+  // }) => {
+  //   item.expiry_dt = new Date(item.expiry_dt);
+  //   item.original_creation_dt = new Date(item.original_creation_dt);
+  //   setCurrentItem(item);
+  //   setDetailShowModal(true);
+  // };
+
+  // const currentDate = new Date();
+
+
 
   useEffect(() => {
     axios
@@ -93,108 +135,73 @@ const StaffRoleListingPage = () => {
       });
   }, []);
 
-
-
-  const handleApplication = () => {
+  const handleViewApplications = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
     navigate('/StaffApplicationPage')
   }
 
   return (
     <div>
       <Header accessRights={accessRights} />
-      <SearchBar />
-      <div class="col-8">
+      <SearchBar onSearch={handleSearch} />
+      <div className="container">
+        <div className="row">
+          <div className="col-8">
 
 
-        {data
-          .filter((item) => item.active_status == 1)
-          .map((item) => (
-            <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
-              <CardHeader className="d-flex justify-content-between">
-                <div>
-                  <h1>{item.role_name}</h1>
-                  {item.expiry_dt > currentDate ? (
-                    <Badge bg="danger">Expired</Badge>
-                  ) : (
-                    <Badge>Active</Badge>
-                  )}
-                </div>
-
-              </CardHeader>
-              <CardBody>
-                Department: {item.department}
-                <RoleSkills key={item.role_name.toString()} item={item} />
-              </CardBody>
-              <CardFooter>
-                <Button
-                  style={{ backgroundColor: "#266C73" }}
-                  onClick={() => handleDetailShowModal(item)}
+            {data
+              .filter((item) => item.active_status == 1)
+              .map((item) => (
+                <Card
+                  style={{ margin: "30px" }}
+                  key={item.role_id.toString()}
+                  onClick={() => handleDetail(item)}
+                  className="clickable-card"
+                  data-mdb-ripple-color="light"
                 >
-                  More details
-                </Button>
-                <Button
-                  style={{ backgroundColor: "#266C73" }}
-                  onClick={() => handleApplication()}
-                >
-                  Apply
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-
-        {showDetailModal && (
-          <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>{currentItem!.role_name}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              Application Close Date:{" "}
-              <p>{currentItem!.expiry_dt.toLocaleDateString()}</p>
-              Job Description:<p>{currentItem!.job_description}</p>
-              Job Type: <p>{currentItem!.job_type}</p>
-              Creation Date and time:
-              <p>{currentItem!.original_creation_dt.toLocaleDateString()}</p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                style={{ backgroundColor: "#266C73" }}
-                onClick={handleDetailCloseModal}
-              >
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        )}
-
-        {showApplicationModal && (
-          <Modal
-            show={showApplicationModal}
-            onHide={() => setApplicationShowModal(false)}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Applications</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p>Applicant by staff ID</p>
-              {Object.keys(Applications).map((key: string) => (
-                <li key={key}>{Applications[key].applicant_staff_id}</li>
+                  <CardBody>
+                    <div className="d-flex justify-content-between">
+                      <div>
+                        <CardTitle>{item.role_name}</CardTitle>
+                      </div>
+                    </div>
+                    <Card.Text>
+                      <FaBuilding /> Department: {item.department}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaBriefcase /> Job Type: {item.job_type}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaPen /> Apply By:{" "}
+                      {item.expiry_dt.toString().slice(5, 16)}
+                    </Card.Text>
+                    <Card.Text>
+                      <FaUser /> Last updated by on{" "}
+                      {/* {item.upd_dt.slice(5, 22)} */}
+                    </Card.Text>
+                    <button
+                      className="view-applicants-button"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click
+                        handleViewApplications(item);
+                      }}
+                    >
+                      Apply
+                    </button>
+                    <RoleSkills item={item} />
+                  </CardBody>
+                  
+ 
+                </Card>
               ))}
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                style={{ backgroundColor: "#266C73" }}
-                onClick={() => setApplicationShowModal(false)}
-              >
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        )}
-      </div>
 
-      <div className="sidebar" class="col-2">
-        <h2>Filters</h2>
+          </div>
 
+          <div className="col-4 sidebar">
+            <h2>Filters</h2>
+
+          </div>
+        </div>
       </div>
     </div>
   );
