@@ -1987,8 +1987,11 @@ class UT_B_UpdateRole(unittest.TestCase):
 
         self.utB003Exp = {"error":"Passed JSON data invalid or missing values, error: \'role_listing_skills\'"}
 
-
-    def test_UT_B_001(self):
+    @patch('app.db.session.query')
+    @patch('app.db.session.add')
+    @patch('app.db.session.commit')
+    @patch('requests.get')
+    def test_UT_B_001(self, mock_requests_get, db_commit, db_add, mock_query):
  
         res = self.app.post(
             "http://127.0.0.1:5000/API/v1/updateRole", json=self.utB001json)
