@@ -31,7 +31,7 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
         self.utA008json = {"skills": ["Computing"]}
         self.utA009json = {"skills": ["System Integration", "Network Administration and Maintenance"]}
         self.utA010json = {"skills": ["System Integration", "Budgeting"]}
-
+        self.utA011json = {"search": "engineer", "department": ["SOLUTIONING"]}
         ####################################################
         # UNIT TEST - LISTS / OBJECTS TO PATCH SQLALCHEMY
         ####################################################
@@ -232,7 +232,7 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
                 original_creation_dt="Sat, 10 Jun 2023 16:55:00 GMT",
                 role_id=6,
                 role_listing_ver=0,
-                role_name="Support Engineer",
+                role_name="Developer",
                 upd_dt="Sat, 10 Jun 2023 16:55:00 GMT",
                 upd_hiring_manager_id=171018
             )
@@ -290,6 +290,22 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
         self.utA010SkillsQuery = []
 
+        self.utA011RoleNameQuery = [
+            Role(
+                active_status=True,
+                department="SOLUTIONING",
+                expiry_dt="Wed, 13 Dec 2023 23:59:59 GMT",
+                hiring_manager_id=140894,
+                job_description="The Support Engineer undertakes complex projects related to system provisioning, installations, configurations as well as monitoring and maintenance of systems. He/She applies highly developed specialist knowledge and skills in systems administration and works toward continuous optimisation of system performance. He implements system improvements and instructs other IT staff in the resolution of most complex issues. He is required to be on standby with on-call availability with varied shifts including nights, weekends and holidays to resolve systems related incidents. He works in a team setting and is proficient in Infrastructure systems and Network related tools and techniques required by the organisation. He is also familiar with the relevant platforms on which the database is deployed on. The Support Team is able to quickly and effectively solve issues as they arise. He is able to methodically identify the cause of the issue, evaluate it and develop a solution in collaboration with the team. He is able to communicate effectively and displays high service level standards.",
+                job_type="PT",
+                original_creation_dt="Wed, 15 Feb 2023 21:55:00 GMT",
+                role_id=22,
+                role_listing_ver=0,
+                role_name="Support Engineer",
+                upd_dt="Wed, 15 Feb 2023 21:55:00 GMT",
+                upd_hiring_manager_id=140894
+            )
+        ]
         ####################################################
         # UNIT TEST - STAFF OBJECTS (PASSED VIA REQUESTS)
         ####################################################
@@ -429,6 +445,15 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
         )
 
         self.utA009140894 = Staff(
+            country="Singapore",
+            dept="Sales",
+            email="Rahim.Khalid.1@allinone.com.sg",
+            staff_fname="Rahim",
+            staff_id=140894,
+            staff_lname="Khalid"
+        )
+
+        self.utA011140894 = Staff(
             country="Singapore",
             dept="Sales",
             email="Rahim.Khalid.1@allinone.com.sg",
@@ -881,8 +906,8 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
                 "role_listing_ver": 0,
                 "role_name": "Support Engineer",
                 "skills_matched": [
-                    "Network Administration and Maintenance",
-                    "System Integration"
+                    "System Integration",
+                    "Network Administration and Maintenance"
                 ],
                 "skills_matched_count": 2,
                 "upd_dt": "Wed, 15 Feb 2023 21:55:00 GMT",
@@ -900,19 +925,48 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
         self.utA010Exp = {"error": "No role found with search criteria"}
 
+        self.utA011Exp = [
+            {
+                "active_status": True,
+                "department": "SOLUTIONING",
+                "expiry_dt": "Wed, 13 Dec 2023 23:59:59 GMT",
+                "hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Sales",
+                    "email": "Rahim.Khalid.1@allinone.com.sg",
+                    "staff_fname": "Rahim",
+                    "staff_id": 140894,
+                    "staff_lname": "Khalid"
+                },
+                "hiring_manager_id": 140894,
+                "job_description": "The Support Engineer undertakes complex projects related to system provisioning, installations, configurations as well as monitoring and maintenance of systems. He/She applies highly developed specialist knowledge and skills in systems administration and works toward continuous optimisation of system performance. He implements system improvements and instructs other IT staff in the resolution of most complex issues. He is required to be on standby with on-call availability with varied shifts including nights, weekends and holidays to resolve systems related incidents. He works in a team setting and is proficient in Infrastructure systems and Network related tools and techniques required by the organisation. He is also familiar with the relevant platforms on which the database is deployed on. The Support Team is able to quickly and effectively solve issues as they arise. He is able to methodically identify the cause of the issue, evaluate it and develop a solution in collaboration with the team. He is able to communicate effectively and displays high service level standards.",
+                "job_type": "PT",
+                "original_creation_dt": "Wed, 15 Feb 2023 21:55:00 GMT",
+                "role_id": 22,
+                "role_listing_ver": 0,
+                "role_name": "Support Engineer",
+                "upd_dt": "Wed, 15 Feb 2023 21:55:00 GMT",
+                "upd_hiring_manager": {
+                    "country": "Singapore",
+                    "dept": "Sales",
+                    "email": "Rahim.Khalid.1@allinone.com.sg",
+                    "staff_fname": "Rahim",
+                    "staff_id": 140894,
+                    "staff_lname": "Khalid"
+                },
+                "upd_hiring_manager_id": 140894
+            }
+        ]
+
 
     @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_001(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA001RoleNameQuery]
 
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA001RoleNameQuery
-
-        # Set the responses for the mock requests.get calls
         mock_requests_get.side_effect = [
             self.utA001HiringMgr140944,
             self.utA001UpdMgr140944,
@@ -928,15 +982,11 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
     @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_002(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA002RoleNameQuery]
 
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA002RoleNameQuery
-
-        # Set the responses for the mock requests.get calls
         mock_requests_get.side_effect = [
             self.utA002140001, self.utA002140001,
             self.utA002150866, self.utA002150866,
@@ -951,13 +1001,10 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
     @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_003(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
-
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA003RoleNameQuery
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA003RoleNameQuery]
 
         res = self.app.post(
             "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA003json)
@@ -967,13 +1014,10 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
     @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_004(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
-
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA004RoleNameQuery
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA004RoleNameQuery]
 
         # Set the responses for the mock requests.get calls
         mock_requests_get.side_effect = [
@@ -988,13 +1032,10 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
     @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_005(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
-
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA005RoleNameQuery
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA005RoleNameQuery]
 
         res = self.app.post(
             "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA005json)
@@ -1004,15 +1045,11 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
     @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_006(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA006RoleNameQuery]
 
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.return_value.join.return_value.filter.return_value.all.return_value = self.utA006RoleNameQuery
-
-        # Set the responses for the mock requests.get calls
         mock_requests_get.side_effect = [
             self.utA006160318, self.utA006160318,
             self.utA006190059, self.utA006190059,
@@ -1023,18 +1060,14 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
         self.assertEqual(res.json, self.utA006Exp)
 
-    @patch('sqlalchemy.engine.result.Result.all')
+    @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_007(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA007SkillsQuery, self.utA007RoleNameQuery1, self.utA007RoleNameQuery2]
 
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.side_effect = [
-            self.utA007SkillsQuery, self.utA007RoleNameQuery1, self.utA007RoleNameQuery2]
-        # Set the responses for the mock requests.get calls
         mock_requests_get.side_effect = [
             self.utA007171018, self.utA007171018,
             self.utA007140894, self.utA007140894,
@@ -1044,35 +1077,27 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
         self.assertEqual(res.json, self.utA007Exp)
 
-    @patch('sqlalchemy.engine.result.Result.all')
+    @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_008(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
-
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.side_effect = [
-            self.utA008SkillsQuery]
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA008SkillsQuery]
 
         res = self.app.post(
             "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA008json)
 
         self.assertEqual(res.json, self.utA008Exp)
 
-    @patch('sqlalchemy.engine.result.Result.all')
+    @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_009(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA009SkillsQuery, self.utA009RoleNameQuery]
 
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.side_effect = [
-            self.utA009SkillsQuery, self.utA009RoleNameQuery]
-        # Set the responses for the mock requests.get calls
         mock_requests_get.side_effect = [
             self.utA009140894, self.utA009140894,
         ]
@@ -1081,24 +1106,35 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
 
         self.assertEqual(res.json, self.utA009Exp)
 
-    @patch('sqlalchemy.engine.result.Result.all')
+    @patch('app.db.session.query')
     @patch('requests.get')
     def test_UT_A_010(self, mock_requests_get, mock_query):
-        mock_subquery = Mock()
-        mock_subquery.c.role_id = Mock()
-        mock_subquery.c.max_ver = Mock()
-
-        # Mock the main query
-        # Configure the mock subquery
-        mock_query.side_effect = [
-            self.utA010SkillsQuery]
-
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect = [self.utA010SkillsQuery]
+        
         res = self.app.post(
             "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA010json)
 
         self.assertEqual(res.json, self.utA010Exp)
 
+    @patch('app.db.session.query')
+    @patch('requests.get')
+    def test_UT_A_011(self, mock_requests_get, mock_query):
+ 
+        mock_query.return_value = Mock()
+        mock_query.return_value.join.return_value = Mock()
+        mock_all = mock_query.return_value.join.return_value.filter.return_value.all
+        mock_all.side_effect  = [self.utA011RoleNameQuery]
 
+        mock_requests_get.side_effect = [
+            self.utA011140894, self.utA011140894,
+        ]
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/searchRole", json=self.utA011json)
+        
+        self.assertEqual(res.json, self.utA011Exp)
 
 if __name__ == "__main__":
     unittest.main()
