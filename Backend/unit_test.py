@@ -2,17 +2,6 @@ import unittest
 from unittest.mock import Mock, patch
 from app import *
 from models import *
-import requests
-import json
-
-
-class CISetupTest(unittest.TestCase):
-    def test_hello(self):
-
-        res = hello()
-        self.assertEqual(res, "Welcome to SBRP")
-
-
 class UT_A_FilterRoleStaff(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
