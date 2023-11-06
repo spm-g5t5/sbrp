@@ -1871,5 +1871,158 @@ class UT_A_FilterRoleStaff(unittest.TestCase):
         
         self.assertEqual(res.json, self.utA020Exp)
 
+class UT_B_UpdateRole(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+
+        ####################################################
+        # UNIT TEST - POST JSON PASSED TO API
+        ####################################################
+        self.utB001json = {
+            "active_status": True,
+            "department": "Engineering",
+            "expiry_dt": "Sat, 14 Oct 2023 23:59:59 GMT",
+            "hiring_manager_id": 140001,
+            "job_description": "Develop Machine learning Models",
+            "job_type": "FT",
+            "original_creation_dt": "Mon, 23 Oct 2023 18:45:39 GMT",
+            "role_name": "Data Engineer",
+            "upd_hiring_manager_id": 140001,
+            "role_listing_skills": [
+            ["communication", 1],
+            ["coding", 3]
+            ],
+            "orig_role_listing": {
+                    "active_status": True,
+                    "department": "Engineering",
+                    "expiry_dt": "Sat, 14 Oct 2023 23:59:59 GMT",
+                    "hiring_manager_id": 140001,
+                    "job_description": "Develop software applications",
+                    "job_type": "Full-time",
+                    "original_creation_dt": "Mon, 23 Oct 2023 18:45:39 GMT",
+                    "role_id": 27,
+                    "role_listing_ver": 0,
+                    "role_name": "Software Engineer",
+                    "upd_dt": "Mon, 23 Oct 2023 18:45:39 GMT",
+                    "upd_hiring_manager_id": 140001
+            }
+        }
+
+
+
+
+        self.utB002json = {
+            "active_status": True,
+            "department": "Engineering",
+            "expiry_dt": "Sat, 14 Oct 2023 23:59:59 GMT",
+            "hiring_manager_id": 140001,
+            "job_description": "Develop Machine learning Models",
+            "job_type": "FT",
+            "original_creation_dt": "Mon, 23 Oct 2023 18:45:39 GMT",
+            "role_name": "Data Engineer",
+            "upd_hiring_manager_id": 140001,
+            "role_listing_skills": [
+            ["communication", 1],
+            ["coding", 3]
+            ],
+        }
+
+        self.utB003json = {
+            "active_status": True,
+            "department": "Engineering",
+            "expiry_dt": "Sat, 14 Oct 2023 23:59:59 GMT",
+            "hiring_manager_id": 140001,
+            "job_description": "Develop Machine learning Models",
+            "job_type": "FT",
+            "original_creation_dt": "Mon, 23 Oct 2023 18:45:39 GMT",
+            "role_name": "Data Engineer",
+            "upd_hiring_manager_id": 140001,
+            "orig_role_listing": {
+                    "active_status": True,
+                    "department": "Engineering",
+                    "expiry_dt": "Sat, 14 Oct 2023 23:59:59 GMT",
+                    "hiring_manager_id": 140001,
+                    "job_description": "Develop software applications",
+                    "job_type": "Full-time",
+                    "original_creation_dt": "Mon, 23 Oct 2023 18:45:39 GMT",
+                    "role_id": 27,
+                    "role_listing_ver": 0,
+                    "role_name": "Software Engineer",
+                    "upd_dt": "Mon, 23 Oct 2023 18:45:39 GMT",
+                    "upd_hiring_manager_id": 140001
+            }
+        }
+
+        #########################
+        # UNIT TEST - EXPECTED RESPONSES
+        ####################################################
+
+        self.utB001resActive = True
+        self.utB001resDept = "Engineering"
+        self.utB001resExpDt = "Sat, 14 Oct 2023 23:59:59 GMT"
+        self.utB001resHiringMgrId = 140001
+        self.utB001resJobDesc = "Develop Machine learning Models"
+        self.utB001resJobType = "FT"
+        self.utB001resOrigCreateDt = "Mon, 23 Oct 2023 18:45:39 GMT"
+        self.utB001resRoleName = "Data Engineer"
+        self.utB001resUpdHiringMgrId = 140001
+        self.utB001resRoleListingSkills = [
+                {
+                    "role_id": 27,
+                    "role_listing_ver": 1,
+                    "skill_name": "communication",
+                    "skills_proficiency": 1
+                },
+                {
+                    "role_id": 27,
+                    "role_listing_ver": 1,
+                    "skill_name": "coding",
+                    "skills_proficiency": 3
+                }
+            ]
+        self.utB001resRoleListingVer = 1
+        self.utB001resRoleID = 27
+
+        self.utB002Exp = {"error": "orig_role_listing key not found in json object"}
+
+        self.utB003Exp = {"error":"Passed JSON data invalid or missing values, error: \'role_listing_skills\'"}
+
+    @patch('app.db.session.query')
+    @patch('app.db.session.add')
+    @patch('app.db.session.commit')
+    @patch('requests.get')
+    def test_UT_B_001(self, mock_requests_get, db_commit, db_add, mock_query):
+ 
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/updateRole", json=self.utB001json)
+
+        self.assertEqual(res.json["active_status"], self.utB001resActive)
+        self.assertEqual(res.json["department"], self.utB001resDept)
+        self.assertEqual(res.json["expiry_dt"], self.utB001resExpDt)
+        self.assertEqual(res.json["hiring_manager_id"], self.utB001resHiringMgrId)
+        self.assertEqual(res.json["job_description"], self.utB001resJobDesc)
+        self.assertEqual(res.json["job_type"], self.utB001resJobType)
+        self.assertEqual(res.json["original_creation_dt"], self.utB001resOrigCreateDt)
+        self.assertEqual(res.json["role_id"], self.utB001resRoleID)
+        self.assertEqual(res.json["role_listing_skills"], self.utB001resRoleListingSkills)
+        self.assertEqual(res.json["role_listing_ver"], self.utB001resRoleListingVer)
+        self.assertEqual(res.json["role_name"], self.utB001resRoleName)
+        self.assertEqual(res.json["upd_hiring_manager_id"], self.utB001resUpdHiringMgrId)
+
+    def test_UT_B_002(self):
+        
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/updateRole", json=self.utB002json)
+                
+        self.assertEqual(res.json, self.utB002Exp)
+
+    def test_UT_B_003(self):
+        
+        res = self.app.post(
+            "http://127.0.0.1:5000/API/v1/updateRole", json=self.utB003json)
+                
+        self.assertEqual(res.json, self.utB003Exp)
+
+
 if __name__ == "__main__":
     unittest.main()
