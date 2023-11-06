@@ -13,7 +13,7 @@ import {
 import Card from "react-bootstrap/Card";
 import { useNavigate } from "react-router-dom";
 import {Row, Col} from "react-bootstrap";
-import Filter from "../components/FilterRole";
+import FilterRole from "../components/FilterRole";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { FaRegSadCry } from "react-icons/fa";
 
@@ -46,6 +46,8 @@ const StaffRoleListingPage = () => {
   const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
   const [roleListingSkill, setRoleListingSkill] = useState<[]>([]);
   const [isArrayEmpty, setIsArrayEmpty] = useState(false);
+  const [staffApplication, setStaffApplication] = useState(new Set());
+
 
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
@@ -79,29 +81,56 @@ const StaffRoleListingPage = () => {
 
   const currentDate = new Date();
 
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:5000/API/v1/viewRoles")
-      .then((response) => {
-        if (Array.isArray(response.data)) {
-          setData(response.data);
-          console.log(response.data)
-          
-        } else {
-          console.log("Response data is not an array.");
-          setIsArrayEmpty(true)
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+
+    useEffect(() => {
+        axios
+        .get("http://127.0.0.1:5000/API/v1/viewRoles")
+        .then((response) => {
+          if (Array.isArray(response.data)) {
+            setData(response.data);
+            
+          } else {
+            console.log("Response data is not an array.");
+            setIsArrayEmpty(true)
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+
+    },[]);
 
 
+    useEffect(() => {
+      axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
+            "staff_id": staffId
+          })
+          .then((response) => {
+            setStaffApplication(new Set(response.data));
+            console.log(response.data);
+          })
+        },[])
+        
 
-  const handleApplication = () => {
-    navigate('/StaffApplicationPage')
-  }
+    const handleApplication = (item: any) => {
+      axios
+        .post('http://127.0.0.1:5000/API/v1/createApplication', {
+          "staff_id": staffId,
+          "role_id": item.role_id
+        })
+        .then(() => {
+          // Chain the second Axios POST request here
+          return axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
+            "staff_id": staffId
+          });
+        })
+        .then((response) => {
+          setStaffApplication(new Set(response.data));
+          console.log(response.data);
+        })
+    }
+    
+
 
   // to check if object is empty
   function isObjectEmpty(obj: any) {
@@ -165,6 +194,7 @@ const StaffRoleListingPage = () => {
         "staff_id": staffId,
         "role_id": item.role_id
     })
+    
     .then((response) => {
      setRoleSkillMatch(response.data.skill_match_pct);
      setStaffMatchSkill(response.data.skill_match);
@@ -190,10 +220,10 @@ function onHandleClearFilter() {
         <button className="view-applicants-button" onClick={() =>onHandleClearFilter()}>Clear filter</button>
       <span className="errormsg">
         <FaRegSadCry />
-        No Applicants
+          No results found
         <FaRegSadCry />
       </span>
-    </div> // Display "No applicants" if the array is empty
+    </div>
     ) : (
       <Row>
       <Col md='8'>
@@ -215,12 +245,20 @@ function onHandleClearFilter() {
                 >
                   More details
                 </button>
-                <button
-                  className="view-applicants-button"
-                  onClick={() => handleApplication()}
-                >
-                  Apply
-                </button>
+                {staffApplication.has(item.role_id) ? (
+                  <button className="remove-job-button">
+                    Applied
+                  </button>
+                ) : (
+                  <button
+                    className="view-applicants-button"
+                    onClick={() => handleApplication(item)}
+                  >
+                    Apply
+                  </button>
+                )}
+
+
                 <button
                   className="view-applicants-button"
                   onClick={() => onHandleSkills(item)}
@@ -233,7 +271,7 @@ function onHandleClearFilter() {
           </Col>  
           <Col md='4'>
           <button className="view-applicants-button"  onClick={onHandleSubmitFilterButton}> Filter</button>
-          <Filter sendDataToRoleListing={handleDataFromFilter}></Filter>
+          <FilterRole sendDataToRoleListing={handleDataFromFilter}></FilterRole>
           </Col>
         </Row>
     )}
@@ -273,7 +311,7 @@ function onHandleClearFilter() {
             <Modal.Body>
 
               <p>
-                  Role's needed skills: {roleListingSkill.map((RoleSkill)=>(
+                  Role's needed skills: {roleListingSkill.map((RoleSkill: any)=>(
                       <Badge bg="primary">{RoleSkill.skill_name}</Badge>
                   ))}
               </p>
