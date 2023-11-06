@@ -3,6 +3,7 @@ import "../styles/AddJobPage.css";
 import Header from "../components/Header";
 import axios from "axios";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { BsX } from "react-icons/bs";
 
 interface FormData {
   role_name: string;
@@ -27,6 +28,9 @@ const AddJobPage: React.FC = () => {
     role_listing_skills: [["", 1]],
     hiring_manager_id: staffId,
   });
+
+  const [errorDate, setErrorDate] = useState("");
+  const [error, setError] = useState("");
 
   const [expiry_date, setExpiryDate] = useState("");
 
@@ -60,6 +64,7 @@ const AddJobPage: React.FC = () => {
       ...prevData,
       [name]: value,
     }));
+    setError("");
   };
 
   const handleInputChangeDate = (
@@ -68,8 +73,19 @@ const AddJobPage: React.FC = () => {
     >
   ) => {
     const { name, value } = event.target;
+    const isDateInPast = (inputDate: Date): boolean => {
+      const currentDate = new Date();
+      return inputDate <= currentDate;
+    };
 
-    setExpiryDate(value); // Update the expiry_date state with the input date
+    const inputDate = new Date(value);
+    if (isDateInPast(inputDate)) {
+      setErrorDate("Please choose a present date for your expiry date.");
+      setExpiryDate(value);
+    } else {
+      setExpiryDate(value);
+      setErrorDate("");
+    }
   };
 
   const handleInputChangeTime = (
@@ -92,10 +108,12 @@ const AddJobPage: React.FC = () => {
       const updatedSkills = prevData.role_listing_skills.map((skill, i) => {
         if (i === index) {
           if (name === "skillName") {
-            // Update skillName at role_listing_skills[index][0]
+            // Check if the selected skill is not already in the selectedSkills array
+            if (!selectedSkills.includes(value)) {
+              setSelectedSkills([...selectedSkills, value]);
+            }
             return [value, skill[1]];
           } else if (name === "proficiency") {
-            // Update proficiency at role_listing_skills[index][1]
             return [skill[0], parseInt(value, 10)];
           }
         }
@@ -109,6 +127,28 @@ const AddJobPage: React.FC = () => {
     });
   };
 
+  const handleRemoveSkill = (index: number) => {
+    setFormData((prevData) => {
+      const updatedSkills = prevData.role_listing_skills.filter(
+        (_, i) => i !== index
+      );
+
+      return {
+        ...prevData,
+        role_listing_skills: updatedSkills,
+      };
+    });
+
+    setSelectedSkills((prevSelectedSkills) => {
+      const skillToRemove = prevSelectedSkills[index];
+      const updatedSelectedSkills = prevSelectedSkills.filter(
+        (_, i) => i !== index
+      );
+
+      return updatedSelectedSkills;
+    });
+  };
+
   const addSkill = () => {
     setFormData((prevData) => ({
       ...prevData,
@@ -117,6 +157,7 @@ const AddJobPage: React.FC = () => {
   };
 
   const [skills, setSkills] = useState<string[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
 
   useEffect(() => {
     axios
@@ -132,38 +173,82 @@ const AddJobPage: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    
 
-    // Combine date and time and format it
-    const combinedDateTime = `${expiry_date} ${expiry_time}`;
-    const combinedDateTimeAsDate = new Date(combinedDateTime);
-    combinedDateTimeAsDate.setSeconds(59); // Set seconds to 59
-    combinedDateTimeAsDate.setUTCHours(
-      combinedDateTimeAsDate.getUTCHours() + 8
+    const errors = [];
+    if (formData.role_name === "" || formData.role_name.trim().length === 0) {
+      errors.push("Role Name");
+    }
+
+    if (formData.department === "" || formData.department.trim().length === 0) {
+      errors.push("Job Department");
+    }
+
+    if (formData.job_type === "") {
+      errors.push("Job Type");
+    }
+
+    if (
+      formData.job_description === "" ||
+      formData.job_description.trim().length === 0
+    ) {
+      errors.push("Job Description");
+    }
+
+    if (expiry_date === "") {
+      errors.push("Job Expiry Date");
+    }
+
+    if (expiry_time === "") {
+      errors.push("Job Expiry Time");
+    }
+
+    // Check for empty skills
+    const hasEmptySkills = formData.role_listing_skills.some(
+      (skill) => skill[0] === "" || skill[0] === "Select Skill"
     );
-    const formattedExpiry_dt = combinedDateTimeAsDate.toUTCString();
+    if (hasEmptySkills) {
+      errors.push("Skills");
+    }
+    if (errors.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${errors.join(
+        ", "
+      )}.`;
+      setError(errorMessage);
+    } else if (errorDate.length > 0) {
+      setError("");
+    } else {
+      setError("");
+      // Combine date and time and format it
+      const combinedDateTime = `${expiry_date} ${expiry_time}`;
+      const combinedDateTimeAsDate = new Date(combinedDateTime);
+      combinedDateTimeAsDate.setSeconds(59); // Set seconds to 59
+      combinedDateTimeAsDate.setUTCHours(
+        combinedDateTimeAsDate.getUTCHours() + 8
+      );
+      const formattedExpiry_dt = combinedDateTimeAsDate.toUTCString();
 
-    const updatedFormData = {
-      ...formData,
-      expiry_dt: formattedExpiry_dt,
-    };
+      const updatedFormData = {
+        ...formData,
+        expiry_dt: formattedExpiry_dt,
+      };
 
-    setFormData((prevData) => ({
-      ...prevData,
-      expiry_dt: formattedExpiry_dt,
-    }));
+      setFormData((prevData) => ({
+        ...prevData,
+        expiry_dt: formattedExpiry_dt,
+      }));
 
-    console.log(updatedFormData);
-    axios
-      .post("http://127.0.0.1:5000/API/v1/createRole", updatedFormData)
-      .then((response) => {
-        // Handle the response from the server here
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("Error logging in:", error);
-      });
-    navigate("/AdminRolePage");
+      console.log(updatedFormData);
+      axios
+        .post("http://127.0.0.1:5000/API/v1/createRole", updatedFormData)
+        .then((response) => {
+          // Handle the response from the server here
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("Error logging in:", error);
+        });
+      navigate("/AdminRolePage");
+    }
   };
 
   return (
@@ -181,7 +266,6 @@ const AddJobPage: React.FC = () => {
               value={formData.role_name}
               placeholder="Enter Role Name"
               onChange={handleInputChange}
-              required // Add the required attribute
             />
           </div>
 
@@ -194,7 +278,6 @@ const AddJobPage: React.FC = () => {
               value={formData.department}
               placeholder="Enter Job Department"
               onChange={handleInputChange}
-              required // Add the required attribute
             />
           </div>
 
@@ -205,9 +288,10 @@ const AddJobPage: React.FC = () => {
               name="job_type"
               value={formData.job_type}
               onChange={handleInputChange}
-              required // Add the required attribute
             >
-              <option value="">Select Job Type</option>
+              <option value="" disabled>
+                Select Job Type
+              </option>
               <option value="FT">FT</option>
               <option value="PT">PT</option>
             </select>
@@ -220,7 +304,6 @@ const AddJobPage: React.FC = () => {
               name="job_description"
               value={formData.job_description}
               onChange={handleInputChange}
-              required // Add the required attribute
             />
           </div>
 
@@ -232,7 +315,6 @@ const AddJobPage: React.FC = () => {
               name="expiry_date"
               value={expiry_date}
               onChange={handleInputChangeDate}
-              required // Add the required attribute
             />
           </div>
 
@@ -244,7 +326,6 @@ const AddJobPage: React.FC = () => {
               name="expiry_time"
               value={expiry_time}
               onChange={handleInputChangeTime}
-              required // Add the required attribute
             />
           </div>
 
@@ -259,16 +340,22 @@ const AddJobPage: React.FC = () => {
                       name="skillName"
                       value={skill[0]}
                       onChange={(event) => handleSkillChange(event, index)}
-                      required
                     >
-                      <option value="">Select Skill</option>
+                      <option value="" disabled>
+                        Select Skill
+                      </option>
                       {skills.map((skillItem) => (
-                        <option key={skillItem} value={skillItem}>
+                        <option
+                          key={skillItem}
+                          value={skillItem}
+                          disabled={selectedSkills.includes(skillItem)}
+                        >
                           {skillItem}
                         </option>
                       ))}
                     </select>
                   </div>
+
                   <div className="skill-row">
                     <label className="label-skill">Proficiency:</label>
                     <select
@@ -276,13 +363,19 @@ const AddJobPage: React.FC = () => {
                       name="proficiency"
                       value={skill[1]}
                       onChange={(event) => handleSkillChange(event, index)}
-                      required
                     >
                       <option value={1}>Basic</option>
                       <option value={2}>Intermediate</option>
                       <option value={3}>Advanced</option>
                     </select>
                   </div>
+                  <button
+                    className="remove-skill-button"
+                    onClick={() => handleRemoveSkill(index)}
+                    type="button"
+                  >
+                    <BsX /> 
+                  </button>
                 </div>
               ))}
             </div>
@@ -290,6 +383,13 @@ const AddJobPage: React.FC = () => {
               Add Skill
             </button>
           </div>
+          {(error || errorDate) && (
+            <div className="alert-input" role="alert">
+              <span dangerouslySetInnerHTML={{ __html: errorDate }} />
+              <br />
+              {error}
+            </div>
+          )}
 
           <div className="submit-container">
             <button className="submitaddrole" type="submit">
