@@ -46,6 +46,10 @@ const UpdateRoleListingPage = () => {
 
   const [expiry_time, setExpiryTime] = useState("");
 
+  const [skills, setSkills] = useState<string[]>([]);
+
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+
   useEffect(() => {
     if (accessRights !== 3) {
       navigate("/");
@@ -101,6 +105,9 @@ const UpdateRoleListingPage = () => {
             orig_role_listing: roleData,
             active_status: 1,
           });
+
+          const initialSelectedSkills = formData.role_listing_skills.map((skill) => String(skill[0]));
+          setSelectedSkills(initialSelectedSkills);
 
           setExpiryDate(formattedDate);
           setExpiryTime(formattedTime);
@@ -214,15 +221,13 @@ const UpdateRoleListingPage = () => {
     }));
   };
 
-  const [skills, setSkills] = useState<string[]>([]);
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-
   useEffect(() => {
     axios
       .get("http://127.0.0.1:5000/API/v1/getSkills")
       .then((response) => {
         const skills = response.data;
         setSkills(skills);
+
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -232,32 +237,46 @@ const UpdateRoleListingPage = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    const errors = [];
+    const lengthErrors = [];
+    const emptyErrors = [];
+
     if (formData.role_name === "" || formData.role_name.trim().length === 0) {
-      errors.push("Role Name");
+      emptyErrors.push("Role Name");
     }
 
     if (formData.department === "" || formData.department.trim().length === 0) {
-      errors.push("Job Department");
+      emptyErrors.push("Job Department");
     }
 
     if (formData.job_type === "") {
-      errors.push("Job Type");
+      emptyErrors.push("Job Type");
     }
 
     if (
       formData.job_description === "" ||
       formData.job_description.trim().length === 0
     ) {
-      errors.push("Job Description");
+      emptyErrors.push("Job Description");
+    }
+
+    if (formData.role_name.length >= 20) {
+      lengthErrors.push("Role Name");
+    }
+
+    if (formData.department.length > 50) {
+      lengthErrors.push("Job Department");
+    }
+
+    if (formData.job_description.length > 50) {
+      lengthErrors.push("Job Description");
     }
 
     if (expiry_date === "") {
-      errors.push("Job Expiry Date");
+      emptyErrors.push("Job Expiry Date");
     }
 
     if (expiry_time === "") {
-      errors.push("Job Expiry Time");
+      emptyErrors.push("Job Expiry Time");
     }
 
     // Check for empty skills
@@ -265,15 +284,49 @@ const UpdateRoleListingPage = () => {
       (skill) => skill[0] === "" || skill[0] === "Select Skill"
     );
     if (hasEmptySkills) {
-      errors.push("Skills");
+      emptyErrors.push("Skills");
     }
-    if (errors.length > 0) {
-      const errorMessage = `Please fill in the following fields: ${errors.join(
+    if (
+      emptyErrors.length > 0 &&
+      lengthErrors.length > 0 &&
+      errorDate.length > 0
+    ) {
+      const errorMessage = `Please fill in the following fields: ${emptyErrors.join(
+        ", "
+      )}.<br><br>Please reduce the length of the following fields: ${lengthErrors.join(
+        ", "
+      )}.<br><br> ${errorDate}`;
+      setError(errorMessage);
+    } else if (emptyErrors.length > 0 && lengthErrors.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyErrors.join(
+        ", "
+      )}.<br><br>Please reduce the length of the following fields: ${lengthErrors.join(
+        ", "
+      )}.`;
+      setError(errorMessage);
+    } else if (emptyErrors.length > 0 && errorDate.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyErrors.join(
+        ", "
+      )}.<br><br>${errorDate}`;
+      setError(errorMessage);
+    } else if (lengthErrors.length > 0 && errorDate.length > 0) {
+      const errorMessage = `Please reduce the length of the following fields: ${lengthErrors.join(
+        ", "
+      )}.<br><br>${errorDate}`;
+      setError(errorMessage);
+    } else if (emptyErrors.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyErrors.join(
+        ", "
+      )}.`;
+      setError(errorMessage);
+    } else if (lengthErrors.length > 0) {
+      const errorMessage = `Please reduce the length of the following fields: ${lengthErrors.join(
         ", "
       )}.`;
       setError(errorMessage);
     } else if (errorDate.length > 0) {
-      setError("");
+      const errorMessage = `${errorDate}`;
+      setError(errorMessage);
     } else {
       setError("");
 
@@ -296,7 +349,7 @@ const UpdateRoleListingPage = () => {
         expiry_dt: formattedExpiry_dt,
       }));
 
-      console.log(updatedFormData)
+      console.log(updatedFormData);
 
       axios
         .post("http://127.0.0.1:5000/API/v1/updateRole", updatedFormData)
@@ -400,9 +453,15 @@ const UpdateRoleListingPage = () => {
                       value={skill[0]}
                       onChange={(event) => handleSkillChange(event, index)}
                     >
-                      <option value="" disabled>Select Skill</option>
+                      <option value="" disabled>
+                        Select Skill
+                      </option>
                       {skills.map((skillItem) => (
-                        <option key={skillItem} value={skillItem}>
+                        <option
+                          key={skillItem}
+                          value={skillItem}
+                          disabled={selectedSkills.includes(skillItem)}
+                        >
                           {skillItem}
                         </option>
                       ))}
@@ -426,7 +485,7 @@ const UpdateRoleListingPage = () => {
                     onClick={() => handleRemoveSkill(index)}
                     type="button"
                   >
-                    <BsX /> 
+                    <BsX />
                   </button>
                 </div>
               ))}
@@ -437,9 +496,7 @@ const UpdateRoleListingPage = () => {
           </div>
           {(error || errorDate) && (
             <div className="alert-input" role="alert">
-              <span dangerouslySetInnerHTML={{ __html: errorDate }} />
-              <br />
-              {error}
+              <div dangerouslySetInnerHTML={{ __html: error }}></div>
             </div>
           )}
 

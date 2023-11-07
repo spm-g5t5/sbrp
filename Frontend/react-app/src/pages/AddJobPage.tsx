@@ -42,6 +42,8 @@ const AddJobPage: React.FC = () => {
     3: "Advanced",
   };
 
+
+
   const navigate = useNavigate(); // Get the navigate function
   //Check and navigate to the right page
   useEffect(() => {
@@ -79,14 +81,16 @@ const AddJobPage: React.FC = () => {
     };
 
     const inputDate = new Date(value);
+
     if (isDateInPast(inputDate)) {
       setErrorDate("Please choose a present date for your expiry date.");
       setExpiryDate(value);
-    } else {
+    }
+    else {
       setExpiryDate(value);
       setErrorDate("");
     }
-  };
+  };    
 
   const handleInputChangeTime = (
     event: React.ChangeEvent<
@@ -173,33 +177,47 @@ const AddJobPage: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    const lengthErrors = []
+    const emptyErrors = [];
 
-    const errors = [];
     if (formData.role_name === "" || formData.role_name.trim().length === 0) {
-      errors.push("Role Name");
+      emptyErrors.push("Role Name");
     }
 
     if (formData.department === "" || formData.department.trim().length === 0) {
-      errors.push("Job Department");
+      emptyErrors.push("Job Department");
     }
 
     if (formData.job_type === "") {
-      errors.push("Job Type");
+      emptyErrors.push("Job Type");
     }
 
     if (
       formData.job_description === "" ||
       formData.job_description.trim().length === 0
     ) {
-      errors.push("Job Description");
+      emptyErrors.push("Job Description");
+    }
+
+    if (formData.role_name.length >= 20) {
+      lengthErrors.push("Role Name");
+    }
+
+    if (formData.department.length > 50) {
+      lengthErrors.push("Job Department");
+    }
+
+    if (
+      formData.job_description.length > 50) {
+      lengthErrors.push("Job Description");
     }
 
     if (expiry_date === "") {
-      errors.push("Job Expiry Date");
+      emptyErrors.push("Job Expiry Date");
     }
 
     if (expiry_time === "") {
-      errors.push("Job Expiry Time");
+      emptyErrors.push("Job Expiry Time");
     }
 
     // Check for empty skills
@@ -207,17 +225,32 @@ const AddJobPage: React.FC = () => {
       (skill) => skill[0] === "" || skill[0] === "Select Skill"
     );
     if (hasEmptySkills) {
-      errors.push("Skills");
+      emptyErrors.push("Skills");
     }
-    if (errors.length > 0) {
-      const errorMessage = `Please fill in the following fields: ${errors.join(
-        ", "
-      )}.`;
+    if (emptyErrors.length > 0 && lengthErrors.length > 0 && errorDate.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyErrors.join(", ")}.<br><br>Please reduce the length of the following fields: ${lengthErrors.join(", ")}.<br><br> ${errorDate}`;
       setError(errorMessage);
-    } else if (errorDate.length > 0) {
+    }else if (emptyErrors.length > 0 && lengthErrors.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyErrors.join(", ")}.<br><br>Please reduce the length of the following fields: ${lengthErrors.join(", ")}.`;
+      setError(errorMessage);
+    }else if (emptyErrors.length > 0 && errorDate.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyErrors.join(", ")}.<br><br>${errorDate}`;
+      setError(errorMessage);
+    }else if (lengthErrors.length > 0 && errorDate.length > 0) {
+      const errorMessage = `Please reduce the length of the following fields: ${lengthErrors.join(", ")}.<br><br>${errorDate}`;
+      setError(errorMessage);
+    }else if (emptyErrors.length > 0){
+      const errorMessage = `Please fill in the following fields: ${emptyErrors.join(", ")}.`;
+      setError(errorMessage);
+    }else if (lengthErrors.length > 0){
+      const errorMessage = `Please reduce the length of the following fields: ${lengthErrors.join(", ")}.`;
+      setError(errorMessage);
+    }else if (errorDate.length > 0){
+      const errorMessage = `${errorDate}`;
+      setError(errorMessage);
+    }else {
       setError("");
-    } else {
-      setError("");
+
       // Combine date and time and format it
       const combinedDateTime = `${expiry_date} ${expiry_time}`;
       const combinedDateTimeAsDate = new Date(combinedDateTime);
@@ -238,16 +271,16 @@ const AddJobPage: React.FC = () => {
       }));
 
       console.log(updatedFormData);
-      axios
-        .post("http://127.0.0.1:5000/API/v1/createRole", updatedFormData)
-        .then((response) => {
-          // Handle the response from the server here
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error("Error logging in:", error);
-        });
-      navigate("/AdminRolePage");
+      // axios
+      //   .post("http://127.0.0.1:5000/API/v1/createRole", updatedFormData)
+      //   .then((response) => {
+      //     // Handle the response from the server here
+      //     console.log(response);
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error logging in:", error);
+      //   });
+      // navigate("/AdminRolePage");
     }
   };
 
@@ -385,9 +418,7 @@ const AddJobPage: React.FC = () => {
           </div>
           {(error || errorDate) && (
             <div className="alert-input" role="alert">
-              <span dangerouslySetInnerHTML={{ __html: errorDate }} />
-              <br />
-              {error}
+              <div dangerouslySetInnerHTML={{ __html: error }}></div>
             </div>
           )}
 
