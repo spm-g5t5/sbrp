@@ -65,8 +65,8 @@ mySQLConnection.close()
 # Create user database connection
 conn = sqlalchemy.create_engine(ROOT_SQLALCHEMY_DATABASE_URI)
 # Append data
-datalist = ["database/staff.csv", "database/staff_access.csv", "database/staff_skill.csv", "database/role_skill.csv", "database/staff_role_skill.csv", "database/role_listing.csv", "database/application.csv", "database/role_listing_skills.csv"]
-tables = ["staff", "staff_access", "staff_skill", "role_skill", "staff_role_skill", "role_listing", "application", "role_listing_skills"]
+datalist = ["database/staff.csv", "database/staff_access.csv", "database/staff_skill.csv", "database/role_skill.csv", "database/staff_role_skill.csv", "database/role_listing.csv", "database/application.csv", "database/role_listing_skills.csv", "database/staff_role.csv"]
+tables = ["staff", "staff_access", "staff_skill", "role_skill", "staff_role_skill", "role_listing", "application", "role_listing_skills", "staff_role"]
 
 for i in range(0, len(datalist)):
     data_df = pd.read_csv(datalist[i], encoding='unicode_escape')
