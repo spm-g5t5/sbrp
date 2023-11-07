@@ -40,11 +40,12 @@ interface Role {
   // Add other properties as needed
 }
 
+
 const StaffRoleListingPage = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<Role[]>([]);
   const accessRights = parseInt(
-    localStorage.getItem("AccessRights") || "0",
+    localStorage.getItem("AccessRights") || "1",
     10
   );
   const [showDetailModal, setDetailShowModal] = useState(false);
@@ -57,6 +58,9 @@ const StaffRoleListingPage = () => {
   const [isArrayEmpty, setIsArrayEmpty] = useState(false);
   const [staffApplication, setStaffApplication] = useState(new Set());
 
+  const userDepartment = localStorage.getItem("DEPT");
+
+
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
     role_name: string;
@@ -68,6 +72,7 @@ const StaffRoleListingPage = () => {
     upd_dt: string;
     // Add other properties as needed
   } | null>(null);
+
 
 
   const handleDetailCloseModal = () => setDetailShowModal(false);
@@ -89,182 +94,216 @@ const StaffRoleListingPage = () => {
     setDetailShowModal(true);
   };
   const currentDate = new Date();
-    useEffect(() => {
-      axios
-        .get("http://127.0.0.1:5000/API/v1/viewRoles")
-        .then((response) => {
-          if (Array.isArray(response.data)) {
-            setData(response.data);
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:5000/API/v1/viewRoles")
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setData(response.data);
 
-          } else {
-            console.log("Response data is not an array.");
-            setIsArrayEmpty(true)
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-
-    }, []);
-    
-      useEffect(() => {
-        axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
-          "staff_id": staffId
-        })
-          .then((response) => {
-            setStaffApplication(new Set(response.data));
-            console.log(response.data);
-          })
-      }, [])
-
-
-
-    const handleApplication = (item: any) => {
-      axios
-        .post('http://127.0.0.1:5000/API/v1/createApplication', {
-          "staff_id": staffId,
-          "role_id": item.role_id
-        })
-        .then(() => {
-          // Chain the second Axios POST request here
-          return axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
-            "staff_id": staffId
-          });
-        })
-        .then((response) => {
-          setStaffApplication(new Set(response.data));
-          console.log(response.data);
-        })
-    }
-
-
-
-    // to check if object is empty
-    function isObjectEmpty(obj: any) {
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          return false; // Object has at least one own property
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true)
         }
-      }
-      return true; // Object is empty (has no own properties)
-    }
-
-
-
-    const handleDataFromFilter = (data: any) => {
-      if (isObjectEmpty(data)) {
-        console.log("empty")
-      } else {
-        setAllFilters((prev) => ({
-          ...prev,
-          ...data,
-        }));
-      }
-
-
-    }
-
-    function onHandleSubmitFilterButton() {
-      axios.post('http://127.0.0.1:5000/API/v1/searchRole', {
-        "skills": allFilters["skills"],
-        "department": allFilters["department"],
-        "jobtype": allFilters["jobtype"]
       })
-        .then((response) => {
-          if (Array.isArray(response.data)) {
-            setData(response.data);
-            console.log(response.data)
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
 
-          } else {
-            console.log("Response data is not an array.");
-            setIsArrayEmpty(true)
-          }
+  }, []);
 
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
+  useEffect(() => {
+    axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
+      "staff_id": staffId
+    })
+      .then((response) => {
+        setStaffApplication(new Set(response.data));
+        console.log(response.data);
+      })
+  }, [])
+
+
+
+  const handleDetail = (item: { role_id: number }) => {
+    const roleId = item.role_id.toString(); // Convert number to string
+    localStorage.setItem("RoleId", roleId);
+    navigate("/ApplicantDetailsPage");
+  };
+
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const showErrorMessage = (message: any) => {
+    setErrorMessage(message);
+    setErrorVisible(true);
+  };
+
+  const hideErrorMessage = () => {
+    setErrorVisible(false);
+    setErrorMessage("");
+  };
+
+
+
+  const handleApplication = (item: any) => {
+    console.log("userDepartment:", userDepartment);
+    console.log("item.department:", item.department);
+    console.log("user access:", accessRights);
+
+    if (item.department === userDepartment) {
+      showErrorMessage("You belong to the same department. You cannot apply for this role.");
+      return; // Prevent further processing
     }
-
-    const staffId = localStorage.getItem('StaffId');
-    function onHandleSkills(item: Role) {
-
-      axios.get('http://127.0.0.1:5000/API/v1/viewRoles/skill/' + item.role_id)
-        .then((response) => {
-          setRoleListingSkill(response.data);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
-
-      setSkillShowModal(true);
-      axios.post('http://127.0.0.1:5000/API/v1/getRoleSkillMatch', {
+    axios
+      .post('http://127.0.0.1:5000/API/v1/createApplication', {
         "staff_id": staffId,
         "role_id": item.role_id
       })
-
-        .then((response) => {
-          setRoleSkillMatch(response.data.skill_match_pct);
-          setStaffMatchSkill(response.data.skill_match);
-          setStaffUnmatchSkill(response.data.staff_skills_unmatch);
-
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
+      .then(() => {
+        // Chain the second Axios POST request here
+        return axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
+          "staff_id": staffId
         });
-
-    };
-
-    // const handleDetail = (item: { role_id: number }) => {
-    //   const roleId = item.role_id.toString(); // Convert number to string
-    //   localStorage.setItem("RoleId", roleId);
-    //   navigate("/ApplicantDetailsPage");
-    // };
+      })
+      .then((response) => {
+        setStaffApplication(new Set(response.data));
+        console.log(response.data);
+      })
+  }
 
 
-    // const handleSearch = (searchText: string) => {
-    //   const searchData = {
-    //     search: searchText,
-    //   };
-    //   axios
-    //     .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
-    //     .then((response) => {
-    //       setData(response.data);
-  
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //       console.log(error);
-    //     });
-    //   console.log(searchData)
+
+  // to check if object is empty
+  function isObjectEmpty(obj: any) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false; // Object has at least one own property
+      }
+    }
+    return true; // Object is empty (has no own properties)
+  }
 
 
-    function onHandleClearFilter() {
-      window.location.reload();
+
+  const handleDataFromFilter = (data: any) => {
+    if (isObjectEmpty(data)) {
+      console.log("empty")
+    } else {
+      setAllFilters((prev) => ({
+        ...prev,
+        ...data,
+      }));
     }
 
-    return (
-      <div>
-        <Header accessRights={accessRights} />
 
-        {/* <SearchBar onSearch={handleSearch} /> */}
-        {isArrayEmpty ? ( // Check if the data array is empty
-          <div>
-            <button className="view-applicants-button" onClick={() => onHandleClearFilter()}>Clear filter</button>
-            <span className="errormsg">
-              <FaRegSadCry />
-              No results found
-              <FaRegSadCry />
-            </span>
-          </div>
-        ) : (
+  }
+
+  function onHandleSubmitFilterButton() {
+    axios.post('http://127.0.0.1:5000/API/v1/searchRole', {
+      "skills": allFilters["skills"],
+      "department": allFilters["department"],
+      "jobtype": allFilters["jobtype"]
+    })
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+          console.log(response.data)
+
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true)
+        }
+
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  const staffId = localStorage.getItem('StaffId');
+  function onHandleSkills(item: Role) {
+
+    axios.get('http://127.0.0.1:5000/API/v1/viewRoles/skill/' + item.role_id)
+      .then((response) => {
+        setRoleListingSkill(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+
+    setSkillShowModal(true);
+    axios.post('http://127.0.0.1:5000/API/v1/getRoleSkillMatch', {
+      "staff_id": staffId,
+      "role_id": item.role_id
+    })
+
+      .then((response) => {
+        setRoleSkillMatch(response.data.skill_match_pct);
+        setStaffMatchSkill(response.data.skill_match);
+        setStaffUnmatchSkill(response.data.staff_skills_unmatch);
+
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+
+  };
+
+
+  const handleSearch = (searchText: string) => {
+    const searchData = {
+      search: searchText,
+    };
+    axios
+      .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
+      .then((response) => {
+        setData(response.data);
+
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log(error);
+      });
+    console.log(searchData)
+  };
+
+
+  function onHandleClearFilter() {
+    window.location.reload();
+  }
+
+  return (
+    <div>
+      <Header accessRights={accessRights} />
+
+      {isArrayEmpty ? ( // Check if the data array is empty
+        <div>
+          <button className="view-applicants-button" onClick={() => onHandleClearFilter()}>Clear filter</button>
+          <span className="errormsg">
+            <FaRegSadCry />
+            No results found
+            <FaRegSadCry />
+          </span>
+        </div>
+      ) : (
+        <Row>
+
+          <Col>
+            <SearchBar onSearch={handleSearch} />
+          </Col>
           <Row>
             <Col md='8'>
 
               {data
                 .filter((item) => item.active_status == 1 && new Date(item.expiry_dt) > currentDate)
                 .map((item) => (
-                  <Card style={{ margin: "30px" }} key={item.role_id.toString()}>
+                  <Card
+                    style={{ margin: "30px" }}
+                    key={item.role_id.toString()}
+                    onClick={() => handleDetail(item)}
+                    className="clickable-card"
+                    data-mdb-ripple-color="light"
+                  >
 
                     <CardBody>
                       <div className="d-flex justify-content-between">
@@ -287,20 +326,21 @@ const StaffRoleListingPage = () => {
                       </Card.Text>
                     </CardBody>
                     <CardFooter>
-                      <button
+                      {/* <button
                         className="view-applicants-button"
                         onClick={() => handleDetailShowModal(item)}
                       >
                         More details
-                      </button>
+                      </button> */}
                       {staffApplication.has(item.role_id) ? (
                         <button className="remove-job-button">
                           Applied
                         </button>
                       ) : (
                         <button
-                          className="view-applicants-button"
-                          onClick={() => handleApplication(item)}
+                          className="view-applicants-button" 
+                          onClick={(e) => {
+                            e.stopPropagation(); handleApplication(item)}}
                         >
                           Apply
                         </button>
@@ -309,7 +349,9 @@ const StaffRoleListingPage = () => {
 
                       <button
                         className="view-applicants-button"
-                        onClick={() => onHandleSkills(item)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onHandleSkills(item)}}
                       >
                         View Skills
                       </button>
@@ -322,77 +364,97 @@ const StaffRoleListingPage = () => {
               <FilterRole sendDataToRoleListing={handleDataFromFilter}></FilterRole>
             </Col>
           </Row>
-        )}
+        </Row>
+      )}
 
-        {showDetailModal && (
-          <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>{currentItem!.role_name}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              Application Close Date:{" "}
-              <p>{currentItem!.expiry_dt.toLocaleDateString()}</p>
-              Job Description:<p>{currentItem!.job_description}</p>
-              Job Type: <p>{currentItem!.job_type}</p>
-              Creation Date and time:
-              <p>{currentItem!.original_creation_dt.toLocaleDateString()}</p>
-            </Modal.Body>
-            <Modal.Footer>
-              <button
-                className="view-applicants-button"
-                onClick={handleDetailCloseModal}
-              >
-                Close
-              </button>
-            </Modal.Footer>
-          </Modal>
-        )}
-
-
-        {showSkillModal && (
-          <Modal show={showSkillModal} onHide={handleSkillCloseModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Applicant's skills</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-
-              <p>
-                Role's needed skills: {roleListingSkill.map((RoleSkill: any) => (
-                  <Badge bg="primary">{RoleSkill.skill_name}</Badge>
-                ))}
-              </p>
-              <p>
-                Your skills:
-                {staffMatchSkill.map((skill) => (
-                  <Badge bg="success">{skill}</Badge>
-                ))}
-                {staffUnmatchSkill.map((skill) => (
-                  <Badge bg="danger">{skill}</Badge>
-                ))}
-              </p>
-              <p>
-                Applicant's skills Match Percentage:
-                <ProgressBar now={roleSkillMatch} label={`${roleSkillMatch}%`} />
-              </p>
-
-            </Modal.Body>
-            <Modal.Footer>
-              <button
-                className="view-applicants-button"
-                onClick={handleSkillCloseModal}
-              >
-                Close
-              </button>
-            </Modal.Footer>
-          </Modal>
-
-        )}
-      </div>
+      {showDetailModal && (
+        <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>{currentItem!.role_name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Application Close Date:{" "}
+            <p>{currentItem!.expiry_dt.toLocaleDateString()}</p>
+            Job Description:<p>{currentItem!.job_description}</p>
+            Job Type: <p>{currentItem!.job_type}</p>
+            Creation Date and time:
+            <p>{currentItem!.original_creation_dt.toLocaleDateString()}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              className="view-applicants-button"
+              onClick={handleDetailCloseModal}
+            >
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal>
+      )}
 
 
-    );
-  };
+      {showSkillModal && (
+        <Modal show={showSkillModal} onHide={handleSkillCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Applicant's skills</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+
+            <p>
+              Role's needed skills: {roleListingSkill.map((RoleSkill: any) => (
+                <Badge bg="primary">{RoleSkill.skill_name}</Badge>
+              ))}
+            </p>
+            <p>
+              Your skills:
+              {staffMatchSkill.map((skill) => (
+                <Badge bg="success">{skill}</Badge>
+              ))}
+              {staffUnmatchSkill.map((skill) => (
+                <Badge bg="danger">{skill}</Badge>
+              ))}
+            </p>
+            <p>
+              Applicant's skills Match Percentage:
+              <ProgressBar now={roleSkillMatch} label={`${roleSkillMatch}%`} />
+            </p>
+
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              className="view-applicants-button"
+              onClick={handleSkillCloseModal}
+            >
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal>
+      )}
+
+      {/* Error message pop-up */}
+      {errorVisible && (
+        <Modal show={errorVisible} onHide={hideErrorMessage}>
+          <Modal.Header closeButton>
+            <Modal.Title>Error</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>{errorMessage}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              className="view-applicants-button"
+              onClick={hideErrorMessage}
+            >
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal>
+      )}
+    </div>
+
+
+  );
+};
 
 
 
-  export default StaffRoleListingPage;
+export default StaffRoleListingPage;
