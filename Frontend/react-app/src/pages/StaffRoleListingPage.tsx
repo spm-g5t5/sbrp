@@ -44,7 +44,7 @@ const StaffRoleListingPage = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<Role[]>([]);
   const accessRights = parseInt(
-    localStorage.getItem("AccessRights") || "0",
+    localStorage.getItem("AccessRights") || "1",
     10
   );
   const [showDetailModal, setDetailShowModal] = useState(false);
@@ -215,28 +215,23 @@ const StaffRoleListingPage = () => {
 
     };
 
-    // const handleDetail = (item: { role_id: number }) => {
-    //   const roleId = item.role_id.toString(); // Convert number to string
-    //   localStorage.setItem("RoleId", roleId);
-    //   navigate("/ApplicantDetailsPage");
-    // };
 
-
-    // const handleSearch = (searchText: string) => {
-    //   const searchData = {
-    //     search: searchText,
-    //   };
-    //   axios
-    //     .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
-    //     .then((response) => {
-    //       setData(response.data);
+    const handleSearch = (searchText: string) => {
+      const searchData = {
+        search: searchText,
+      };
+      axios
+        .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
+        .then((response) => {
+          setData(response.data);
   
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //       console.log(error);
-    //     });
-    //   console.log(searchData)
+        })
+        .catch((error) => {
+          console.error(error);
+          console.log(error);
+        });
+      console.log(searchData)
+  };
 
 
     function onHandleClearFilter() {
@@ -247,7 +242,6 @@ const StaffRoleListingPage = () => {
       <div>
         <Header accessRights={accessRights} />
 
-        {/* <SearchBar onSearch={handleSearch} /> */}
         {isArrayEmpty ? ( // Check if the data array is empty
           <div>
             <button className="view-applicants-button" onClick={() => onHandleClearFilter()}>Clear filter</button>
@@ -259,6 +253,11 @@ const StaffRoleListingPage = () => {
           </div>
         ) : (
           <Row>
+
+        <Col>
+          <SearchBar onSearch={handleSearch} />
+        </Col>
+            <Row>
             <Col md='8'>
 
               {data
@@ -321,6 +320,7 @@ const StaffRoleListingPage = () => {
               <button className="view-applicants-button" onClick={onHandleSubmitFilterButton}> Filter</button>
               <FilterRole sendDataToRoleListing={handleDataFromFilter}></FilterRole>
             </Col>
+          </Row>
           </Row>
         )}
 
