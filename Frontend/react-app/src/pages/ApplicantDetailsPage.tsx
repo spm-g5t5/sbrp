@@ -34,14 +34,14 @@ const ApplicantDetailsPage = () => {
     }[]
   >([]);
 
-  useEffect(() => {
-    // Check access rights here
-    if (accessRights !== 3) {
-      // Redirect to the login page if access rights are not 3
-      // This will take the user back to the login page
-      navigate("/");
-    }
-  }, [accessRights, navigate]);
+  // useEffect(() => {
+  //   // Check access rights here
+  //   if (accessRights !== 3) {
+  //     // Redirect to the login page if access rights are not 3
+  //     // This will take the user back to the login page
+  //     navigate("/");
+  //   }
+  // }, [accessRights, navigate]);
 
   useEffect(() => {
     axios
