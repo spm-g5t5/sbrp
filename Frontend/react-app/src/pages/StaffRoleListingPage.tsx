@@ -40,6 +40,7 @@ interface Role {
   // Add other properties as needed
 }
 
+
 const StaffRoleListingPage = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<Role[]>([]);
@@ -57,6 +58,9 @@ const StaffRoleListingPage = () => {
   const [isArrayEmpty, setIsArrayEmpty] = useState(false);
   const [staffApplication, setStaffApplication] = useState(new Set());
 
+  const userDepartment = localStorage.getItem("DEPT");
+
+  
   const [currentItem, setCurrentItem] = useState<{
     role_id: number;
     role_name: string;
@@ -119,7 +123,33 @@ const StaffRoleListingPage = () => {
 
 
 
+//////////////////////////////////////////////////////////////
+
+
+const [errorVisible, setErrorVisible] = useState(false);
+const [errorMessage, setErrorMessage] = useState("");
+
+const showErrorMessage = (message : any) => {
+  setErrorMessage(message);
+  setErrorVisible(true);
+};
+
+const hideErrorMessage = () => {
+  setErrorVisible(false);
+  setErrorMessage("");
+};
+
+
+
     const handleApplication = (item: any) => {
+      console.log("userDepartment:", userDepartment);
+      console.log("item.department:", item.department);
+      console.log("user access:", accessRights);
+    
+      if (item.department === userDepartment) {
+        showErrorMessage("You belong to the same department. You cannot apply for this role.");
+        return; // Prevent further processing
+      }
       axios
         .post('http://127.0.0.1:5000/API/v1/createApplication', {
           "staff_id": staffId,
@@ -385,8 +415,27 @@ const StaffRoleListingPage = () => {
               </button>
             </Modal.Footer>
           </Modal>
-
         )}
+
+             {/* Error message pop-up */}
+      {errorVisible && (
+        <Modal show={errorVisible} onHide={hideErrorMessage}>
+          <Modal.Header closeButton>
+            <Modal.Title>Error</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>{errorMessage}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              className="view-applicants-button"
+              onClick={hideErrorMessage}
+            >
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal>
+      )}
       </div>
 
 
