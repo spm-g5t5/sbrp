@@ -12,8 +12,11 @@ import {
   Container,
 } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
+import { useNavigate } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 import { BsFillXCircleFill } from "react-icons/bs";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import FilterRole from "../components/FilterRole";
+import ProgressBar from "react-bootstrap/ProgressBar";
 import {
   FaBuilding,
   FaBriefcase,
@@ -21,9 +24,6 @@ import {
   FaUser,
   FaRegSadCry,
 } from "react-icons/fa";
-import { Row, Col } from "react-bootstrap";
-import FilterRole from "../components/FilterRole";
-import ProgressBar from "react-bootstrap/ProgressBar";
 
 
 interface Role {
@@ -47,77 +47,48 @@ const StaffRoleListingPage = () => {
     localStorage.getItem("AccessRights") || "0",
     10
   );
+  const [showDetailModal, setDetailShowModal] = useState(false);
+  const [allFilters, setAllFilters] = useState<{ [key: string]: any }>({});
+  const [showSkillModal, setSkillShowModal] = useState(false);
+  const [roleSkillMatch, setRoleSkillMatch] = useState<number>(0);
+  const [staffMatchSkill, setStaffMatchSkill] = useState<[]>([]);
+  const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
+  const [roleListingSkill, setRoleListingSkill] = useState<[]>([]);
+  const [isArrayEmpty, setIsArrayEmpty] = useState(false);
+  const [staffApplication, setStaffApplication] = useState(new Set());
 
-  const handleSearch = (searchText: string) => {
-    const searchData = {
-      search: searchText,
-    };
-    axios
-      .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
-      .then((response) => {
-        setData(response.data);
-
-      })
-      .catch((error) => {
-        console.error(error);
-        console.log(error);
-      });
-    console.log(searchData)
-
-    const [showDetailModal, setDetailShowModal] = useState(false);
-    const [allFilters, setAllFilters] = useState<{ [key: string]: any }>({});
-    const [showSkillModal, setSkillShowModal] = useState(false);
-    const [roleSkillMatch, setRoleSkillMatch] = useState<number>(0);
-    const [staffMatchSkill, setStaffMatchSkill] = useState<[]>([]);
-    const [staffUnmatchSkill, setStaffUnmatchSkill] = useState<[]>([]);
-    const [roleListingSkill, setRoleListingSkill] = useState<[]>([]);
-    const [isArrayEmpty, setIsArrayEmpty] = useState(false);
-    const [staffApplication, setStaffApplication] = useState(new Set());
-
-    const [currentItem, setCurrentItem] = useState<{
-      role_id: number;
-      role_name: string;
-      department: string;
-      job_description: string;
-      expiry_dt: Date;
-      job_type: string;
-      original_creation_dt: Date;
-      upd_dt: string;
-      // Add other properties as needed
-    } | null>(null);
+  const [currentItem, setCurrentItem] = useState<{
+    role_id: number;
+    role_name: string;
+    department: string;
+    job_description: string;
+    expiry_dt: Date;
+    job_type: string;
+    original_creation_dt: Date;
+    upd_dt: string;
+    // Add other properties as needed
+  } | null>(null);
 
 
-    const handleDetailCloseModal = () => setDetailShowModal(false);
-    const handleSkillCloseModal = () => setSkillShowModal(false);
+  const handleDetailCloseModal = () => setDetailShowModal(false);
+  const handleSkillCloseModal = () => setSkillShowModal(false);
 
-    const handleDetailShowModal = (item: {
-      role_id: number;
-      role_name: string;
-      department: string;
-      job_description: string;
-      expiry_dt: Date;
-      job_type: string;
-      original_creation_dt: Date;
-      upd_dt: string;
-    }) => {
-      item.expiry_dt = new Date(item.expiry_dt);
-      item.original_creation_dt = new Date(item.original_creation_dt);
-      setCurrentItem(item);
-      setDetailShowModal(true);
-    };
-
-    const handleDetail = (item: { role_id: number }) => {
-      const roleId = item.role_id.toString(); // Convert number to string
-      localStorage.setItem("RoleId", roleId);
-      navigate("/ApplicantDetailsPage");
-    };
-
-    const currentDate = new Date();
-
-
-
-
-
+  const handleDetailShowModal = (item: {
+    role_id: number;
+    role_name: string;
+    department: string;
+    job_description: string;
+    expiry_dt: Date;
+    job_type: string;
+    original_creation_dt: Date;
+    upd_dt: string;
+  }) => {
+    item.expiry_dt = new Date(item.expiry_dt);
+    item.original_creation_dt = new Date(item.original_creation_dt);
+    setCurrentItem(item);
+    setDetailShowModal(true);
+  };
+  const currentDate = new Date();
     useEffect(() => {
       axios
         .get("http://127.0.0.1:5000/API/v1/viewRoles")
@@ -135,17 +106,17 @@ const StaffRoleListingPage = () => {
         });
 
     }, []);
-
-
-    useEffect(() => {
-      axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
-        "staff_id": staffId
-      })
-        .then((response) => {
-          setStaffApplication(new Set(response.data));
-          console.log(response.data);
+    
+      useEffect(() => {
+        axios.post('http://127.0.0.1:5000/API/v1/getStaffApplication', {
+          "staff_id": staffId
         })
-    }, [])
+          .then((response) => {
+            setStaffApplication(new Set(response.data));
+            console.log(response.data);
+          })
+      }, [])
+
 
 
     const handleApplication = (item: any) => {
@@ -244,6 +215,29 @@ const StaffRoleListingPage = () => {
 
     };
 
+    // const handleDetail = (item: { role_id: number }) => {
+    //   const roleId = item.role_id.toString(); // Convert number to string
+    //   localStorage.setItem("RoleId", roleId);
+    //   navigate("/ApplicantDetailsPage");
+    // };
+
+
+    // const handleSearch = (searchText: string) => {
+    //   const searchData = {
+    //     search: searchText,
+    //   };
+    //   axios
+    //     .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
+    //     .then((response) => {
+    //       setData(response.data);
+  
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //       console.log(error);
+    //     });
+    //   console.log(searchData)
+
 
     function onHandleClearFilter() {
       window.location.reload();
@@ -253,7 +247,7 @@ const StaffRoleListingPage = () => {
       <div>
         <Header accessRights={accessRights} />
 
-        <SearchBar onSearch={handleSearch} />
+        {/* <SearchBar onSearch={handleSearch} /> */}
         {isArrayEmpty ? ( // Check if the data array is empty
           <div>
             <button className="view-applicants-button" onClick={() => onHandleClearFilter()}>Clear filter</button>
@@ -290,7 +284,6 @@ const StaffRoleListingPage = () => {
                       </Card.Text>
                       <Card.Text>
                         <FaUser /> Last updated by on {item.upd_dt.slice(5, 22)}
-                        {/* {item.upd_dt.slice(5, 22)} */}
                       </Card.Text>
                     </CardBody>
                     <CardFooter>
@@ -330,8 +323,6 @@ const StaffRoleListingPage = () => {
             </Col>
           </Row>
         )}
-
-
 
         {showDetailModal && (
           <Modal show={showDetailModal} onHide={handleDetailCloseModal}>
@@ -402,7 +393,6 @@ const StaffRoleListingPage = () => {
     );
   };
 
-};
 
 
-export default StaffRoleListingPage;
+  export default StaffRoleListingPage;
