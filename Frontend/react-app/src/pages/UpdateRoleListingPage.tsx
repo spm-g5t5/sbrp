@@ -204,10 +204,15 @@ useEffect(() => {
   };
 
   const handleRemoveSkill = (index: number) => {
+
     setFormData((prevData) => {
+
       const updatedSkills = prevData.role_listing_skills.filter(
         (_, i) => i !== index
       );
+      if (updatedSkills.length === 0) {
+        return prevData;
+      }
 
       return {
         ...prevData,
@@ -216,10 +221,14 @@ useEffect(() => {
     });
 
     setSelectedSkills((prevSelectedSkills) => {
-      const skillToRemove = prevSelectedSkills[index];
+
       const updatedSelectedSkills = prevSelectedSkills.filter(
         (_, i) => i !== index
       );
+
+      if (updatedSelectedSkills.length === 0) {
+        return prevSelectedSkills;
+      }  
 
       return updatedSelectedSkills;
     });
