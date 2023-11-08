@@ -43,17 +43,16 @@ const AddJobPage: React.FC = () => {
   };
 
 
-
   const navigate = useNavigate(); // Get the navigate function
   //Check and navigate to the right page
-  useEffect(() => {
-    // Check access rights here
-    if (accessRights !== 3) {
-      // Redirect to the login page if access rights are not 3
-      // This will take the user back to the login page
-      navigate("/");
-    }
-  }, [accessRights, navigate]);
+  // useEffect(() => {
+  //   // Check access rights here
+  //   if (accessRights !== 3) {
+  //     // Redirect to the login page if access rights are not 3
+  //     // This will take the user back to the login page
+  //     navigate("/");
+  //   }
+  // }, [accessRights, navigate]);
 
   const handleInputChange = (
     event: React.ChangeEvent<
@@ -112,10 +111,6 @@ const AddJobPage: React.FC = () => {
       const updatedSkills = prevData.role_listing_skills.map((skill, i) => {
         if (i === index) {
           if (name === "skillName") {
-            // Check if the selected skill is not already in the selectedSkills array
-            if (!selectedSkills.includes(value)) {
-              setSelectedSkills([...selectedSkills, value]);
-            }
             return [value, skill[1]];
           } else if (name === "proficiency") {
             return [skill[0], parseInt(value, 10)];
@@ -123,6 +118,9 @@ const AddJobPage: React.FC = () => {
         }
         return skill;
       });
+
+      const updatedSelectedSkills = updatedSkills.map((skill) => String(skill[0]));
+      setSelectedSkills(updatedSelectedSkills)
 
       return {
         ...prevData,
@@ -203,13 +201,9 @@ const AddJobPage: React.FC = () => {
       lengthErrors.push("Role Name");
     }
 
-    if (formData.department.length > 50) {
-      lengthErrors.push("Job Department");
-    }
-
     if (
-      formData.job_description.length > 50) {
-      lengthErrors.push("Job Description");
+      formData.department.length > 50) {
+      lengthErrors.push("Job Department");
     }
 
     if (expiry_date === "") {
@@ -271,16 +265,16 @@ const AddJobPage: React.FC = () => {
       }));
 
       console.log(updatedFormData);
-      // axios
-      //   .post("http://127.0.0.1:5000/API/v1/createRole", updatedFormData)
-      //   .then((response) => {
-      //     // Handle the response from the server here
-      //     console.log(response);
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error logging in:", error);
-      //   });
-      // navigate("/AdminRolePage");
+      axios
+        .post("http://127.0.0.1:5000/API/v1/createRole", updatedFormData)
+        .then((response) => {
+          // Handle the response from the server here
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("Error logging in:", error);
+        });
+      navigate("/AdminRolePage");
     }
   };
 
