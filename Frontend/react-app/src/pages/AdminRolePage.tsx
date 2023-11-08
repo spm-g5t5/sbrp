@@ -25,8 +25,8 @@ import {
   FaPen,
   FaUser,
   FaRegSadCry,
-  FaEye, 
-  FaEyeSlash
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
 
 const AdminRolePage = () => {
@@ -73,11 +73,10 @@ const AdminRolePage = () => {
       .then((response) => {
         if (Array.isArray(response.data)) {
           setData(response.data);
-          console.log(response.data)
-
+          console.log(response.data);
         } else {
           console.log("Response data is not an array.");
-          setIsArrayEmpty(true)
+          setIsArrayEmpty(true);
         }
       })
       .catch((error) => {
@@ -131,58 +130,54 @@ const AdminRolePage = () => {
       .post("http://127.0.0.1:5000/API/v1/searchRole", searchData)
       .then((response) => {
         setData(response.data);
-        
       })
       .catch((error) => {
         console.error(error);
         console.log(error);
       });
-      console.log(searchData)
+    console.log(searchData);
   };
 
-    // to check if object is empty
-    function isObjectEmpty(obj: any) {
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          return false; // Object has at least one own property
-        }
+  // to check if object is empty
+  function isObjectEmpty(obj: any) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false; // Object has at least one own property
       }
-      return true; // Object is empty (has no own properties)
     }
+    return true; // Object is empty (has no own properties)
+  }
 
-    
   const handleDataFromFilter = (data: any) => {
-    if (isObjectEmpty(data)){
-      console.log("empty")
-    }else{
+    if (isObjectEmpty(data)) {
+      console.log("empty");
+    } else {
       setAllFilters((prev) => ({
         ...prev,
         ...data,
       }));
     }
-
-  }
+  };
 
   function onHandleSubmitFilterButton() {
-    axios.post('http://127.0.0.1:5000/API/v1/searchRole',{
-      "skills": allFilters["skills"],
-      "department": allFilters["department"],
-      "jobtype":  allFilters["jobtype"]
-    })
-    .then((response) => {
-      if (Array.isArray(response.data)) {
-        setData(response.data);
-        console.log(response.data)
-        
-      } else {
-        console.log("Response data is not an array.");
-        setIsArrayEmpty(true)
-      }
-
-    })
-    .catch((error) => {
-        console.error('Error fetching data:', error);
-    });
+    axios
+      .post("http://127.0.0.1:5000/API/v1/searchRole", {
+        skills: allFilters["skills"],
+        department: allFilters["department"],
+        jobtype: allFilters["jobtype"],
+      })
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+          console.log(response.data);
+        } else {
+          console.log("Response data is not an array.");
+          setIsArrayEmpty(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }
 
   function onHandleClearFilter() {
@@ -194,153 +189,195 @@ const AdminRolePage = () => {
       <Header accessRights={accessRights} />
       {isArrayEmpty ? (
         <div>
-          <button className="view-applicants-button" onClick={() =>onHandleClearFilter()}>Clear filter</button>
-          <span className="errormsg">
-            <FaRegSadCry />
-              No results found
-            <FaRegSadCry />
-          </span>
+          <Row>
+            <Col xl="8">
+              <span className="errormsg">
+                <FaRegSadCry />
+                No results found
+                <FaRegSadCry />
+              </span>
+            </Col>
+            <Col xl="4">
+              <Card
+                style={{
+                  marginTop: "30px",
+                  marginBottom: "30px",
+                  marginRight: "30px",
+                  marginLeft: "15",
+                }}
+              >
+                <div className="filter-card">
+                  <CardTitle>Filter For Applicant</CardTitle>
+                  <button
+                    className="view-applicants-button"
+                    onClick={() => onHandleClearFilter()}
+                  >
+                    Clear filter
+                  </button>
+                </div>
+              </Card>
+            </Col>
+          </Row>
         </div>
       ) : (
         <Row>
+          <Col xs={12} xl={11}>
+            <SearchBar onSearch={handleSearch} />
+          </Col>
 
-        <Col xs={12} xl={11}>
-          <SearchBar onSearch={handleSearch} />
-        </Col>
-       
-        <Col xs={12} xl={1}>
-          <button
-            className="add-job-button"
-            onClick={() => navigate("/AddJobPage")}
-          >
-            <span>
-              <FaPlus />
-            </span>
-          </button>
-        </Col>
-
-      <Row>
-        <Col xl={8}>
-          {data.length > 0 ? (
-            data
-              .map((item) => (
-                <Card
-                  style={{ margin: "30px" }}
-                  key={item.role_id.toString()}
-                  onClick={() => handleDetail(item)}
-                  className="clickable-card"
-                  data-mdb-ripple-color="light"
-                >
-                  <CardBody>
-                    <div className="d-flex justify-content-between">
-                      <div>
-                        <CardTitle>{item.role_name}</CardTitle>
-                        {new Date(item.expiry_dt) < currentDate ? (
-                          <Badge pill bg="danger" className="badge-margin">
-                            Expired
-                          </Badge>
-                        ) : (
-                          <Badge pill bg="success" className="badge-margin">
-                            Active
-                          </Badge>
-                        )}
-                        {item.active_status ? (
-                        <Badge pill bg="success" className="badge-margin">
-                          Visible
-                        </Badge>
-                        ) : (                         
-                        <Badge pill bg="danger" className="badge-margin">
-                           Hidden
-                         </Badge>
-                        )
-                        }
-                      </div>
-                      <div className="d-flex">
-                        <button
-                          className="update-job-button"
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent card click
-                            handleUpdateRole(item);
-                          }}
-                        >
-                          <span>Update</span>
-                        </button>
-                        
-                      {item.active_status ? (
-                        <button
-                          className="remove-job-button"
-                          onClick={(e) => {
-                            e.stopPropagation(); 
-                            handleRemoveRole(item);
-                          }}
-                        >
-                          <span>
-                            <FaEyeSlash />
-                          </span>
-                        </button>
-                      ) : (
-                        <button
-                          className="unhide-job-button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleUnHideRole(item);
-                          }}
-                        >
-                          <span>
-                            <FaEye />
-                          </span>
-                        </button>
-                      )
-                    }
-                         
-                      </div>
-                    </div>
-                    <Card.Text>
-                      <FaBuilding /> Department: {item.department}
-                    </Card.Text>
-                    <Card.Text>
-                      <FaBriefcase /> Job Type: {item.job_type}
-                    </Card.Text>
-                    <Card.Text>
-                      <FaPen /> Apply By:{" "}
-                      {item.expiry_dt.toString().slice(5, 16)}
-                    </Card.Text>
-                    <Card.Text>
-                      <FaUser /> Last updated by{" "}
-                      {item.upd_hiring_manager.staff_fname}{" "}
-                      {item.upd_hiring_manager.staff_lname} on{" "}
-                      {item.upd_dt.slice(5, 22)}
-                    </Card.Text>
-                    <button
-                      className="view-applicants-button"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent card click
-                        handleViewApplications(item);
-                      }}
-                    >
-                      View Applicants
-                    </button>
-                  </CardBody>
-                </Card>
-              ))
-          ) : (
-            <div>
-              <span className="errormsg">
-                <FaRegSadCry />
-                No items to display
-                <FaRegSadCry />
+          <Col xs={12} xl={1}>
+            <button
+              className="add-job-button"
+              onClick={() => navigate("/AddJobPage")}
+            >
+              <span>
+                <FaPlus />
               </span>
-            </div>
-          )}
-        </Col>
-        <Col md='4'>
-        <button className="view-applicants-button"  onClick={onHandleSubmitFilterButton}> Filter</button>
-        <FilterRole sendDataToRoleListing={handleDataFromFilter}></FilterRole>
-        </Col>
-      </Row>
-      </Row>
+            </button>
+          </Col>
+
+          <Row>
+            <Col xl={8}>
+              {data.length > 0 ? (
+                data.map((item) => (
+                  <Card
+                    style={{
+                      marginTop: "30px",
+                      marginBottom: "30px",
+                      marginLeft: "30px",
+                      marginRight: "15",
+                    }}
+                    key={item.role_id.toString()}
+                    onClick={() => handleDetail(item)}
+                    className="clickable-card"
+                    data-mdb-ripple-color="light"
+                  >
+                    <CardBody>
+                      <div className="d-flex justify-content-between">
+                        <div>
+                          <CardTitle>{item.role_name}</CardTitle>
+                          {new Date(item.expiry_dt) < currentDate ? (
+                            <Badge pill bg="danger" className="badge-margin">
+                              Expired
+                            </Badge>
+                          ) : (
+                            <Badge pill bg="success" className="badge-margin">
+                              Active
+                            </Badge>
+                          )}
+                          {item.active_status ? (
+                            <Badge pill bg="success" className="badge-margin">
+                              Visible
+                            </Badge>
+                          ) : (
+                            <Badge pill bg="danger" className="badge-margin">
+                              Hidden
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="d-flex">
+                          <button
+                            className="update-job-button"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              handleUpdateRole(item);
+                            }}
+                          >
+                            <span>Update</span>
+                          </button>
+
+                          {item.active_status ? (
+                            <button
+                              className="remove-job-button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemoveRole(item);
+                              }}
+                            >
+                              <span>
+                                <FaEyeSlash />
+                              </span>
+                            </button>
+                          ) : (
+                            <button
+                              className="unhide-job-button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleUnHideRole(item);
+                              }}
+                            >
+                              <span>
+                                <FaEye />
+                              </span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      <Card.Text>
+                        <FaBuilding /> Department: {item.department}
+                      </Card.Text>
+                      <Card.Text>
+                        <FaBriefcase /> Job Type: {item.job_type}
+                      </Card.Text>
+                      <Card.Text>
+                        <FaPen /> Apply By:{" "}
+                        {item.expiry_dt.toString().slice(5, 16)}
+                      </Card.Text>
+                      <Card.Text>
+                        <FaUser /> Last updated by{" "}
+                        {item.upd_hiring_manager.staff_fname}{" "}
+                        {item.upd_hiring_manager.staff_lname} on{" "}
+                        {item.upd_dt.slice(5, 22)}
+                      </Card.Text>
+                      <button
+                        className="view-applicants-button"
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent card click
+                          handleViewApplications(item);
+                        }}
+                      >
+                        View Applicants
+                      </button>
+                    </CardBody>
+                  </Card>
+                ))
+              ) : (
+                <div>
+                  <span className="errormsg">
+                    <FaRegSadCry />
+                    No items to display
+                    <FaRegSadCry />
+                  </span>
+                </div>
+              )}
+            </Col>
+            <Col xl={4}>
+              <Card
+                style={{
+                  marginTop: "30px",
+                  marginBottom: "30px",
+                  marginRight: "30px",
+                  marginLeft: "15",
+                }}
+              >
+                <div className="filter-card">
+                  <CardTitle>Filter For Roles</CardTitle>
+                  <FilterRole
+                    sendDataToRoleListing={handleDataFromFilter}
+                  ></FilterRole>
+                  <button
+                    className="filter-button"
+                    onClick={onHandleSubmitFilterButton}
+                  >
+                    {" "}
+                    Filter
+                  </button>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+        </Row>
       )}
-      
 
       {/* {showApplicationModal && (
         <Modal

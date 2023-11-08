@@ -61,6 +61,7 @@ const UpdateRoleListingPage = () => {
       .get(`http://127.0.0.1:5000//API/v1/searchAllRoleVer/${roleId}`)
       .then((response) => {
         const data = response.data;
+        console.log(response.data)
         if (Array.isArray(data) && data.length > 0) {
           // Get the last object in the array
           const lastObject = data[data.length - 1];
@@ -72,8 +73,8 @@ const UpdateRoleListingPage = () => {
           ]);
 
           // Parse the original expiry date string
-          const originalExpiryDate = new Date(roleData.expiry_dt);
-
+          const originalExpiryDate = new Date(roleData.expiry_dt.slice(5, 16));
+          console.log(originalExpiryDate)
           // Format date as "yyyy-MM-dd"
           const year = originalExpiryDate.getFullYear();
           const month = String(originalExpiryDate.getMonth() + 1).padStart(
@@ -82,15 +83,17 @@ const UpdateRoleListingPage = () => {
           );
           const day = String(originalExpiryDate.getDate()).padStart(2, "0");
           const formattedDate = `${year}-${month}-${day}`;
+          console.log(formattedDate)
 
           // Format time as "HH:mm:ss"
+          const originalExpiryTime = new Date(roleData.expiry_dt);
           const gmtExpiryDate = new Date(
             Date.UTC(
-              originalExpiryDate.getUTCFullYear(),
-              originalExpiryDate.getUTCMonth(),
-              originalExpiryDate.getUTCDate(),
-              originalExpiryDate.getUTCHours(),
-              originalExpiryDate.getUTCMinutes()
+              originalExpiryTime.getUTCFullYear(),
+              originalExpiryTime.getUTCMonth(),
+              originalExpiryTime.getUTCDate(),
+              originalExpiryTime.getUTCHours(),
+              originalExpiryTime.getUTCMinutes()
             )
           );
           const formattedTime = gmtExpiryDate.toISOString().slice(11, 19); // Extract the time part
@@ -106,9 +109,6 @@ const UpdateRoleListingPage = () => {
             active_status: 1,
           });
 
-          const initialSelectedSkills = formData.role_listing_skills.map((skill) => String(skill[0]));
-          setSelectedSkills(initialSelectedSkills);
-
           setExpiryDate(formattedDate);
           setExpiryTime(formattedTime);
         }
@@ -117,6 +117,17 @@ const UpdateRoleListingPage = () => {
         console.error("Error fetching data:", error);
       });
   }, [roleId]);
+
+
+useEffect(() => {
+  // This useEffect watches for changes in formData.role_listing_skills and updates selectedSkills accordingly.
+  const initialSelectedSkills = formData.role_listing_skills.map((skill) =>
+    String(skill[0])
+  );
+  setSelectedSkills(initialSelectedSkills);
+}, [formData.role_listing_skills]);
+
+
 
   const handleInputChange = (
     event: React.ChangeEvent<
@@ -265,10 +276,6 @@ const UpdateRoleListingPage = () => {
 
     if (formData.department.length > 50) {
       lengthErrors.push("Job Department");
-    }
-
-    if (formData.job_description.length > 50) {
-      lengthErrors.push("Job Description");
     }
 
     if (expiry_date === "") {
