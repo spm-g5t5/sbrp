@@ -135,7 +135,6 @@ const AdminRolePage = () => {
         console.error(error);
         console.log(error);
       });
-    console.log(searchData);
   };
 
   // to check if object is empty
@@ -187,6 +186,7 @@ const AdminRolePage = () => {
   return (
     <div>
       <Header accessRights={accessRights} />
+
       {isArrayEmpty ? (
         <div>
           <Row>
@@ -378,31 +378,6 @@ const AdminRolePage = () => {
           </Row>
         </Row>
       )}
-
-      {/* {showApplicationModal && (
-        <Modal
-          show={showApplicationModal}
-          onHide={() => setApplicationShowModal(false)}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Applications</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>Applicant by staff ID</p>
-            {Object.keys(Applications).map((key: string) => (
-              <li key={key}>{Applications[key].applicant_staff_id}</li>
-            ))}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              style={{ backgroundColor: "#266C73" }}
-              onClick={() => setApplicationShowModal(false)}
-            >
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )} */}
     </div>
   );
 };

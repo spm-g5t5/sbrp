@@ -42,7 +42,25 @@ interface Role {
 
 const StaffRoleListingPage = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<Role[]>([]);
+  const [data, setData] = useState<
+  {
+    role_id: number;
+    role_name: string;
+    department: string;
+    job_description: string;
+    expiry_dt: Date;
+    job_type: string;
+    original_creation_dt: Date;
+    active_status: number;
+    orig_role_listing: object;
+    upd_hiring_manager: {
+      staff_fname: string;
+      staff_lname: string;
+    };
+    upd_dt: string;
+    // Add other properties as needed
+  }[]
+>([]);
   const accessRights = parseInt(
     localStorage.getItem("AccessRights") || "1",
     10
@@ -113,7 +131,6 @@ const StaffRoleListingPage = () => {
       })
       .then((response) => {
         setStaffApplication(new Set(response.data));
-        console.log(response.data);
       });
   }, []);
 
@@ -135,22 +152,24 @@ const StaffRoleListingPage = () => {
     setErrorVisible(false);
     setErrorMessage("");
   };
+  
 
   const handleApplication = (item: any) => {
-    console.log("userDepartment:", userDepartment);
-    console.log("item.department:", item.department);
-    console.log("user access:", accessRights);
-
-    if (item.department === userDepartment) {
-      showErrorMessage(
-        "You belong to the same department. You cannot apply for this role."
-      );
-      return; // Prevent further processing
-    }
     axios
       .post("http://127.0.0.1:5000/API/v1/createApplication", {
         staff_id: staffId,
         role_id: item.role_id,
+      })
+      .then((response) => {
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          console.log(response.data);
+        } else if (response.data.error) {
+          showErrorMessage(response.data.error);
+          // Set your error state or do error handling here
+        } else {
+          console.error("Response data is empty.");
+          // Set your error state or do error handling here
+        }
       })
       .then(() => {
         // Chain the second Axios POST request here
@@ -234,6 +253,7 @@ const StaffRoleListingPage = () => {
       });
   }
 
+
   const handleSearch = (searchText: string) => {
     const searchData = {
       search: searchText,
@@ -247,12 +267,12 @@ const StaffRoleListingPage = () => {
         console.error(error);
         console.log(error);
       });
-    console.log(searchData);
   };
 
   function onHandleClearFilter() {
     window.location.reload();
   }
+
 
   return (
     <div>
@@ -297,8 +317,8 @@ const StaffRoleListingPage = () => {
           </Col>
           <Row>
             <Col md="8">
-              {data
-                .filter(
+              {data.length > 0 ? (
+                data.filter(
                   (item) =>
                     item.active_status == 1 &&
                     new Date(item.expiry_dt) > currentDate
@@ -364,7 +384,15 @@ const StaffRoleListingPage = () => {
                       </button>
                     </CardBody>
                   </Card>
-                ))}
+                ))): (
+                  <div>
+                    <span className="errormsg">
+                      <FaRegSadCry />
+                      No items to display
+                      <FaRegSadCry />
+                    </span>
+                  </div>
+                )}
             </Col>
             <Col xl={4}>
               <Card
@@ -464,14 +492,6 @@ const StaffRoleListingPage = () => {
           <Modal.Body>
             <p>{errorMessage}</p>
           </Modal.Body>
-          <Modal.Footer>
-            <button
-              className="view-applicants-button"
-              onClick={hideErrorMessage}
-            >
-              Close
-            </button>
-          </Modal.Footer>
         </Modal>
       )}
     </div>
