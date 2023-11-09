@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "react-bootstrap": "^2.9.0",
+    "react-icons": "^4.11.0",
+    "survey-core": "^1.9.112",
+    "survey-react-ui": "^1.9.112"
+  }
+}

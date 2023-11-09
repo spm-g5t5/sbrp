@@ -1,0 +1,28 @@
+/* UserCard Container */
+.user-card {
+    width: 300px;
+    height: 350px;
+    background: #92B5B8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  /* Circular Avatar */
+  .avatar-circle {  /* Change the class name to match your component */
+    width: 200px;
+    height: 200px;
+    background: #FFE37F;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .username-text {
+    font-size: 50px; /* Adjust the font size as needed */
+    font-weight: bold;
+  }
